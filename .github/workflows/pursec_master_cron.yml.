@@ -1,0 +1,29 @@
+name: PURSEC 24/7 Autonomous AI Orchestrator
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # Ejecuta los agentes de telemetría, radio IA y laboratorio automáticamente
+  workflow_dispatch:       # Permite lanzarlo manualmente con 1 clic
+
+jobs:
+  run-all-agents:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Descargar Repositorio PURSEC
+        uses: actions/checkout@v4
+
+      - name: Instalar Python 3.11, FFmpeg y Edge-TTS
+        run: |
+          sudo apt-get update && sudo apt-get install -y ffmpeg
+          pip install edge-tts
+
+      - name: Ejecutar Agentes 01, 02 y 03 (63 Funciones + Radio IA + Lab)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+        run: python pursec_agents_engine.py
+
+      - name: Ejecutar Agente 04 (Marketing Orgánico Viral)
+        run: python pursec_marketing_agent.py
