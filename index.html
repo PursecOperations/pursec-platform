@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PURSEC™ (Purple Sector) — Live Timing Predictivo 360º, Noticias & Sim Racing</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #060609; color: #f8fafc; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- CABECERA GLOBAL DEL ECOSISTEMA 360º -->
+  <header class="border-b border-zinc-800 bg-zinc-950/95 sticky top-0 z-40 px-4 md:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <span class="text-2xl font-black tracking-tighter text-white">P U R S E C ™</span>
+      <span class="bg-purple-600 text-white text-[10px] font-black px-2.5 py-1 rounded-full uppercase mono">63 LIVE MODULES // 360º</span>
+    </div>
+
+    <!-- Menú de las 4 Áreas del Ecosistema -->
+    <nav class="flex flex-wrap gap-1.5 text-xs font-bold">
+      <button onclick="mostrarArea('live')" id="nav-live" class="px-3.5 py-2 rounded-xl bg-purple-600 text-white">⏱️ Live Timing &amp; Context Pins</button>
+      <button onclick="mostrarArea('lab')" id="nav-lab" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300 hover:bg-zinc-800">🔬 Lab Lunes–Jueves (Stints &amp; H2H)</button>
+      <button onclick="mostrarArea('trackers')" id="nav-trackers" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300 hover:bg-zinc-800">🏆 BoP, Superlicencia &amp; Predictor</button>
+      <button onclick="mostrarArea('cfo')" id="nav-cfo" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-amber-400 hover:bg-zinc-800 mono">📊 Record Contable CFO</button>
+    </nav>
+
+    <!-- Controles de Modo (Real vs Sim) y Plan (Paddock vs Trackside) -->
+    <div class="flex items-center gap-2">
+      <button onclick="alternarModoSim()" id="btn-modo" class="bg-zinc-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold px-3 py-2 rounded-xl mono">
+        🌍 MODO: COMPETICIÓN REAL AMPLIADA
+      </button>
+      <button onclick="alternarPlan()" id="btn-plan" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-black px-4 py-2 rounded-xl shadow-lg">
+        🟣 PLAN: TRACKSIDE (4,99€/mes)
+      </button>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto w-full p-4 md:p-8 space-y-8 flex-1">
+
+    <!-- =====================================================================
+         ÁREA 1: LIVE TIMING PREDICTIVO (63 FUNCIONES) + LIVE CONTEXT PINS
+         ===================================================================== -->
+    <section id="area-live" class="space-y-6">
+      <!-- Barra de las 7 Categorías -->
+      <div class="flex flex-wrap items-center justify-between gap-3 bg-zinc-900 border border-zinc-800 p-3 rounded-2xl">
+        <div class="flex flex-wrap gap-1.5 text-xs font-black mono">
+          <button onclick="cambiarCategoria('f1')" id="tab-f1" class="px-3 py-2 rounded-xl bg-purple-600 text-white">FÓRMULA 1</button>
+          <button onclick="cambiarCategoria('f2_f3')" id="tab-f2_f3" class="px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400">F2 / F3</button>
+          <button onclick="cambiarCategoria('fe')" id="tab-fe" class="px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400">FÓRMULA E</button>
+          <button onclick="cambiarCategoria('motogp')" id="tab-motogp" class="px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400">MOTOGP / 2 / 3</button>
+          <button onclick="cambiarCategoria('indycar')" id="tab-indycar" class="px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400">INDYCAR</button>
+          <button onclick="cambiarCategoria('gt3')" id="tab-gt3" class="px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400">GT3</button>
+          <button onclick="cambiarCategoria('wec')" id="tab-wec" class="px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400">RESISTENCIA (WEC / IMSA)</button>
+        </div>
+        <a href="https://buy.stripe.com/test_pursec_trackside" target="_blank" class="text-xs font-black text-emerald-400 hover:underline mono">
+          ⚡ Suscribirse a PURSEC TRACKSIDE (4,99€/mes o 39,90€/año) ➔
+        </a>
+      </div>
+
+      <!-- Tabla de Cronometraje en Vivo + Pins de Noticias -->
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 overflow-x-auto">
+        <h2 id="titulo-categoria" class="text-lg font-black text-white mb-3">Cronometraje Adaptativo en Vivo</h2>
+        <table class="w-full text-left text-xs mono mb-6">
+          <thead class="bg-zinc-950 text-zinc-400 uppercase border-b border-zinc-800">
+            <tr>
+              <th class="p-3">POS</th>
+              <th class="p-3">PILOTO / DORSAL</th>
+              <th class="p-3">TIEMPO / GAP</th>
+              <th class="p-3">📌 LIVE CONTEXT PIN (ACTUALIDAD IA)</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-pilotos" class="divide-y divide-zinc-800"></tbody>
+        </table>
+
+        <!-- Desglose de las Funciones PADDOCK (Gratis) vs TRACKSIDE (Premium) de la Categoría -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 pt-4 border-t border-zinc-800">
+          <div class="lg:col-span-4 bg-zinc-950 border border-zinc-800 rounded-2xl p-4">
+            <span class="text-[11px] font-black text-emerald-400 mono uppercase">🟢 PURSEC PADDOCK (GRATIS — VER QUÉ PASA)</span>
+            <ul id="lista-paddock" class="mt-3 space-y-2.5 text-xs text-zinc-300"></ul>
+          </div>
+          <div class="lg:col-span-8 bg-zinc-950 border-2 border-purple-500/50 rounded-2xl p-4">
+            <span id="header-trackside" class="text-[11px] font-black text-purple-400 mono uppercase">🟣 PURSEC TRACKSIDE (PREMIUM — PREDECIR QUÉ VA A PASAR)</span>
+            <div id="grid-trackside" class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ÁREA 2: LABORATORIO POST-SESIÓN (RETENCIÓN LUNES A JUEVES)
+         ===================================================================== -->
+    <section id="area-lab" class="hidden space-y-6">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6">
+        <span class="text-xs font-black text-cyan-400 mono uppercase">RETENCIÓN LUNES A JUEVES // AGENTE 03 POST-SESSION CLEANER</span>
+        <h2 class="text-2xl font-black text-white mt-1 mb-4">Laboratorio Post-Sesión: Stints sin Tráfico/SC, Degradación y Duelos H2H</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl">
+            <strong class="text-purple-400 block mb-1 mono">1. COMPARADOR DE STINTS LIMPIOS</strong>
+            Eliminadas automáticamente 5 vueltas de Safety Car, 2 de VSC y 4 vueltas con tráfico (&lt;0.6s). Ritmo real en tanda de compuesto Medio: Piloto A (1:18.310) vs Piloto B (1:18.490).
+          </div>
+          <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl">
+            <strong class="text-cyan-400 block mb-1 mono">2. CURVAS DE DEGRADACIÓN TÉRMICA</strong>
+            Pendiente calculada por regresión lineal: Compuesto Blando pierde +0.088s/vuelta a partir del giro 11; Compuesto Duro mantiene +0.024s/vuelta.
+          </div>
+          <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl">
+            <strong class="text-emerald-400 block mb-1 mono">3. DUELO DIRECTO (HEAD-TO-HEAD)</strong>
+            Comparativa pura entre compañeros de equipo en aire limpio: Diferencia en frenada (-0.092s), paso por curva rápida (-0.041s) y tracción (+0.030s).
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ÁREA 3: RASTREADORES PERMANENTES Y GAMIFICACIÓN TÉCNICA
+         ===================================================================== -->
+    <section id="area-trackers" class="hidden grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+        <span class="text-emerald-400 font-black mono">RASTREADOR PERMANENTE 01</span>
+        <h3 class="text-lg font-black text-white mt-1 mb-3">Evolución de BoP (GT3 &amp; WEC/IMSA)</h3>
+        <p class="text-zinc-300 mb-2">Histórico vivo de kilos de lastre, potencia y energía por stint:</p>
+        <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 mono space-y-1.5">
+          <div>• Ferrari 296 GT3: 1312 kg (+12 kg) | -1.2% Turbo</div>
+          <div>• Porsche 911 GT3 R: 1318 kg (+18 kg) | Brida 36mm</div>
+          <div>• BMW M4 GT3: 1304 kg (-6 kg) | +8 MJ Stint</div>
+        </div>
+      </div>
+
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+        <span class="text-purple-400 font-black mono">RASTREADOR PERMANENTE 02</span>
+        <h3 class="text-lg font-black text-white mt-1 mb-3">Puntos de Superlicencia FIA en Vivo</h3>
+        <p class="text-zinc-300 mb-2">Seguimiento hacia los 40 puntos requeridos para subir a F1:</p>
+        <div class="bg-zinc-950 p-3 rounded-xl border border-zinc-800 mono space-y-1.5">
+          <div>• Líder F2 Actual: 44 pts proyectados (✅ APTO F1)</div>
+          <div>• P3 F2 Actual: 37 pts (+1 pt por FP1 limpia)</div>
+          <div>• Campeón F3 Virtual: 32 pts acumulados</div>
+        </div>
+      </div>
+
+      <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+        <span class="text-amber-400 font-black mono">GAMIFICACIÓN COMUNIDAD</span>
+        <h3 class="text-lg font-black text-white mt-1 mb-3">Predictor Técnico de Telemetría</h3>
+        <p class="text-zinc-300 mb-3">Pronostica el récord del Sector 3 en Q3 y el piloto con más posiciones ganadas en la vuelta 1:</p>
+        <input type="text" placeholder="Ej: 22.184s — VER" class="w-full bg-zinc-950 border border-zinc-700 rounded-xl p-2.5 text-white mono mb-2.5" />
+        <button onclick="alert('Pronóstico guardado automáticamente para la corrección post-carrera del Agente 03.')" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-black py-2.5 rounded-xl">
+          Registrar Predicción Técnica
+        </button>
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         ÁREA 4: LIBRO CONTABLE Y RECORD ECONÓMICO (AGENTE 08 CFO)
+         ===================================================================== -->
+    <section id="area-cfo" class="hidden space-y-6">
+      <div class="bg-zinc-900 border-2 border-amber-500/50 rounded-3xl p-6">
+        <div class="flex flex-wrap justify-between items-center gap-4 mb-5 border-b border-zinc-800 pb-4">
+          <div>
+            <span class="text-xs font-black text-amber-400 mono">AGENTE 08 CFO // LIBRO MAYOR Y CONTABILIDAD AUTOMÁTICA</span>
+            <h2 class="text-2xl font-black text-white mt-1">Record Económico del Negocio (Ingresos, IVA OSS, Comisiones y P&amp;L)</h2>
+          </div>
+          <button onclick="descargarCSVFiscal()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black px-4 py-2.5 rounded-xl mono">
+            📥 Exportar Libro Contable Trimestral (.CSV)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-xs mono">
+          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+            <span class="text-zinc-400 block">COSTE FIJO MENSUAL</span>
+            <strong class="text-xl text-rose-400">20,88 € / mes</strong>
+            <span class="text-[10px] text-zinc-500 block">20€ Claude Pro + 0,88€ Dominio</span>
+          </div>
+          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+            <span class="text-zinc-400 block">NETO POR SUB (4,99€)</span>
+            <strong class="text-xl text-emerald-400">+3,80 € limpios</strong>
+            <span class="text-[10px] text-zinc-500 block">Descontado 0,87€ IVA y 0,32€ Stripe</span>
+          </div>
+          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+            <span class="text-zinc-400 block">PUNTO DE EQUILIBRIO</span>
+            <strong class="text-xl text-purple-400">6 Suscriptores</strong>
+            <span class="text-[10px] text-zinc-500 block">6 x 3,80€ = 22,80€ (&gt; 20,88€)</span>
+          </div>
+          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+            <span class="text-zinc-400 block">NETO POR SUB ANUAL (39,90€)</span>
+            <strong class="text-xl text-cyan-400">+32,13 € limpios</strong>
+            <span class="text-[10px] text-zinc-500 block">Descontado 6,92€ IVA y 0,85€ Stripe</span>
+          </div>
+        </div>
+
+        <table class="w-full text-left text-xs mono border border-zinc-800">
+          <thead class="bg-zinc-950 text-amber-400">
+            <tr>
+              <th class="p-3">FECHA</th>
+              <th class="p-3">TRIMESTRE</th>
+              <th class="p-3">CONCEPTO</th>
+              <th class="p-3">BRUTO (€)</th>
+              <th class="p-3">BASE IMP.</th>
+              <th class="p-3">IVA (21%)</th>
+              <th class="p-3">FEE STRIPE</th>
+              <th class="p-3">NETO CAJA</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-contable" class="divide-y divide-zinc-800 text-zinc-300"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BANNER DE CONSENTIMIENTO DE COOKIES TCF v2.2 & RGPD -->
+  <div id="banner-cookies" class="fixed bottom-4 right-4 left-4 md:left-auto md:max-w-md bg-zinc-900 border-2 border-purple-500 rounded-2xl p-4 shadow-2xl z-50 text-xs">
+    <strong class="text-white block mb-1">🍪 Consentimiento de Privacidad y Cookies (IAB TCF v2.2)</strong>
+    <p class="text-zinc-400 mb-3">El Agente 06 de PURSEC™ protege tus datos bajo el RGPD europeo. Puedes aceptar todas las cookies o utilizar únicamente las estrictamente necesarias.</p>
+    <div class="flex gap-2">
+      <button onclick="aceptarCookies('all')" class="flex-1 bg-purple-600 text-white font-black py-2 rounded-xl">Aceptar Todas</button>
+      <button onclick="aceptarCookies('essential')" class="flex-1 bg-zinc-800 text-zinc-300 font-bold py-2 rounded-xl">Solo Esenciales</button>
+    </div>
+  </div>
+
+  <!-- PIE DE PÁGINA CON ENLACE A POLÍTICAS LEGALES Y BORRADO RGPD -->
+  <footer class="border-t border-zinc-800 bg-zinc-950 py-5 px-6 text-xs text-zinc-500 flex flex-wrap justify-between items-center gap-3">
+    <span>© 2026 P U R S E C ™ (pursec.com) — Operado al 100% por Agentes IA (Claude PRO + Fable 5).</span>
+    <div class="flex gap-4">
+      <a href="legal.html" class="text-purple-400 hover:underline">Aviso Legal, Privacidad RGPD, Cookies y Fair Use</a>
+      <a href="https://billing.stripe.com/p/login/test_portal" target="_blank" class="text-emerald-400 hover:underline">Gestionar Suscripción TRACKSIDE</a>
+    </div>
+  </footer>
+
+  <script>
+    let modoSim = false;
+    let planTrackside = true;
+    let categoriaActiva = "f1";
+
+    // MATRIZ ÍNTEGRA DE LAS 63 FUNCIONES DEFINITIVAS DEL CSV
+    const DATOS_CATEGORIAS = {
+      f1: {
+        titulo: "Fórmula 1 — Live Timing & Telemetría Predictiva",
+        pilotos: [
+          { pos: 1, cod: "VER #1", gap: "1:15.192 (LÍDER)", pin: "📌 Vuelta 24: Aviso 1/3 de Track Limits en salida de Curva 9 (Micro-nota IA)" },
+          { pos: 2, cod: "NOR #4", gap: "+1.180s", pin: "📌 Vuelta 26: Radio IA detecta comando 'Plan B' por aumento térmico trasero" }
+        ],
+        paddock: [
+          "• Historial de stints y compuestos (nuevos/usados): 🔴S (Nuevo, 14v) ➔ 🟡M (Usado, 8v).",
+          "• Semáforo de Track Limits (avisos y sanciones): 🟢 VER (1/3) | 🔴 NOR (3/3 — Al límite de +5s).",
+          "• (Sim) Modo de despliegue ERS y avisos del juego: ERS Mode 3 (Balanced) · 0x Off-Tracks."
+        ],
+        trackside_real: [
+          { nombre: "Ghost Pit-Stop (+ Sanciones)", valor: "Posición virtual tras parar: Sale P3 (+1.2s aire limpio) sumando sanciones pendientes." },
+          { nombre: "Degradación Predictiva", valor: "Vida útil restante de goma: 66% (11 vueltas óptimas) · Ahorro batería: +9%." },
+          { nombre: "Ventana de Parada 'Gratis' (VSC / SC)", valor: "🟢 Si sale VSC/SC en este segundo, NOR ahorra 10.6s en box y sale P1 gratis." },
+          { nombre: "Telemetría de Eficiencia Aero", valor: "Vel. curva rápida: 249 km/h (+4 km/h vs P2) vs. Punta sin DRS: 315 km/h." },
+          { nombre: "Filtro de Radio IA (Transcripción en Vivo)", valor: "🎙️ 'Box confirms Plan B, brake temp peaking at 980°C, light rain in 6 min'." }
+        ],
+        trackside_sim: [
+          { nombre: "Calculadora de Tren DRS (Sim Racing)", valor: "⚡ Hay ritmo (+0.85s/v) para romper la barrera del 1.0s en 1.5 vueltas tras parar en tráfico." },
+          { nombre: "Mapa de Core Temp (Sim Racing)", valor: "🔥 Temperatura interna carcasa: DI 103°C · DD 107°C · TI 105°C · TD 106°C (Sin blistering)." }
+        ]
+      },
+      f2_f3: {
+        titulo: "FIA F2 / F3 — Live Timing & Auditoría de Monoplazas",
+        pilotos: [
+          { pos: 1, cod: "MINI #4 (Alpine Acad.)", gap: "1:28.310 (LÍDER)", pin: "📌 Vuelta 15: Consolida los 42 pts virtuales de Superlicencia FIA" },
+          { pos: 10, cod: "BORT #10 (McLaren Acad.)", gap: "+6.410s (POLE SPRINT)", pin: "📌 Línea divisoria dinámica: Ocupa la P10 que da la Pole mañana" }
+        ],
+        paddock: [
+          "• Línea divisoria dinámica de parrilla invertida (Sprint): Corte activo en P10 (F2) / P12 (F3).",
+          "• Etiquetas visuales por Academia de F1: 🔵 Alpine Academy · 🟠 McLaren Driver Development.",
+          "• (Sim) Estado de Fast Repair y daño básico: Fast Repair disponible (1/1) · Daño alerón: 0%."
+        ],
+        trackside_real: [
+          { nombre: "Superlicencia en Vivo", valor: "Cálculo virtual FIA según posición actual en pista: 42 pts (✅ Supera el mínimo de 40 pts)." },
+          { nombre: "Radar de Tire Cliff", valor: "🚨 Alerta roja en P4: El neumático cae +0.45s/v de golpe (Será cazado en 2.2 vueltas)." },
+          { nombre: "Reloj de Carrera por Tiempo vs. Vueltas", valor: "⏱️ Por 2 interrupciones de Safety Car, la carrera acabará por límite de reloj (60 min) en vuelta 31." },
+          { nombre: "Delta Puro de Compañeros (Teammate Pace)", valor: "Media móvil últimas 5 vueltas en aire limpio: #4 es -0.240s/v más rápido que su compañero." },
+          { nombre: "Auditoría de Paradas Lentas", valor: "Tiempo neto detenido en box: 3.2s (Sin fallo de pistola neumática ni calada de embrague)." }
+        ],
+        trackside_sim: [
+          { nombre: "Telemetría de Cabina (Fixed Setup)", valor: "🕹️ Ajustes en vivo: Brake Bias 56.5% · Barras P2/P1 · Eficiencia Trail Braking: 92%." }
+        ]
+      },
+      fe: {
+        titulo: "Fórmula E — Gestión Energética, Attack Mode & RealRoad",
+        pilotos: [
+          { pos: 1, cod: "WEH #1 · Porsche FE", gap: "1:11.890 (LÍDER)", pin: "📌 Vuelta 19: Ahorrando un 3.6% extra de batería en el pelotón" }
+        ],
+        paddock: [
+          "• Contador y combinaciones de Attack Mode (AWD): 1/2 activado (Quedan 4:00 min en modo 350 kW).",
+          "• Porcentaje real de batería (SoC): 49.8% de carga útil restante.",
+          "• (Sim) Barras de acelerador, freno y regeneración: Regen trasero activo a 350 kW en frenada."
+        ],
+        trackside_real: [
+          { nombre: "Simulador Attack Zone y Pit Boost", valor: "Al salirse de la trazada cae a P4 (-1.3s) · Tras Pit Boost reaparece en P6 con aire limpio." },
+          { nombre: "Balance de Pelotón", valor: "🔋 Detectado ahorro de +3.6% extra sobre la media del grupo para atacar en las últimas 3 vueltas." },
+          { nombre: "Proyector de Vueltas Añadidas (Added Laps)", valor: "+3 vueltas extra sumadas por la FIA por tiempo bajo SC ➔ Nuevo consumo objetivo: 1.38 kWh/vuelta." },
+          { nombre: "Alerta de Thermal Derating", valor: "🌡️ Celdas del P2 a 55.2°C (Cerca del límite térmico por abusar de la tracción total AWD)." }
+        ],
+        trackside_sim: [
+          { nombre: "Evolución RealRoad (Servidor Sim Racing)", valor: "🛣️ Engomado matemático en trazada ideal: 95% grip vs. Línea sucia de adelantamiento: 71% grip." }
+        ]
+      },
+      motogp: {
+        titulo: "MotoGP / Moto2 / Moto3 — Presiones, Long Lap & Pelotones",
+        pilotos: [
+          { pos: 1, cod: "M. MÁRQUEZ #93", gap: "1:36.940 (LÍDER)", pin: "📌 Vuelta 14: Presión delantera verificada dentro del margen legal (>1.80 bar)" }
+        ],
+        paddock: [
+          "• Matriz asimétrica de gomas (delantera/trasera): Delantera [DURA] / Trasera [BLANDA].",
+          "• Avisos de pisar el verde y Long Lap pendientes: 1/3 avisos de verde · 0 Long Lap pendientes.",
+          "• (Sim) Tiempo perdido por reset de caída: 0.0s perdidos en sesión."
+        ],
+        trackside_real: [
+          { nombre: "Simulador de Long Lap", valor: "Pérdida exacta en este circuito: 2.7s (Vuelve a pista en el hueco entre P4 y P5)." },
+          { nombre: "Detector de Pelotones", valor: "Agrupado en tren de rebufo (<0.4s) de 4 motos · Índice de ahorro goma trasera: +15%." },
+          { nombre: "Radar de Presión Mínima Delantera", valor: "🟢 Lleva 11 vueltas a rebufo (>1.80 bar, cumple el 65% requerido; 0% riesgo de sanción de 8s/16s)." },
+          { nombre: "Calculadora Flag-to-Flag (Punto de Cruce)", valor: "🌧️ Cruce alcanzado: El slick ya es 2.1s/vuelta más rápido que la goma de agua (Entrar a box ya)." },
+          { nombre: "Mapa de Drop por Sector", valor: "Aislado: Pierde 0.19s por falta de tracción al levantar la moto en S3 (Frenada intacta)." }
+        ],
+        trackside_sim: [
+          { nombre: "Analizador de Inputs (Sim Racing)", valor: "🏍️ Maneta freno delantero: 95% · Gatillo freno trasero en curva: 44% · Engine Brake: Nivel 2." }
+        ]
+      },
+      indycar: {
+        titulo: "IndyCar — Push-to-Pass, Caution Trap & Estrategia de Paradas",
+        pilotos: [
+          { pos: 1, cod: "PALOU #10 · Ganassi", gap: "1:08.420 (LÍDER)", pin: "📌 Vuelta 45: Ejecutando Lift & Coast en S2 para ir a estrategia de 2 paradas" }
+        ],
+        paddock: [
+          "• Segundos restantes de Push-to-Pass (P2P): 132 segundos disponibles.",
+          "• Check de uso obligatorio de goma dura/blanda: Primary (Dura) ✅ | Alternate (Blanda) ✅.",
+          "• (Sim) Indicador de pérdida punta por daño aero: -1.8 km/h en recta principal."
+        ],
+        trackside_real: [
+          { nombre: "Alerta de Caution Trap", valor: "🟢 Ventana segura: Si una amarilla cierra el box ahora, #10 sale líder gratis y #3 pierde vuelta." },
+          { nombre: "Monitor Fuel Save", valor: "Detectado Lift & Coast 48m antes de frenada · Velocidad en aire limpio en óvalo: 362 km/h." },
+          { nombre: "Punto de Cruce Alternates vs. Primaries", valor: "En la vuelta 17 del stint el neumático blando cae por debajo del ritmo del duro." },
+          { nombre: "Simulador de 2 vs. 3 Paradas", valor: "Objetivo para ahorrar 1 parada: Rodar en 1:09.6 y mantener consumo de 3.85 MPG." },
+          { nombre: "Rastreador de Wave Around", valor: "Coches doblados #7, #14 y #28 recuperarán vuelta si sale bandera amarilla en este giro." }
+        ],
+        trackside_sim: [
+          { nombre: "Telemetría en Óvalo (Sim Racing)", valor: "🏁 Desgaste neumático delantero derecho (RF): 79% · Ajuste Weight Jacker en tráfico: +3 clics." }
+        ]
+      },
+      gt3: {
+        titulo: "GT3 — Categorización FIA, BoP, Overcut & Netcode Radar",
+        pilotos: [
+          { pos: 1, cod: "#32 BMW M4 GT3 (Platino)", gap: "2:16.710 (LÍDER)", pin: "📌 Vuelta 21: Recortando 1.9s/vuelta al líder Bronce de clase Pro-Am" }
+        ],
+        paddock: [
+          "• Insignia FIA del piloto al volante: ⚪ PLATINO (Piloto 1) vs. 🟤 BRONCE en P2.",
+          "• Reloj de apertura/cierre de ventana de cambio: Ventana obligatoria abre en 06:20 min.",
+          "• (Sim) Contador de Incident Points e iRating: 5x / 17x · iRating proyectado: 5.240 (+46)."
+        ],
+        trackside_real: [
+          { nombre: "Cazador de Mismatches", valor: "🎯 El piloto Pro (#32) dará caza al piloto Bronce (#88) exactamente en la vuelta 25 (Sector 2)." },
+          { nombre: "Capa de BoP y Lastre", valor: "BMW M4 GT3 en este circuito: +10 kg de lastre FIA y -0.02 bar de presión de turbo." },
+          { nombre: "Simulador de Overcut (Neumáticos Fríos)", valor: "❄️ Sin calentadores (DTM/GTWC), parar antes pierde 3.9s en las 2 primeras vueltas frente a goma caliente." },
+          { nombre: "Cronómetro de Tiempo Mínimo de Pit Stop", valor: "Tránsito pit lane medido: 65.032s (🟢 +0.032s sobre el mínimo legal; sin sanción)." },
+          { nombre: "Inventario de Juegos Nuevos", valor: "Al coche #32 y al #51 les queda 1 juego de neumáticos sin estrenar para el stint final." }
+        ],
+        trackside_sim: [
+          { nombre: "Radar de Netcode y Ping (Sim Racing)", valor: "📡 Cruce en paralelo #32 vs #51: Latencia 39ms / 0.0% Packet Loss (🟢 Bajo riesgo de choque fantasma)." }
+        ]
+      },
+      wec: {
+        titulo: "Resistencia (WEC / IMSA) — Multiclase, Virtual Energy & Slow Zones",
+        pilotos: [
+          { pos: 1, cod: "#6 Porsche 963 (Hypercar)", gap: "3:25.910 (LÍDER)", pin: "📌 Vuelta 118: Libró la Slow Zone 4 en verde 2 segundos antes de activarse" }
+        ],
+        paddock: [
+          "• Vista multiclase dividida: 🔴 HYPERCAR / GTP | 🔵 LMP2 | 🟠 LMGT3 / GTD.",
+          "• Reloj de turno de conducción del piloto actual: 01h 48m acumulados (Dentro del límite FIA).",
+          "• (Sim) Fuerza del Split (SoF) y pilotos en cola: SoF 4.980 · 3 pilotos del equipo conectados en cola."
+        ],
+        trackside_real: [
+          { nombre: "Radar de Tráfico de Doblados", valor: "⚠️ El líder Hypercar alcanzará un grupo de 5 GT3 en las curvas Porsche (Perderá ~2.2s)." },
+          { nombre: "Auditoría de Virtual Energy", valor: "Tanque virtual: 158 MJ restantes (3.8 vueltas) · 3 sets de gomas en garaje · Tiempo piloto OK." },
+          { nombre: "Impacto de Slow Zones en Vivo (Le Mans)", valor: "🟢 #6 pasó el Sector 2 en verde 3s antes del límite a 80 km/h (Gana +9.6s gratis sobre el #50)." },
+          { nombre: "Calculadora de Double / Triple Stint", valor: "Ahorra 15s en box no cambiando ruedas vs. pierde 10.5s en pista por goma usada (✅ Compensa Double Stint)." },
+          { nombre: "Simulador de Pass-Around (IMSA)", valor: "Simulación de recolocación de clases bajo amarilla EE. UU.: #6 conservará P1 y #31 ganará 4 puestos." }
+        ],
+        trackside_sim: [
+          { nombre: "Cálculo de Splash & Dash al mililitro + Driver Swap", valor: "⛽ Faltan exactamente 1.720 ml para llegar a meta (Parada de 1.7s) · Conexión Driver Swap entrante: 🟢 100% Estable." }
+        ]
+      }
+    };
+
+    const ASIENTOS_CONTABLES = [
+      { fecha: "2026-09-01", trim: "2026-Q3", concepto: "Gasto Fijo: Suscripción Claude PRO + Fable 5", bruto: -20.00, base: -16.53, iva: -3.47, fee: 0.00, neto: -20.00 },
+      { fecha: "2026-09-01", trim: "2026-Q3", concepto: "Gasto Fijo: Dominio pursec.com (10,50€/año)", bruto: -0.88, base: -0.73, iva: -0.15, fee: 0.00, neto: -0.88 },
+      { fecha: "2026-09-18", trim: "2026-Q3", concepto: "100 Suscripciones Mensuales TRACKSIDE (4,99€)", bruto: 499.00, base: 412.40, iva: 86.60, fee: 32.48, neto: 379.92 },
+      { fecha: "2026-09-24", trim: "2026-Q3", concepto: "15 Suscripciones Anuales TRACKSIDE (39,90€)", bruto: 598.50, base: 494.63, iva: 103.87, fee: 12.73, neto: 481.90 },
+      { fecha: "2026-09-27", trim: "2026-Q3", concepto: "Ingresos Google AdSense Plan Gratuito PADDOCK", bruto: 210.00, base: 210.00, iva: 0.00, fee: 0.00, neto: 210.00 }
+    ];
+
+    function renderizarLive() {
+      const c = DATOS_CATEGORIAS[categoriaActiva];
+      document.getElementById("titulo-categoria").innerText = c.titulo;
+      document.getElementById("tabla-pilotos").innerHTML = c.pilotos.map(p => `
+        <tr class="hover:bg-zinc-800/40">
+          <td class="p-3 font-black text-white">P${p.pos}</td>
+          <td class="p-3 font-bold text-white">${p.cod}</td>
+          <td class="p-3 text-emerald-400 font-bold">${p.gap}</td>
+          <td class="p-3"><span class="bg-purple-950 border border-purple-500/40 text-purple-200 px-2.5 py-1 rounded-lg">${p.pin}</span></td>
+        </tr>
+      `).join("");
+
+      document.getElementById("lista-paddock").innerHTML = c.paddock.map(item => `
+        <li class="bg-zinc-900 p-3 rounded-xl border border-zinc-800">${item}</li>
+      `).join("");
+
+      document.getElementById("header-trackside").innerText = modoSim
+        ? "🕹️ PURSEC TRACKSIDE — VERSIÓN SIM RACING (ACTIVA)"
+        : "🟣 PURSEC TRACKSIDE — COMPETICIÓN REAL AMPLIADA (ACTIVA)";
+
+      const modulos = modoSim ? c.trackside_sim : c.trackside_real;
+      document.getElementById("grid-trackside").innerHTML = modulos.map(m => `
+        <div class="bg-zinc-900 border border-purple-500/30 p-3.5 rounded-xl">
+          <strong class="text-purple-300 block mb-1 mono">${m.nombre}</strong>
+          ${planTrackside
+            ? `<span class="text-zinc-200">${m.valor}</span>`
+            : `<span class="text-zinc-500 italic">🔒 Bloqueado en Plan PADDOCK — Activa TRACKSIDE (4,99€/mes)</span>`
+          }
+        </div>
+      `).join("");
+    }
+
+    function cambiarCategoria(cat) {
+      categoriaActiva = cat;
+      ["f1", "f2_f3", "fe", "motogp", "indycar", "gt3", "wec"].forEach(id => {
+        document.getElementById("tab-" + id).className = (id === cat)
+          ? "px-3 py-2 rounded-xl bg-purple-600 text-white"
+          : "px-3 py-2 rounded-xl bg-zinc-950 text-zinc-400";
+      });
+      renderizarLive();
+    }
+
+    function alternarModoSim() {
+      modoSim = !modoSim;
+      document.getElementById("btn-modo").innerText = modoSim
+        ? "🕹️ MODO: VERSIÓN SIM RACING"
+        : "🌍 MODO: COMPETICIÓN REAL AMPLIADA";
+      renderizarLive();
+    }
+
+    function alternarPlan() {
+      planTrackside = !planTrackside;
+      document.getElementById("btn-plan").innerText = planTrackside
+        ? "🟣 PLAN: TRACKSIDE (4,99€/mes)"
+        : "🟢 PLAN: PADDOCK (GRATIS)";
+      renderizarLive();
+    }
+
+    function mostrarArea(area) {
+      ["live", "lab", "trackers", "cfo"].forEach(a => {
+        document.getElementById("area-" + a).classList.add("hidden");
+        document.getElementById("nav-" + a).className = "px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300";
+      });
+      document.getElementById("area-" + area).classList.remove("hidden");
+      document.getElementById("nav-" + area).className = "px-3.5 py-2 rounded-xl bg-purple-600 text-white";
+    }
+
+    function renderizarCFO() {
+      document.getElementById("tabla-contable").innerHTML = ASIENTOS_CONTABLES.map(a => `
+        <tr>
+          <td class="p-3">${a.fecha}</td>
+          <td class="p-3">${a.trim}</td>
+          <td class="p-3">${a.concepto}</td>
+          <td class="p-3">${a.bruto.toFixed(2)}€</td>
+          <td class="p-3">${a.base.toFixed(2)}€</td>
+          <td class="p-3">${a.iva.toFixed(2)}€</td>
+          <td class="p-3">${a.fee.toFixed(2)}€</td>
+          <td class="p-3 font-black ${a.neto >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${a.neto.toFixed(2)}€</td>
+        </tr>
+      `).join("");
+    }
+
+    function descargarCSVFiscal() {
+      let csv = "Fecha,Trimestre,Concepto,Bruto_EUR,Base_Imponible_EUR,IVA_21_EUR,Comision_Stripe_EUR,Beneficio_Neto_Caja_EUR\n";
+      ASIENTOS_CONTABLES.forEach(a => {
+        csv += `${a.fecha},${a.trim},"${a.concepto}",${a.bruto},${a.base},${a.iva},${a.fee},${a.neto}\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "PURSEC_Record_Economico_Fiscal.csv";
+      link.click();
+    }
+
+    function aceptarCookies(nivel) {
+      localStorage.setItem("pursec_cookies_tcf", nivel);
+      document.getElementById("banner-cookies").classList.add("hidden");
+    }
+
+    if (localStorage.getItem("pursec_cookies_tcf")) {
+      document.getElementById("banner-cookies").classList.add("hidden");
+    }
+
+    renderizarLive();
+    renderizarCFO();
+  </script>
+</body>
+</html>
