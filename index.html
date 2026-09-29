@@ -27,7 +27,10 @@
       <button onclick="mostrarArea('live')" id="nav-live" class="px-3.5 py-2 rounded-xl bg-purple-600 text-white">⏱️ Live Timing &amp; Context Pins</button>
       <button onclick="mostrarArea('lab')" id="nav-lab" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300 hover:bg-zinc-800">🔬 Lab Lunes–Jueves (Stints &amp; H2H)</button>
       <button onclick="mostrarArea('trackers')" id="nav-trackers" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300 hover:bg-zinc-800">🏆 BoP, Superlicencia &amp; Predictor</button>
-      <button onclick="mostrarArea('cfo')" id="nav-cfo" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-amber-400 hover:bg-zinc-800 mono">📊 Record Contable CFO</button>
+     <!-- Botón CFO bloqueado de raíz para visitantes y modo incógnito -->
+<button id="cfo-tab-btn" style="display: none;" onclick="switchTab('cfo')" class="items-center gap-2 px-3.5 py-1.5 rounded-lg bg-purple-950/60 border border-purple-500/40 text-purple-200 text-xs font-bold uppercase tracking-wider hover:bg-purple-900/60 transition">
+  📊 Record Contable CFO
+</button>📊 Record Contable CFO</button>
     </nav>
 
     <!-- Controles de Modo (Real vs Sim) y Plan (Paddock vs Trackside) -->
@@ -507,7 +510,49 @@
 
     renderizarLive();
     renderizarCFO();
-  </script>
+  </script>// 1. PON AQUÍ TU CORREO REAL DE ADMINISTRADOR
+const FOUNDER_EMAIL = "pursec.telemetry.hq@gmail.com"; 
+let isFounderAuthenticated = false;
+
+// 2. Comprobador automático de identidad contra Supabase
+async function verifyFounderSession() {
+  const cfoBtn = document.getElementById('cfo-tab-btn');
+  const cfoSection = document.getElementById('cfo'); // o el id del div de tu sección CFO
+
+  try {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    
+    if (user && user.email && user.email.toLowerCase() === FOUNDER_EMAIL.toLowerCase()) {
+      isFounderAuthenticated = true;
+      if (cfoBtn) cfoBtn.style.display = ' inline-flex';
+    } else {
+      isFounderAuthenticated = false;
+      if (cfoBtn) cfoBtn.style.display = 'none';
+      if (cfoSection) cfoSection.classList.add('hidden');
+    }
+  } catch (e) {
+    isFounderAuthenticated = false;
+    if (cfoBtn) cfoBtn.style.display = 'none';
+  }
+}
+
+// 3. Bloqueo dentro de switchTab: si no eres tú, deniega el paso
+const originalSwitchTab = window.switchTab;
+window.switchTab = function(tabId) {
+  if (tabId === 'cfo' && !isFounderAuthenticated) {
+    console.warn("Acceso restringido exclusivamente al CFO.");
+    return; // Bloquea la apertura en incógnito o usuarios normales
+  }
+  if (typeof originalSwitchTab === 'function') {
+    originalSwitchTab(tabId);
+  }
+};
+
+// Ejecutar nada más cargar la web y cada vez que alguien inicie o cierre sesión
+document.addEventListener('DOMContentLoaded', verifyFounderSession);
+if (typeof supabaseClient !== 'undefined') {
+  supabaseClient.auth.onAuthStateChange(() => verifyFounderSession());
+}
   <script src="//code.tidio.co/se7xo9quxr8q89qvvhgjtkhv7mo2dnai.js" async></script>
 </body>
 </html>
