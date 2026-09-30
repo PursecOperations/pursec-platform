@@ -1,0 +1,10 @@
+{
+  // Worker de pagos (Agente 08). Se despliega desde GitHub con Workers Builds,
+  // carpeta raíz: workers/cfo-agent
+  "name": "pursec-cfo-agent",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  // Conserva las variables definidas en el panel de Cloudflare (URL y claves)
+  "keep_vars": true
+}

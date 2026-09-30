@@ -1,0 +1,10 @@
+{
+  // Web pública de PURSEC (pursec.club). Solo se publica la carpeta public/;
+  // el resto del repo (scripts, workers) nunca se sirve.
+  "name": "pursec-platform",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./public"
+  },
+  "keep_vars": true
+}

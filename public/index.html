@@ -27,19 +27,12 @@
       <button onclick="mostrarArea('live')" id="nav-live" class="px-3.5 py-2 rounded-xl bg-purple-600 text-white">⏱️ Live Timing &amp; Context Pins</button>
       <button onclick="mostrarArea('lab')" id="nav-lab" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300 hover:bg-zinc-800">🔬 Lab Lunes–Jueves (Stints &amp; H2H)</button>
       <button onclick="mostrarArea('trackers')" id="nav-trackers" class="px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300 hover:bg-zinc-800">🏆 BoP, Superlicencia &amp; Predictor</button>
-     <!-- Botón CFO bloqueado de raíz para visitantes y modo incógnito -->
-<button id="cfo-tab-btn" style="display: none;" onclick="switchTab('cfo')" class="items-center gap-2 px-3.5 py-1.5 rounded-lg bg-purple-950/60 border border-purple-500/40 text-purple-200 text-xs font-bold uppercase tracking-wider hover:bg-purple-900/60 transition">
-  📊 Record Contable CFO
-</button>📊 Record Contable CFO</button>
     </nav>
 
     <!-- Controles de Modo (Real vs Sim) y Plan (Paddock vs Trackside) -->
     <div class="flex items-center gap-2">
       <button onclick="alternarModoSim()" id="btn-modo" class="bg-zinc-900 border border-cyan-500/40 text-cyan-300 text-xs font-bold px-3 py-2 rounded-xl mono">
         🌍 MODO: COMPETICIÓN REAL AMPLIADA
-      </button>
-      <button onclick="alternarPlan()" id="btn-plan" class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-black px-4 py-2 rounded-xl shadow-lg">
-        🟣 PLAN: TRACKSIDE (4,99€/mes)
       </button>
     </div>
   </header>
@@ -69,7 +62,6 @@
     🏆 TRACKSIDE Yearly (99,99€/año) ➔
   </a>
 </div>
-        </a>
       </div>
 
       <!-- Tabla de Cronometraje en Vivo + Pins de Noticias -->
@@ -162,62 +154,6 @@
       </div>
     </section>
 
-    <!-- =====================================================================
-         ÁREA 4: LIBRO CONTABLE Y RECORD ECONÓMICO (AGENTE 08 CFO)
-         ===================================================================== -->
-    <section id="area-cfo" class="hidden space-y-6">
-      <div class="bg-zinc-900 border-2 border-amber-500/50 rounded-3xl p-6">
-        <div class="flex flex-wrap justify-between items-center gap-4 mb-5 border-b border-zinc-800 pb-4">
-          <div>
-            <span class="text-xs font-black text-amber-400 mono">AGENTE 08 CFO // LIBRO MAYOR Y CONTABILIDAD AUTOMÁTICA</span>
-            <h2 class="text-2xl font-black text-white mt-1">Record Económico del Negocio (Ingresos, IVA OSS, Comisiones y P&amp;L)</h2>
-          </div>
-          <button onclick="descargarCSVFiscal()" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs font-black px-4 py-2.5 rounded-xl mono">
-            📥 Exportar Libro Contable Trimestral (.CSV)
-          </button>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-xs mono">
-          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
-            <span class="text-zinc-400 block">COSTE FIJO MENSUAL</span>
-            <strong class="text-xl text-rose-400">20,88 € / mes</strong>
-            <span class="text-[10px] text-zinc-500 block">20€ Claude Pro + 0,88€ Dominio</span>
-          </div>
-          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
-            <span class="text-zinc-400 block">NETO POR SUB (4,99€)</span>
-            <strong class="text-xl text-emerald-400">+3,80 € limpios</strong>
-            <span class="text-[10px] text-zinc-500 block">Descontado 0,87€ IVA y 0,32€ Stripe</span>
-          </div>
-          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
-            <span class="text-zinc-400 block">PUNTO DE EQUILIBRIO</span>
-            <strong class="text-xl text-purple-400">6 Suscriptores</strong>
-            <span class="text-[10px] text-zinc-500 block">6 x 3,80€ = 22,80€ (&gt; 20,88€)</span>
-          </div>
-          <div class="bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
-            <span class="text-zinc-400 block">NETO POR SUB ANUAL (39,90€)</span>
-            <strong class="text-xl text-cyan-400">+32,13 € limpios</strong>
-            <span class="text-[10px] text-zinc-500 block">Descontado 6,92€ IVA y 0,85€ Stripe</span>
-          </div>
-        </div>
-
-        <table class="w-full text-left text-xs mono border border-zinc-800">
-          <thead class="bg-zinc-950 text-amber-400">
-            <tr>
-              <th class="p-3">FECHA</th>
-              <th class="p-3">TRIMESTRE</th>
-              <th class="p-3">CONCEPTO</th>
-              <th class="p-3">BRUTO (€)</th>
-              <th class="p-3">BASE IMP.</th>
-              <th class="p-3">IVA (21%)</th>
-              <th class="p-3">FEE STRIPE</th>
-              <th class="p-3">NETO CAJA</th>
-            </tr>
-          </thead>
-          <tbody id="tabla-contable" class="divide-y divide-zinc-800 text-zinc-300"></tbody>
-        </table>
-      </div>
-    </section>
-
   </main>
 
   <!-- BANNER DE CONSENTIMIENTO DE COOKIES TCF v2.2 & RGPD -->
@@ -235,13 +171,13 @@
     <span>© 2026 P U R S E C ™ (pursec.com) — Operado al 100% por Agentes IA (Claude PRO + Fable 5).</span>
     <div class="flex gap-4">
       <a href="legal.html" class="text-purple-400 hover:underline">Aviso Legal, Privacidad RGPD, Cookies y Fair Use</a>
-      <a href="https://billing.stripe.com/p/login/test_portal" target="_blank" class="text-emerald-400 hover:underline">Gestionar Suscripción TRACKSIDE</a>
+      <a href="https://billing.stripe.com/p/login/5kQaEQ5vue8007q1M3eUU00" target="_blank" class="text-emerald-400 hover:underline">Gestionar Suscripción TRACKSIDE</a>
     </div>
   </footer>
 
   <script>
     let modoSim = false;
-    let planTrackside = true;
+    let planTrackside = false;
     let categoriaActiva = "f1";
 
     // MATRIZ ÍNTEGRA DE LAS 63 FUNCIONES DEFINITIVAS DEL CSV
@@ -397,13 +333,6 @@
       }
     };
 
-    const ASIENTOS_CONTABLES = [
-      { fecha: "2026-09-01", trim: "2026-Q3", concepto: "Gasto Fijo: Suscripción Claude PRO + Fable 5", bruto: -20.00, base: -16.53, iva: -3.47, fee: 0.00, neto: -20.00 },
-      { fecha: "2026-09-01", trim: "2026-Q3", concepto: "Gasto Fijo: Dominio pursec.com (10,50€/año)", bruto: -0.88, base: -0.73, iva: -0.15, fee: 0.00, neto: -0.88 },
-      { fecha: "2026-09-18", trim: "2026-Q3", concepto: "100 Suscripciones Mensuales TRACKSIDE (4,99€)", bruto: 499.00, base: 412.40, iva: 86.60, fee: 32.48, neto: 379.92 },
-      { fecha: "2026-09-24", trim: "2026-Q3", concepto: "15 Suscripciones Anuales TRACKSIDE (39,90€)", bruto: 598.50, base: 494.63, iva: 103.87, fee: 12.73, neto: 481.90 },
-      { fecha: "2026-09-27", trim: "2026-Q3", concepto: "Ingresos Google AdSense Plan Gratuito PADDOCK", bruto: 210.00, base: 210.00, iva: 0.00, fee: 0.00, neto: 210.00 }
-    ];
 
     function renderizarLive() {
       const c = DATOS_CATEGORIAS[categoriaActiva];
@@ -431,7 +360,7 @@
           <strong class="text-purple-300 block mb-1 mono">${m.nombre}</strong>
           ${planTrackside
             ? `<span class="text-zinc-200">${m.valor}</span>`
-            : `<span class="text-zinc-500 italic">🔒 Bloqueado en Plan PADDOCK — Activa TRACKSIDE (4,99€/mes)</span>`
+            : `<span class="text-zinc-500 italic">🔒 Bloqueado en PADDOCK — Activa TRACKSIDE (9,99 €/mes, 7 días gratis)</span>`
           }
         </div>
       `).join("");
@@ -455,16 +384,9 @@
       renderizarLive();
     }
 
-    function alternarPlan() {
-      planTrackside = !planTrackside;
-      document.getElementById("btn-plan").innerText = planTrackside
-        ? "🟣 PLAN: TRACKSIDE (4,99€/mes)"
-        : "🟢 PLAN: PADDOCK (GRATIS)";
-      renderizarLive();
-    }
 
     function mostrarArea(area) {
-      ["live", "lab", "trackers", "cfo"].forEach(a => {
+      ["live", "lab", "trackers"].forEach(a => {
         document.getElementById("area-" + a).classList.add("hidden");
         document.getElementById("nav-" + a).className = "px-3.5 py-2 rounded-xl bg-zinc-900 text-zinc-300";
       });
@@ -472,32 +394,7 @@
       document.getElementById("nav-" + area).className = "px-3.5 py-2 rounded-xl bg-purple-600 text-white";
     }
 
-    function renderizarCFO() {
-      document.getElementById("tabla-contable").innerHTML = ASIENTOS_CONTABLES.map(a => `
-        <tr>
-          <td class="p-3">${a.fecha}</td>
-          <td class="p-3">${a.trim}</td>
-          <td class="p-3">${a.concepto}</td>
-          <td class="p-3">${a.bruto.toFixed(2)}€</td>
-          <td class="p-3">${a.base.toFixed(2)}€</td>
-          <td class="p-3">${a.iva.toFixed(2)}€</td>
-          <td class="p-3">${a.fee.toFixed(2)}€</td>
-          <td class="p-3 font-black ${a.neto >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${a.neto.toFixed(2)}€</td>
-        </tr>
-      `).join("");
-    }
 
-    function descargarCSVFiscal() {
-      let csv = "Fecha,Trimestre,Concepto,Bruto_EUR,Base_Imponible_EUR,IVA_21_EUR,Comision_Stripe_EUR,Beneficio_Neto_Caja_EUR\n";
-      ASIENTOS_CONTABLES.forEach(a => {
-        csv += `${a.fecha},${a.trim},"${a.concepto}",${a.bruto},${a.base},${a.iva},${a.fee},${a.neto}\n`;
-      });
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "PURSEC_Record_Economico_Fiscal.csv";
-      link.click();
-    }
 
     function aceptarCookies(nivel) {
       localStorage.setItem("pursec_cookies_tcf", nivel);
@@ -509,51 +406,7 @@
     }
 
     renderizarLive();
-    renderizarCFO();
-  </script>// 1. PON AQUÍ TU CORREO REAL DE ADMINISTRADOR
-const FOUNDER_EMAIL = "pursec.telemetry.hq@gmail.com"; 
-let isFounderAuthenticated = false;
-
-// 2. Comprobador automático de identidad contra Supabase
-async function verifyFounderSession() {
-  const cfoBtn = document.getElementById('cfo-tab-btn');
-  const cfoSection = document.getElementById('cfo'); // o el id del div de tu sección CFO
-
-  try {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    
-    if (user && user.email && user.email.toLowerCase() === FOUNDER_EMAIL.toLowerCase()) {
-      isFounderAuthenticated = true;
-      if (cfoBtn) cfoBtn.style.display = ' inline-flex';
-    } else {
-      isFounderAuthenticated = false;
-      if (cfoBtn) cfoBtn.style.display = 'none';
-      if (cfoSection) cfoSection.classList.add('hidden');
-    }
-  } catch (e) {
-    isFounderAuthenticated = false;
-    if (cfoBtn) cfoBtn.style.display = 'none';
-  }
-}
-
-// 3. Bloqueo dentro de switchTab: si no eres tú, deniega el paso
-const originalSwitchTab = window.switchTab;
-window.switchTab = function(tabId) {
-  if (tabId === 'cfo' && !isFounderAuthenticated) {
-    console.warn("Acceso restringido exclusivamente al CFO.");
-    return; // Bloquea la apertura en incógnito o usuarios normales
-  }
-  if (typeof originalSwitchTab === 'function') {
-    originalSwitchTab(tabId);
-  }
-};
-
-// Ejecutar nada más cargar la web y cada vez que alguien inicie o cierre sesión
-document.addEventListener('DOMContentLoaded', verifyFounderSession);
-if (typeof supabaseClient !== 'undefined') {
-  supabaseClient.auth.onAuthStateChange(() => verifyFounderSession());
-}
+  </script>
   <script src="//code.tidio.co/se7xo9quxr8q89qvvhgjtkhv7mo2dnai.js" async></script>
 </body>
 </html>
-https://billing.stripe.com/p/login/5kQaEQ5vue8007q1M3eUU00
