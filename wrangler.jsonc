@@ -6,5 +6,7 @@
   "assets": {
     "directory": "./public"
   },
-  "keep_vars": true
+  "keep_vars": true,
+  // Worker Previews: cada rama tiene su URL de prueba antes de llegar a producción
+  "previews": {}
 }
