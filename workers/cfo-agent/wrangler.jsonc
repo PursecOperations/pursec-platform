@@ -1,11 +1,21 @@
 {
-  // Worker de pagos (Agente 08). Se despliega desde GitHub con Workers Builds,
-  // carpeta raíz: workers/cfo-agent
+  // Worker de cobros (Agente 08): webhook de Stripe + alta en el Club + portal del cliente.
+  // Se despliega desde GitHub con Workers Builds, carpeta raíz: workers/cfo-agent
   "name": "pursec-cfo-agent",
   "main": "src/index.js",
   "compatibility_date": "2026-09-01",
   "workers_dev": true,
-  // Conserva las variables definidas en el panel de Cloudflare (URL y claves)
+  // Conserva las variables y secretos definidos en el panel de Cloudflare
+  // (SUPABASE_URL, SUPABASE_SERVICE_KEY, STRIPE_WEBHOOK_SECRET, STRIPE_SECRET_KEY)
   "keep_vars": true,
-  "previews": {}
+  "previews": {},
+  // Valores públicos (no son secretos)
+  "vars": {
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_aKv-FR4J-9LYHz45Np-u_Q_TUoF9ybe",
+    "PRICE_MONTHLY": "price_1UKg7P2M4r86Zy0wEC7fuPnn",
+    "PRICE_YEARLY": "price_1UKg9X2M4r86Zy0wqNBZMo6f",
+    "SITE_URL": "https://pursec.club",
+    "ALLOWED_ORIGINS": "https://pursec.club,https://www.pursec.club",
+    "LAUNCH_SERIES": "F1"
+  }
 }
