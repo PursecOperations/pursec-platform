@@ -1,4 +1,4 @@
--- PENDIENTE DE APROBACIÓN (no aplicado). Lista de espera de la página "Muy pronto".
+-- Lista de espera de la página "Muy pronto" (aplicada en pursec-core-db el 1 oct 2026, aprobada por Oriol).
 -- Cualquiera puede apuntarse (insert); nadie puede leer la lista desde el navegador.
 create table public.waitlist (
   id          bigint generated always as identity primary key,
