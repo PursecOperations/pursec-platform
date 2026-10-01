@@ -6,3 +6,4 @@ export { safetyCarWindow, stateAfterLap } from "./safetycar.js";
 export { undercut, undercutTable } from "./undercut.js";
 export { championship, clinchMatrix } from "./championship.js";
 export { simulateRace, compareScenario } from "./lab.js";
+export { buildRaceCard } from "./racecard.js";

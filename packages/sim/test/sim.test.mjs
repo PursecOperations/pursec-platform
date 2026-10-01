@@ -204,3 +204,20 @@ test("Laboratorio: abandono y validación de vueltas", () => {
   assert.equal(r.classification[1].position, null);
   assert.throws(() => simulateRace({ ...LAB, drivers: [{ ...LAB.drivers[0], stints: [{ compound: "M", laps: 10 }] }] }));
 });
+
+// ------------------------------------------------------------------ Race Card
+import { buildRaceCard } from "../src/index.js";
+test("Race Card: módulos gratis y Trackside separados", () => {
+  const card = buildRaceCard({
+    laps: 50, pitLoss: 22, pitLossSC: 11, pitLossVSC: 15, compounds: C, rules: SERIES.F1.rules,
+    grid: [{ position: 1, code: "AAA", startTyre: "M" }, { position: 2, code: "BBB", startTyre: "H" }],
+    history: [{ season: 2024, safety_cars: 1, virtual_safety_cars: 0, red_flags: 0 }, { season: 2025, safety_cars: 0, virtual_safety_cars: 1, red_flags: 0 }],
+    battles: [{ ahead: "AAA", behind: "BBB", a: { compound: "M", age: 18 }, b: { compound: "M", age: 18 }, newA: "H", newB: "H" }],
+    sources: ["ficticio"],
+  });
+  assert.deepEqual(Object.keys(card.free).sort(), ["grid", "pit_windows"]);
+  assert.equal(card.free.grid[0].startTyre, undefined); // el neumático de salida es Trackside
+  assert.equal(card.trackside.safety_car_history.rate, 0.5);
+  assert.equal(card.trackside.key_battles[0].undercutMaxGap.length, 3);
+  assert.equal(card.trackside.wet_race, null);
+});
