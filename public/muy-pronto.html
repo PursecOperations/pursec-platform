@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PURSEC — Muy pronto</title>
+<meta name="description" content="PURSEC, el club de análisis técnico de motorsport: Strategy Brief, Race Card, Debrief y simuladores. Apúntate a la lista de espera.">
+<meta property="og:title" content="PURSEC — Muy pronto">
+<meta property="og:description" content="El club de análisis técnico de motorsport. Apúntate a la lista de espera.">
+<meta property="og:url" content="https://pursec.club/muy-pronto">
+<meta name="theme-color" content="#050409">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:ital,wdth,wght@1,125,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#050409; --panel:#0E0B16; --line:#231C33; --purple:#A855F7; --green:#22C55E; --text:#EFE7FF; --muted:#A79FBA; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family:'JetBrains Mono', ui-monospace, monospace; line-height:1.55; }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 16px 64px; }
+  .logo { font-family:'Saira', sans-serif; font-style:italic; font-weight:800; font-stretch:125%; color:var(--purple); font-size:28px; letter-spacing:.02em; }
+  .tag { display:inline-block; margin-top:56px; border:2px solid var(--purple); color:var(--purple); border-radius:4px; padding:4px 12px; font-size:14px; }
+  h1 { font-family:'Saira', sans-serif; font-style:italic; font-weight:800; font-stretch:125%; font-size:clamp(36px, 8vw, 72px); line-height:1.02; margin:20px 0 16px; }
+  .lead { color:var(--muted); font-size:clamp(15px, 2.6vw, 18px); max-width: 640px; margin:0 0 40px; }
+  .cycle { display:grid; grid-template-columns: repeat(4, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:4px; margin-bottom:48px; }
+  .cycle div { background:var(--bg); padding:18px 14px; }
+  .cycle b { display:block; font-size:12px; color:var(--purple); letter-spacing:.08em; }
+  .cycle span { display:block; margin-top:8px; font-weight:600; }
+  .cycle small { display:block; margin-top:4px; color:var(--muted); font-size:13px; }
+  @media (max-width: 640px) { .cycle { grid-template-columns: 1fr 1fr; } }
+  form { background:var(--panel); border:1px solid var(--line); border-radius:4px; padding:24px; max-width:560px; }
+  label.f { display:block; font-size:14px; color:var(--muted); margin-bottom:8px; }
+  .row { display:flex; gap:8px; }
+  input[type=email] { flex:1; min-width:0; background:var(--bg); color:var(--text); border:1px solid var(--line); border-radius:4px; padding:12px; font:inherit; }
+  input[type=email]:focus { outline:2px solid var(--purple); outline-offset:1px; }
+  button { background:var(--purple); color:var(--bg); border:0; border-radius:4px; padding:12px 18px; font:inherit; font-weight:600; cursor:pointer; }
+  button[disabled] { opacity:.6; cursor:default; }
+  .consent { display:flex; gap:10px; align-items:flex-start; margin-top:14px; font-size:13px; color:var(--muted); }
+  .consent a, footer a { color:var(--text); }
+  .msg { margin-top:14px; font-size:14px; min-height:1.5em; }
+  .ok { color:var(--green); } .err { color:#FB7185; }
+  footer { margin-top:64px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; display:flex; flex-wrap:wrap; gap:16px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="logo">PURSEC</div>
+
+  <span class="tag">MUY PRONTO</span>
+  <h1>El club de análisis técnico de motorsport</h1>
+  <p class="lead">Strategy, pit windows y Safety Car calculados antes de cada carrera. Debrief técnico después. Simuladores para rehacer escenarios. Sin ruido: datos públicos y criterio propio.</p>
+
+  <section class="cycle" aria-label="El ciclo de cada carrera">
+    <div><b>JUEVES</b><span>Strategy Brief</span><small>Predicción de estrategia</small></div>
+    <div><b>SÁBADO</b><span>Race Card</span><small>Pit windows, Safety Car, key battles</small></div>
+    <div><b>LUNES</b><span>Debrief</span><small>¿Acertamos? Lo que pasó y por qué</small></div>
+    <div><b>SIEMPRE</b><span>Laboratorio</span><small>Rehaz la carrera cambiando el pit stop</small></div>
+  </section>
+
+  <form id="wl" novalidate>
+    <label class="f" for="email">Avísame cuando abra el Club</label>
+    <div class="row">
+      <input id="email" type="email" name="email" autocomplete="email" placeholder="tu@email.com" required>
+      <button type="submit" id="btn">Apuntarme</button>
+    </div>
+    <label class="consent">
+      <input type="checkbox" id="consent" required>
+      <span>Acepto la <a href="/privacidad">política de privacidad</a>. Solo usaremos tu email para avisarte del lanzamiento; puedes darte de baja cuando quieras.</span>
+    </label>
+    <div class="msg" id="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <footer>
+    <span>PURSEC es un proyecto independiente, sin relación con ningún campeonato, equipo o piloto.</span>
+    <a href="/aviso-legal">Aviso legal</a>
+    <a href="/privacidad">Privacidad</a>
+    <a href="/cookies">Cookies</a>
+  </footer>
+</main>
+<script>
+  // La clave publicable de Supabase es pública por diseño; la tabla solo permite apuntarse (RLS).
+  const SUPABASE_URL = "https://uymgrzlbpaqorbwajhfh.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_aKv-FR4J-9LYHz45Np-u_Q_TUoF9ybe";
+  const form = document.getElementById("wl");
+  const msg = document.getElementById("msg");
+  const btn = document.getElementById("btn");
+  const say = (text, cls) => { msg.textContent = text; msg.className = "msg " + cls; };
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email").value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return say("Revisa el email.", "err");
+    if (!document.getElementById("consent").checked) return say("Necesitamos que aceptes la política de privacidad.", "err");
+    btn.disabled = true;
+    try {
+      const source = new URLSearchParams(location.search).get("utm_source");
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+        method: "POST",
+        headers: { apikey: SUPABASE_KEY, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify({ email, lang: "es", source: source ? source.slice(0, 100) : null }),
+      });
+      // 409 = ya estaba apuntado: para el usuario es igual de correcto
+      if (res.ok || res.status === 409) { say("Hecho. Te avisaremos cuando abra el Club.", "ok"); form.reset(); }
+      else say("No se ha podido guardar. Inténtalo en un rato.", "err");
+    } catch {
+      say("Sin conexión. Inténtalo de nuevo.", "err");
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
+</body>
+</html>
