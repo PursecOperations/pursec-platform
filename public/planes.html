@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PURSEC — Planes</title>
+<meta name="description" content="Paddock gratis o Trackside por 9,99 €/mes (7 días de prueba) o 99,99 €/año. Briefs, debriefs, simuladores y Laboratorio.">
+<meta property="og:title" content="PURSEC — Planes">
+<meta property="og:url" content="https://pursec.club/planes">
+<meta name="theme-color" content="#050409">
+<link rel="icon" type="image/png" href="/img/ps-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/pursec.css">
+<style>
+  .intro { padding: 64px 0 40px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  .intro h1 { font-size: clamp(40px, 8vw, 84px); }
+  .intro h1 span { color: var(--purple); }
+  .toggle { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 4px; margin-top: 12px; }
+  .toggle button { min-height: 44px; padding: 0 20px; border: 0; border-radius: 3px; background: transparent; color: var(--muted); font: 700 15px 'Saira', sans-serif; cursor: pointer; }
+  .toggle button[aria-pressed="true"] { background: var(--purple); color: var(--purple-ink); }
+  .toggle .save { font-family: 'JetBrains Mono', monospace; font-size: 11px; margin-left: 6px; }
+
+  .plans { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 980px; margin: 0 auto; }
+  .plan { display: flex; flex-direction: column; gap: 18px; padding: 32px; }
+  .plan .name { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .14em; color: var(--muted); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .badge { font-size: 11px; letter-spacing: .1em; background: var(--green); color: #04130A; padding: 5px 8px; border-radius: 3px; font-weight: 600; }
+  .plan .price { font-size: 52px; font-weight: 800; font-style: italic; line-height: 1; }
+  .plan .price small { font-size: 17px; font-style: normal; font-weight: 500; color: var(--muted); }
+  .plan .note { font-size: 14px; color: var(--muted); margin: 0; min-height: 42px; }
+  .plan .btn { align-self: flex-start; margin-top: auto; }
+  .plan.pro { border-color: #4C2E86; background: #120C1C; }
+  .plan.pro .name > span:first-child { color: var(--purple-soft); }
+
+  table.cmp { width: 100%; border-collapse: collapse; font-size: 16px; }
+  table.cmp th, table.cmp td { padding: 16px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+  table.cmp thead th { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .12em; color: var(--muted); font-weight: 600; }
+  table.cmp thead th.pro { color: var(--purple-soft); }
+  table.cmp td.c { width: 22%; color: var(--muted); }
+  table.cmp td.c.yes { color: var(--text); }
+  @media (max-width: 560px) { table.cmp { font-size: 14px; } table.cmp td.c { width: 26%; } }
+
+  .faq { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .faq h3 { margin: 0 0 8px; font-size: 19px; font-weight: 700; }
+  .faq p { margin: 0; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-logo.png" alt="PURSEC" width="67" height="30"></a>
+    <nav aria-label="Principal">
+      <a class="link hide-sm" href="/#ciclo">El club</a>
+      <a class="link" href="/planes" aria-current="page">Planes</a>
+      <a class="link hide-sm" href="/contacto">Contacto</a>
+      <a class="btn btn-primary btn-sm" href="/muy-pronto">Lista de espera</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <span class="kicker">Planes</span>
+    <h1 class="h-display">Ver la carrera.<br><span>Entenderla.</span></h1>
+    <p class="lead" style="max-width:640px">Paddock es gratis para siempre. Trackside es el club completo: el análisis entero, las herramientas y la comunidad.</p>
+    <div class="toggle" role="group" aria-label="Forma de pago">
+      <button type="button" id="b-m" aria-pressed="true">Mensual</button>
+      <button type="button" id="b-y" aria-pressed="false">Anual <span class="save">−17 %</span></button>
+    </div>
+  </section>
+
+  <div class="plans">
+    <div class="card plan">
+      <div class="name"><span>PADDOCK</span></div>
+      <div class="price">0 € <small>para siempre</small></div>
+      <p class="note">Con anuncios.</p>
+      <ul class="ticks">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A79FBA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Noticias y calendario</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A79FBA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Resumen del Strategy Brief y del debrief</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A79FBA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Infografías de cada carrera</li>
+      </ul>
+      <a class="btn btn-ghost" href="/muy-pronto">Avisarme del lanzamiento</a>
+    </div>
+
+    <div class="card plan pro">
+      <div class="name"><span>TRACKSIDE</span><span class="badge" id="badge">7 DÍAS GRATIS</span></div>
+      <div class="price"><span id="price">9,99 €</span> <small id="period">/mes</small></div>
+      <p class="note" id="note">Prueba gratis que cubre siempre un fin de semana de carrera. Después, 9,99 €/mes. Cancela cuando quieras.</p>
+      <ul class="ticks">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Todo Paddock, sin anuncios</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Strategy Brief, Race Card y debrief completos</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Simuladores de estrategia y Laboratorio</li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Archivo, comunidad y acceso anticipado a la ropa</li>
+      </ul>
+      <a class="btn btn-primary" href="/muy-pronto">Avisarme cuando abra</a>
+    </div>
+  </div>
+
+  <section class="block">
+    <div class="section-head">
+      <span class="kicker">Comparativa</span>
+      <h2 class="h-display h2">Qué incluye cada plan.</h2>
+    </div>
+    <table class="cmp">
+      <thead><tr><th scope="col">Qué</th><th scope="col">PADDOCK</th><th scope="col" class="pro">TRACKSIDE</th></tr></thead>
+      <tbody>
+        <tr><td>Noticias y calendario</td><td class="c yes">Sí</td><td class="c yes">Sí</td></tr>
+        <tr><td>Infografías</td><td class="c yes">Sí</td><td class="c yes">Sí</td></tr>
+        <tr><td>Strategy Brief (antes de la carrera)</td><td class="c">Resumen</td><td class="c yes">Completo</td></tr>
+        <tr><td>Race Card: ventanas de parada y escenarios de Safety Car</td><td class="c">Parte</td><td class="c yes">Completa</td></tr>
+        <tr><td>Debrief técnico</td><td class="c">Resumen</td><td class="c yes">Completo</td></tr>
+        <tr><td>Simuladores: estrategia, undercut, Safety Car, campeonato</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+        <tr><td>Laboratorio: rehaz la carrera</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+        <tr><td>Archivo de temporadas</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+        <tr><td>Comunidad y watch-along</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+        <tr><td>Anuncios</td><td class="c">Sí</td><td class="c yes">No</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="block">
+    <div class="section-head">
+      <span class="kicker">Preguntas</span>
+      <h2 class="h-display h2">Lo que nos preguntáis.</h2>
+    </div>
+    <div class="faq">
+      <div class="card"><h3>¿Cuánto dura la prueba?</h3><p>7 días. Si en esos 7 días no hay carrera, dura hasta el lunes siguiente a la próxima carrera. Verás la fecha exacta antes de confirmar. Una prueba por persona.</p></div>
+      <div class="card"><h3>¿Puedo cancelar?</h3><p>Sí, cuando quieras y desde tu cuenta. Mantienes el acceso hasta el final del periodo pagado.</p></div>
+      <div class="card"><h3>¿El plan anual tiene prueba?</h3><p>No. El anual son 99,99 € al año, unos 8,33 € al mes.</p></div>
+      <div class="card"><h3>¿Retransmitís las carreras?</h3><p>No. Ni imágenes ni datos oficiales en directo. Hacemos análisis y comentario con datos públicos, y citamos siempre la fuente.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <img src="/img/ps-logo.png" alt="PURSEC" width="54" height="24">
+    <nav aria-label="Pie">
+      <a href="/planes">Planes</a>
+      <a href="/contacto">Contacto</a>
+      <a href="/legal">Legal y privacidad</a>
+    </nav>
+    <span>© 2026 PURSEC</span>
+    <span class="note">Precios con IVA incluido. PURSEC es un proyecto independiente, sin relación con ningún campeonato, equipo o piloto.</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var m = document.getElementById("b-m"), y = document.getElementById("b-y");
+    var price = document.getElementById("price"), period = document.getElementById("period");
+    var note = document.getElementById("note"), badge = document.getElementById("badge");
+    function set(yearly) {
+      m.setAttribute("aria-pressed", String(!yearly));
+      y.setAttribute("aria-pressed", String(yearly));
+      price.textContent = yearly ? "99,99 €" : "9,99 €";
+      period.textContent = yearly ? "/año" : "/mes";
+      badge.hidden = yearly;
+      note.textContent = yearly
+        ? "Equivale a 8,33 €/mes. Sin prueba. Cancela cuando quieras y no se renueva."
+        : "Prueba gratis que cubre siempre un fin de semana de carrera. Después, 9,99 €/mes. Cancela cuando quieras.";
+    }
+    m.addEventListener("click", function () { set(false); });
+    y.addEventListener("click", function () { set(true); });
+  })();
+</script>
+</body>
+</html>

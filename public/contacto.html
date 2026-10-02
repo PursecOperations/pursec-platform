@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PURSEC — Contacto</title>
+<meta name="description" content="Soporte de cuenta y suscripción, errores en datos, prensa y colaboraciones. Escríbenos por email.">
+<meta property="og:title" content="PURSEC — Contacto">
+<meta property="og:url" content="https://pursec.club/contacto">
+<meta name="theme-color" content="#050409">
+<link rel="icon" type="image/png" href="/img/ps-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/pursec.css">
+<style>
+  .contact { display: grid; gap: 48px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); padding: 64px 0 24px; align-items: start; }
+  .contact h1 { font-size: clamp(44px, 8vw, 72px); }
+  .mail { display: flex; flex-direction: column; gap: 10px; padding: 28px; }
+  .mail .addr { font-family: 'JetBrains Mono', monospace; font-size: clamp(18px, 3vw, 24px); color: var(--text); word-break: break-all; }
+  .topics { display: flex; flex-direction: column; }
+  .topic { display: grid; grid-template-columns: 1fr; gap: 4px; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  .topic:first-child { border-top: 1px solid var(--line); }
+  .topic b { font-size: 18px; }
+  .topic span { color: var(--muted); }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-logo.png" alt="PURSEC" width="67" height="30"></a>
+    <nav aria-label="Principal">
+      <a class="link hide-sm" href="/#ciclo">El club</a>
+      <a class="link" href="/planes">Planes</a>
+      <a class="link hide-sm" href="/contacto" aria-current="page">Contacto</a>
+      <a class="btn btn-primary btn-sm" href="/muy-pronto">Lista de espera</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="contact">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <span class="kicker">Contacto</span>
+      <h1 class="h-display">Radio al muro.</h1>
+      <p class="lead">Dudas, errores en datos, prensa o colaboraciones. Respondemos por email.</p>
+      <div class="card mail">
+        <span class="kicker" style="color:var(--muted)">Email</span>
+        <a class="addr" href="mailto:hola@pursec.club">hola@pursec.club</a>
+        <a class="btn btn-primary" style="align-self:flex-start;margin-top:8px" href="mailto:hola@pursec.club">Escribir un email</a>
+      </div>
+    </div>
+
+    <div class="topics">
+      <div class="topic"><b>Cuenta y suscripción</b><span>Cambiar de plan, cancelar o descargar facturas: desde "Gestionar suscripción" en tu cuenta. Si algo falla, escríbenos con el email de tu cuenta.</span></div>
+      <div class="topic"><b>Errores en datos</b><span>Si ves un dato mal, dinos la carrera, la página y qué dato es. Lo revisamos y lo corregimos citando la fuente.</span></div>
+      <div class="topic"><b>Prensa y colaboraciones</b><span>Pilotos, ingenieros, medios y marcas: cuéntanos la idea en pocas líneas.</span></div>
+      <div class="topic"><b>Privacidad</b><span>Para ejercer tus derechos sobre tus datos, escríbenos y pon "Privacidad" en el asunto.</span></div>
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <img src="/img/ps-logo.png" alt="PURSEC" width="54" height="24">
+    <nav aria-label="Pie">
+      <a href="/planes">Planes</a>
+      <a href="/contacto">Contacto</a>
+      <a href="/legal">Legal y privacidad</a>
+    </nav>
+    <span>© 2026 PURSEC</span>
+    <span class="note">PURSEC es un proyecto independiente, sin relación con ningún campeonato, equipo o piloto.</span>
+  </div>
+</footer>
+</body>
+</html>
