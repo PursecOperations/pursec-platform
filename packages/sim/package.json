@@ -1,0 +1,7 @@
+{
+  "name": "@pursec/sim",
+  "private": true,
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": { "test": "node --test test/*.test.mjs" }
+}
