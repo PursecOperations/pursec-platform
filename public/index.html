@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PURSEC — Club de análisis técnico de motorsport</title>
 <meta name="description" content="Strategy Brief antes de cada carrera, watch-along en directo, debrief técnico y Laboratorio para rehacer escenarios. Análisis con datos públicos y criterio propio.">
-<meta property="og:title" content="PURSEC — Sé el sector morado">
+<meta property="og:title" content="PURSEC — Club de análisis técnico de motorsport">
 <meta property="og:description" content="Club de análisis técnico de motorsport: briefs, Race Card, debriefs y simuladores.">
 <meta property="og:url" content="https://pursec.club/">
 <meta property="og:image" content="https://pursec.club/img/pursec-logo.png">
@@ -13,48 +13,81 @@
 <link rel="icon" type="image/png" href="/img/ps-logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Saira:ital,wdth,wght@0,100..125,400..900;1,100..125,400..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Michroma&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/pursec.css">
 <style>
-  .hero { min-height: calc(100svh - 64px); display: flex; align-items: center; background-image: repeating-linear-gradient(115deg, transparent 0 26px, rgba(168,85,247,.06) 26px 28px); border-bottom: 1px solid #16111F; }
-  .hero .wrap { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; padding-top: 56px; padding-bottom: 72px; }
-  .hero .logo { width: min(1000px, 100%); }
-  .hero .tagline { font-size: clamp(20px, 3.4vw, 28px); font-weight: 500; font-stretch: 105%; color: var(--muted); margin: 0; }
-  .hero .ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 4px; }
+  /* ---- hero: solo el logo, el resto vacío ---- */
+  .hero { min-height: calc(100svh - 56px); display: grid; place-items: center; position: relative; overflow: hidden; isolation: isolate; }
+  .hero::before { /* horizonte: halo tenue que da profundidad */
+    content: ""; position: absolute; left: 50%; bottom: -42vh; width: 170vw; height: 72vh; transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(168,85,247,.22), rgba(168,85,247,.05) 55%, transparent 100%);
+    z-index: -1;
+  }
+  .hero h1 { margin: 0; width: min(1100px, 86vw); }
+  .hero h1 img { width: 100%; filter: drop-shadow(0 0 60px rgba(168,85,247,.28)); animation: rise 1.6s var(--ease) both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.985); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .hero h1 img { animation: none; } }
 
-  .step { display: flex; flex-direction: column; gap: 10px; }
-  .step .when { font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: .14em; color: var(--purple); }
-  .step h3 { margin: 0; font-size: 24px; font-weight: 800; font-style: italic; text-transform: uppercase; line-height: 1.05; }
-  .step p { margin: 0; color: var(--muted); }
+  /* ---- declaración ---- */
+  .statement .wrap { display: flex; flex-direction: column; gap: 28px; }
+  .statement .display { max-width: 14ch; }
+  .statement .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
 
-  .race-list { display: flex; flex-direction: column; }
-  .race { display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: center; padding: 18px 0; border-bottom: 1px solid var(--line); }
+  /* ---- vuelta del ciclo ---- */
+  .lap-grid { display: grid; gap: 56px; }
+  @media (min-width: 900px) { .lap-grid { grid-template-columns: 5fr 7fr; gap: 80px; } .lap-head { position: sticky; top: 120px; align-self: start; } }
+  .lap { --p: 0; position: relative; padding-left: 40px; display: flex; flex-direction: column; gap: clamp(64px, 12vh, 120px); }
+  .lap::before, .lap::after { content: ""; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px; border-radius: 1px; }
+  .lap::before { background: var(--line); }
+  .lap::after {
+    background: linear-gradient(to bottom, var(--green) 0 49%, var(--bg) 49% 50.5%, var(--green) 50.5% 74%, var(--bg) 74% 75.5%, var(--purple) 75.5% 100%);
+    transform-origin: top; transform: scaleY(var(--p));
+  }
+  .stop { position: relative; display: flex; flex-direction: column; gap: 10px; }
+  .stop::before { content: ""; position: absolute; left: -40px; top: 10px; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line-2); transition: border-color .4s, background-color .4s; }
+  .stop.on::before { border-color: var(--green); background: var(--green); }
+  .stop.last.on::before { border-color: var(--purple); background: var(--purple); }
+  .stop .when { font-size: 15px; color: var(--muted); }
+  .stop h3 { margin: 0; font-size: clamp(20px, 2.6vw, 30px); font-family: var(--f-display); font-weight: 400; color: var(--head); line-height: 1.15; }
+  .stop p { margin: 0; color: var(--muted); max-width: 30em; font-size: 18px; }
+
+  /* ---- calendario ---- */
+  .race-list { margin-top: 56px; display: flex; flex-direction: column; }
+  .race { display: grid; grid-template-columns: 1fr auto; gap: 6px 24px; align-items: baseline; padding: 28px 0; border-bottom: 1px solid var(--line); }
   .race:first-child { border-top: 1px solid var(--line); }
-  .race .rnd { font-family: 'JetBrains Mono', monospace; color: var(--dim); font-size: 14px; }
-  .race .name { font-weight: 700; font-size: 19px; line-height: 1.2; }
-  .race .where { color: var(--muted); font-size: 14px; }
-  .race .when { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted); white-space: nowrap; }
-  .race .when b { display: block; color: var(--text); font-size: 16px; }
+  .race .name { font-size: clamp(17px, 2.4vw, 24px); font-family: var(--f-display); font-weight: 400; color: var(--head); line-height: 1.25; }
+  .race .where { grid-column: 1; color: var(--muted); font-size: 15px; }
+  .race .rnd { color: var(--dim); font-size: 14px; margin-right: 12px; font-family: var(--f-body); }
+  .race .when { grid-row: 1 / span 2; grid-column: 2; text-align: right; font-size: 14px; color: var(--muted); white-space: nowrap; }
+  .race .when b { display: block; color: var(--head); font-size: clamp(18px, 2.6vw, 24px); font-weight: 600; }
   .race.next .when b { color: var(--green); }
-  .src { margin-top: 14px; font-size: 13px; color: var(--dim); }
+  .src { margin-top: 20px; }
 
-  .series { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { font-family: 'JetBrains Mono', monospace; font-size: 13px; padding: 8px 12px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); }
-  .chip.on { border-color: var(--purple); color: var(--text); background: rgba(168,85,247,.12); }
+  /* ---- series ---- */
+  .series { margin-top: 48px; font-family: var(--f-display); font-size: clamp(22px, 4.4vw, 52px); line-height: 1.3; color: #3B3150; display: flex; flex-wrap: wrap; column-gap: .45em; }
+  .series .on { color: var(--head); }
 
-  .plan { display: flex; flex-direction: column; gap: 14px; }
-  .plan .name { font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: .14em; color: var(--muted); }
-  .plan .price { font-size: 40px; font-weight: 800; font-style: italic; line-height: 1; }
-  .plan .price small { font-size: 16px; font-style: normal; font-weight: 500; color: var(--muted); }
-  .plan.pro { border-color: #4C2E86; background: #120C1C; }
+  /* ---- planes ---- */
+  .plans { margin-top: 64px; display: grid; gap: 48px; }
+  @media (min-width: 820px) { .plans { grid-template-columns: 1fr 1fr; gap: 0; } .plans .plan + .plan { border-left: 1px solid var(--line); padding-left: 56px; } .plans .plan:first-child { padding-right: 56px; } }
+  .plan { display: flex; flex-direction: column; gap: 16px; }
+  .plan .name { font-size: 15px; color: var(--muted); font-weight: 600; }
   .plan.pro .name { color: var(--purple-soft); }
+  .plan .price { font-size: clamp(44px, 6vw, 64px); font-weight: 600; line-height: 1; color: var(--head); }
+  .plan .price small { font-size: 17px; font-weight: 500; color: var(--muted); }
+  .plan p { margin: 0; color: var(--muted); max-width: 26em; }
+
+  /* ---- cierre ---- */
+  .finale .wrap { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 28px; }
+  .finale .display { max-width: 12ch; }
 </style>
 </head>
 <body>
+<div class="space" aria-hidden="true"></div>
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-logo.png" alt="PURSEC" width="67" height="30"></a>
+    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-logo.png" alt="PURSEC" width="49" height="22"></a>
     <nav aria-label="Principal">
       <a class="link hide-sm" href="#ciclo">El club</a>
       <a class="link" href="/planes">Planes</a>
@@ -66,45 +99,46 @@
 
 <main>
   <section class="hero">
+    <h1><img src="/img/pursec-logo.png" alt="PURSEC, club de análisis técnico de motorsport" width="1252" height="210"></h1>
+  </section>
+
+  <section class="chapter statement">
     <div class="wrap">
-      <span class="kicker">Club de análisis técnico de motorsport</span>
-      <img class="logo" src="/img/pursec-logo.png" alt="PURSEC" width="1252" height="210">
-      <div class="sectors" aria-hidden="true"><span></span><span></span><span></span></div>
-      <p class="tagline">Sé el sector morado.</p>
-      <div class="ctas">
-        <a class="btn btn-primary" href="/muy-pronto">Apúntate
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
+      <p class="label reveal">Club de análisis técnico de motorsport</p>
+      <h2 class="display d-l reveal">No vendemos datos en directo.</h2>
+      <p class="lead reveal">Vendemos lectura de carrera: qué estrategia esperar, qué decisión la cambió y qué habría pasado si no. Con datos públicos y criterio propio.</p>
+      <div class="ctas reveal">
+        <a class="btn btn-primary" href="/muy-pronto">Apuntarme a la lista de espera</a>
         <a class="btn btn-ghost" href="/planes">Ver planes</a>
       </div>
     </div>
   </section>
 
-  <section class="block" id="ciclo">
-    <div class="wrap">
-      <div class="section-head">
-        <span class="kicker">El ciclo de cada carrera</span>
-        <h2 class="h-display h2">Antes, durante y después.</h2>
-        <p class="lead">No vendemos datos en directo. Vendemos lectura de carrera: predicción, análisis y comunidad, con datos públicos y criterio propio.</p>
+  <section class="chapter" id="ciclo">
+    <div class="wrap lap-grid">
+      <div class="lap-head stack reveal">
+        <p class="label">El ciclo de cada carrera</p>
+        <h2 class="display d-m">Antes, durante y después.</h2>
+        <p class="lead">Una vuelta completa por cada gran premio.</p>
       </div>
-      <div class="grid grid-4">
-        <article class="card step">
-          <span class="when">ANTES</span>
+      <div class="lap" data-lap>
+        <article class="stop">
+          <span class="when">Antes</span>
           <h3>Strategy Brief y Race Card</h3>
           <p>La estrategia que esperamos y una tarjeta con las ventanas de parada y los escenarios de Safety Car calculados de antemano.</p>
         </article>
-        <article class="card step">
-          <span class="when">DURANTE</span>
+        <article class="stop">
+          <span class="when">Durante</span>
           <h3>Watch-along</h3>
           <p>Seguimos la carrera en directo con la comunidad: voz y comentario técnico, con la Race Card en la mano.</p>
         </article>
-        <article class="card step">
-          <span class="when">DESPUÉS</span>
+        <article class="stop">
+          <span class="when">Después</span>
           <h3>Debrief</h3>
           <p>Qué pasó y por qué. Qué acertamos, qué no y qué decisión cambió la carrera.</p>
         </article>
-        <article class="card step">
-          <span class="when">LUNES A JUEVES</span>
+        <article class="stop last">
+          <span class="when">De lunes a jueves</span>
           <h3>Laboratorio</h3>
           <p>Rehaz la carrera: cambia la vuelta de parada o el neumático y mira cómo cambia el resultado.</p>
         </article>
@@ -112,62 +146,67 @@
     </div>
   </section>
 
-  <section class="block" id="calendario">
+  <section class="chapter" id="calendario">
     <div class="wrap">
-      <div class="section-head">
-        <span class="kicker">Próximas carreras · F1</span>
-        <h2 class="h-display h2">Siguiente en parrilla.</h2>
+      <div class="stack reveal">
+        <p class="label">Próximas carreras de F1</p>
+        <h2 class="display d-m">Siguiente en parrilla.</h2>
       </div>
       <div class="race-list" id="races" aria-live="polite">
         <p class="lead">Cargando calendario…</p>
       </div>
-      <p class="src">Fechas: <a href="https://www.formula1.com/en/racing/2026" rel="noopener" target="_blank">calendario oficial publicado</a>. Pueden cambiar.</p>
+      <p class="small src">Fechas del <a href="https://www.formula1.com/en/racing/2026" rel="noopener" target="_blank">calendario oficial publicado</a>. Pueden cambiar.</p>
     </div>
   </section>
 
-  <section class="block">
+  <section class="chapter">
     <div class="wrap">
-      <div class="section-head">
-        <span class="kicker">Series</span>
-        <h2 class="h-display h2">Empezamos por la F1.</h2>
+      <div class="stack reveal">
+        <p class="label">Series</p>
+        <h2 class="display d-m">Empezamos por la F1.</h2>
         <p class="lead">Después iremos sumando el resto, una serie cada vez y bien hecha.</p>
       </div>
-      <div class="series">
-        <span class="chip on">F1</span>
-        <span class="chip">F2</span><span class="chip">F3</span>
-        <span class="chip">MotoGP</span><span class="chip">Moto2</span><span class="chip">Moto3</span>
-        <span class="chip">IndyCar</span>
-        <span class="chip">WEC</span><span class="chip">IMSA</span><span class="chip">GT3</span>
-      </div>
+      <p class="series reveal" aria-label="Series: F1 disponible; F2, F3, MotoGP, Moto2, Moto3, IndyCar, WEC, IMSA y GT3 más adelante">
+        <span class="on">F1</span><span>F2</span><span>F3</span><span>MotoGP</span><span>Moto2</span><span>Moto3</span><span>IndyCar</span><span>WEC</span><span>IMSA</span><span>GT3</span>
+      </p>
     </div>
   </section>
 
-  <section class="block">
+  <section class="chapter">
     <div class="wrap">
-      <div class="section-head">
-        <span class="kicker">Planes</span>
-        <h2 class="h-display h2">Gratis para seguir. Trackside para entender.</h2>
+      <div class="stack reveal">
+        <p class="label">Planes</p>
+        <h2 class="display d-m">Gratis para seguir. Trackside para entender.</h2>
       </div>
-      <div class="grid grid-2">
-        <div class="card plan">
-          <span class="name">PADDOCK</span>
-          <span class="price">0 € <small>con anuncios</small></span>
-          <p class="lead">Noticias, calendario, resúmenes de briefs y debriefs, e infografías.</p>
+      <div class="plans reveal">
+        <div class="plan">
+          <span class="name">Paddock</span>
+          <span class="price mono">0 € <small>con anuncios</small></span>
+          <p>Noticias, calendario, resúmenes de briefs y debriefs, e infografías.</p>
         </div>
-        <div class="card plan pro">
-          <span class="name">TRACKSIDE</span>
-          <span class="price">9,99 € <small>/mes · o 99,99 €/año</small></span>
-          <p class="lead">Sin anuncios. Briefs y debriefs completos, Race Card, simuladores, Laboratorio, archivo y comunidad.</p>
+        <div class="plan pro">
+          <span class="name">Trackside</span>
+          <span class="price mono">9,99 € <small>/mes, o 99,99 €/año</small></span>
+          <p>Sin anuncios. Briefs y debriefs completos, Race Card, simuladores, Laboratorio, archivo y comunidad. 7 días de prueba en el plan mensual.</p>
         </div>
       </div>
-      <p style="margin-top:20px"><a class="btn btn-ghost" href="/planes">Comparar planes</a></p>
+      <p style="margin-top:48px" class="reveal"><a class="btn-text" href="/planes">Comparar planes</a></p>
+    </div>
+  </section>
+
+  <section class="screen finale">
+    <div class="wrap">
+      <span class="beacons reveal" aria-hidden="true"><i></i><i></i><i></i></span>
+      <h2 class="display d-l reveal">Llega a la parrilla preparado.</h2>
+      <p class="lead reveal" style="text-align:center">Apúntate y te avisamos cuando abra el club.</p>
+      <a class="btn btn-primary reveal" href="/muy-pronto">Apuntarme a la lista de espera</a>
     </div>
   </section>
 </main>
 
 <footer class="foot">
   <div class="wrap">
-    <img src="/img/ps-logo.png" alt="PURSEC" width="54" height="24">
+    <img src="/img/ps-logo.png" alt="PURSEC" width="45" height="20">
     <nav aria-label="Pie">
       <a href="/planes">Planes</a>
       <a href="/contacto">Contacto</a>
@@ -178,6 +217,7 @@
   </div>
 </footer>
 
+<script src="/js/pursec-ui.js" defer></script>
 <script>
   // Calendario público (lectura permitida por RLS). La clave publicable es pública por diseño.
   (function () {
@@ -204,13 +244,13 @@
           var n = daysTo(r.race_date);
           var rel = n === 0 ? "hoy" : n === 1 ? "mañana" : "en " + n + " días";
           return '<div class="race' + (i === 0 ? ' next' : '') + '">' +
-            '<span class="rnd">R' + esc(r.round) + '</span>' +
-            '<div><div class="name">' + esc(r.name) + '</div><div class="where">' + esc(r.circuit) + ' · ' + esc(r.country) + '</div></div>' +
-            '<div class="when"><b>' + esc(fmt.format(new Date(r.race_date + "T00:00:00Z"))) + '</b>' + rel + '</div>' +
+            '<div class="name"><span class="rnd mono">R' + esc(r.round) + '</span>' + esc(r.name) + '</div>' +
+            '<div class="when mono"><b>' + esc(fmt.format(new Date(r.race_date + "T00:00:00Z"))) + '</b>' + rel + '</div>' +
+            '<div class="where">' + esc(r.circuit) + ', ' + esc(r.country) + '</div>' +
           '</div>';
         }).join("");
       })
-      .catch(function () { box.innerHTML = '<p class="lead">No se ha podido cargar el calendario ahora mismo.</p>'; });
+      .catch(function () { box.innerHTML = '<p class="lead">No se ha podido cargar el calendario. Recarga la página en un momento.</p>'; });
   })();
 </script>
 </body>
