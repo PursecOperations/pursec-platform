@@ -46,18 +46,3 @@
     }
   }
 })();
-
-// Portada: arranca la vuelta de sectores cuando el logo ya está dibujado; se pausa fuera de pantalla
-(function () {
-  var hero = document.getElementById("portada");
-  if (!hero || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  setTimeout(function () { hero.classList.add("lap-on"); }, 2600);
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (es) {
-      hero.style.setProperty("--play", es[0].isIntersecting ? "running" : "paused");
-      hero.querySelectorAll(".sec i, .sec, .sweep, .strokes, .labels span").forEach(function (el) {
-        el.style.animationPlayState = es[0].isIntersecting ? "running" : "paused";
-      });
-    }).observe(hero);
-  }
-})();
