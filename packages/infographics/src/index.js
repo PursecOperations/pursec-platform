@@ -1,6 +1,9 @@
 // PURSEC — generador de infografías (SVG determinista, sin IA, sin dependencias).
 // Formato por defecto 1080×1350 (vertical, redes). Para PNG: renderizar el SVG con un navegador (scripts/render.mjs).
 
+import { emblem } from "./emblem.js";
+export { emblem };
+
 export const BRAND = {
   bg: "#050409",
   panel: "#0E0B16",
@@ -46,7 +49,8 @@ function frame({ width = 1080, height = 1350, tag, title, subtitle, source }, bo
 ${subtitle ? `<text x="60" y="212" class="m" font-size="24">${esc(subtitle)}</text>` : ""}
 ${body}
 <line x1="60" y1="${height - 110}" x2="${width - 60}" y2="${height - 110}" stroke="${BRAND.grid}" stroke-width="2"/>
-<text x="60" y="${height - 62}" class="t" font-size="40" style="fill:${BRAND.purple}">PURSEC</text>
+${emblem(60, height - 100, 56)}
+<text x="128" y="${height - 58}" class="t" font-size="40" style="fill:${BRAND.purple}">PURSEC</text>
 <text x="${width - 60}" y="${height - 70}" class="m" font-size="18" text-anchor="end">${esc(source ? `Fuente: ${source}` : "")}</text>
 <text x="${width - 60}" y="${height - 46}" class="m" font-size="18" text-anchor="end">pursec.club</text>
 </svg>`;
