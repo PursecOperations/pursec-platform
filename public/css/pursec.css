@@ -67,7 +67,7 @@ a:hover { color: #E4D3FF; }
   border-bottom: 1px solid rgba(52, 42, 71, .45);
 }
 .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
-.top .brand img { height: 22px; width: auto; }
+.top .brand img { height: 32px; width: 32px; display: block; }
 .top nav { display: flex; align-items: center; gap: 2px; }
 .top nav a.link { color: var(--muted); font-size: 14px; padding: 8px 10px; border-radius: 4px; transition: color .2s; }
 .top nav a.link:hover, .top nav a.link[aria-current="page"] { color: var(--text); }
@@ -127,7 +127,7 @@ a:hover { color: #E4D3FF; }
 .foot nav a { color: var(--muted); }
 .foot nav a:hover { color: var(--text); }
 .foot .note { flex-basis: 100%; font-size: 13px; max-width: 60em; }
-.foot img { height: 20px; width: auto; }
+.foot img { height: 32px; width: 32px; }
 
 /* ---------- luz: sección clara (contraste y ritmo) ---------- */
 .light {
