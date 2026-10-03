@@ -151,3 +151,21 @@ a:hover { color: #E4D3FF; }
     radial-gradient(30% 40% at 80% 70%, rgba(34,197,94,.10), transparent 70%);
   filter: blur(10px);
 }
+
+/* ---------- logo en hueco + barra de sectores (páginas interiores) ---------- */
+.mark { display: flex; flex-direction: column; gap: 14px; width: min(460px, 78vw); margin-bottom: 20px; }
+.mark.center { align-items: center; margin-left: auto; margin-right: auto; }
+.mark img { width: 100%; filter: drop-shadow(0 0 3px rgba(168,85,247,.75)) drop-shadow(0 0 14px rgba(168,85,247,.35)); animation: mark-in 1.2s var(--ease) both; }
+.mark .bars { display: flex; gap: 6px; width: 62%; }
+.mark .sec { flex: 1; height: 4px; border-radius: 2px; background: rgba(211,198,242,.08); overflow: hidden; }
+.mark .sec i { display: block; height: 100%; border-radius: 2px; background: var(--green); transform-origin: left; transform: scaleX(0); animation: mark-fill .7s linear forwards; }
+.mark .sec:nth-child(1) i { animation-delay: .6s; }
+.mark .sec:nth-child(2) i { animation-delay: 1.3s; }
+.mark .sec:nth-child(3) i { animation: mark-fill .7s linear 2s forwards, mark-purple .01s linear 2.7s forwards; }
+@keyframes mark-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@keyframes mark-fill { to { transform: scaleX(1); } }
+@keyframes mark-purple { to { background: var(--purple); box-shadow: 0 0 12px rgba(168,85,247,.9); } }
+@media (prefers-reduced-motion: reduce) {
+  .mark img, .mark .sec i { animation: none; transform: none; }
+  .mark .sec:nth-child(3) i { background: var(--purple); }
+}
