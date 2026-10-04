@@ -45,8 +45,8 @@
   /* letras: solo contorno, hueco transparente */
   .ink { fill: none; stroke-width: 3.2; stroke-linejoin: round; filter: url(#neon); transition: stroke .5s ease, stroke-width .5s ease, opacity .5s ease; }
   .ink { stroke-linecap: round; }
-  .shine { fill: none; stroke: #F6F0FF; stroke-width: 6; stroke-linecap: round; opacity: 0; transition: opacity .6s ease .25s; }
-  .hero.lit .shine { opacity: .9; }
+  .shine { fill: none; stroke: #DDB8FF; stroke-width: 6; stroke-linecap: round; opacity: 0; transition: opacity .6s ease .25s; }
+  .hero.lit .shine { opacity: .85; }
   @media (max-width: 560px) { .shine { stroke-width: 10; } }
   .s1 .ink, .s2 .ink { stroke: var(--green); }
   .s3 .ink { stroke: var(--purple); }
@@ -55,8 +55,8 @@
   .fills path { fill: url(#gum); fill-rule: evenodd; }
   .hero.lit .fills { opacity: 1; }
   .hero.lit .sector > .fills, .hero.lit .sector > .inks { filter: url(#glow); }
-  .hero.lit .ink { stroke: #E4D3FF; stroke-width: 2.2; filter: none; }
-  .hero.lit .ink.slit { stroke: #2C1450; stroke-width: 4.5; }
+  .hero.lit .ink { stroke: #C99BFF; stroke-width: 2.2; filter: none; }
+  .hero.lit .ink.slit { stroke: #2A0C52; stroke-width: 4.5; }
   .hero.done[data-sector="1"] .s1 .ink:not(.slit), .hero.done[data-sector="2"] .s2 .ink:not(.slit) { stroke: #9BF0B9; }
   .hero.done[data-sector="3"] .s3 .ink:not(.slit) { stroke: #F2E8FF; stroke-width: 3; }
   .sw { fill: var(--purple); opacity: 0; transition: opacity .8s ease; filter: url(#neon); }
@@ -295,12 +295,12 @@
 <defs>
 <filter id="neon" filterUnits="userSpaceOnUse" x="-200" y="-300" width="1800" height="900" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 <linearGradient id="gum" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#D9C2FF"/><stop offset=".45" stop-color="#B57BFA"/><stop offset="1" stop-color="#8E3FE6"/>
+<stop offset="0" stop-color="#B66DFF"/><stop offset=".5" stop-color="#9B3DF5"/><stop offset="1" stop-color="#7A1FE0"/>
 </linearGradient>
 <filter id="glow" filterUnits="userSpaceOnUse" x="-200" y="-300" width="1800" height="900" color-interpolation-filters="sRGB">
 <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="far"/>
 <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="near"/>
-<feColorMatrix in="far" type="matrix" values="0 0 0 0 .66  0 0 0 0 .33  0 0 0 0 .97  0 0 0 .75 0" result="farc"/>
+<feColorMatrix in="far" type="matrix" values="0 0 0 0 .62  0 0 0 0 .2  0 0 0 0 .98  0 0 0 .9 0" result="farc"/>
 <feMerge><feMergeNode in="farc"/><feMergeNode in="near"/><feMergeNode in="SourceGraphic"/></feMerge>
 </filter>
 <filter id="hot" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
