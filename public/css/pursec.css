@@ -13,8 +13,8 @@
   --muted: #958CB0;
   --dim: #6E6788;
   --deep: #0A0618;      /* violeta profundo del espacio */
-  --f-display: 'Michroma', 'Chakra Petch', system-ui, sans-serif;
-  --f-body: 'Chakra Petch', system-ui, sans-serif;
+  --f-display: 'Fredoka', 'Nunito', system-ui, sans-serif;
+  --f-body: 'Nunito', system-ui, sans-serif;
   --max: 1180px;
   --gutter: 16px;
   --ease: cubic-bezier(.2, .7, .2, 1);
@@ -40,7 +40,7 @@ a { color: var(--purple-soft); text-decoration: none; }
 a:hover { color: #E4D3FF; }
 .mono { font-family: var(--f-body); font-weight: 500; font-variant-numeric: tabular-nums; }
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
-:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; border-radius: 2px; }
+:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; border-radius: 999px; }
 
 /* ---------- espacio de fondo: estrellas casi invisibles ---------- */
 .space {
@@ -69,14 +69,14 @@ a:hover { color: #E4D3FF; }
 .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 56px; }
 .top .brand img { height: 32px; width: 32px; display: block; }
 .top nav { display: flex; align-items: center; gap: 2px; }
-.top nav a.link { color: var(--muted); font-size: 14px; padding: 8px 10px; border-radius: 4px; transition: color .2s; }
+.top nav a.link { color: var(--muted); font-size: 15px; font-weight: 600; padding: 8px 12px; border-radius: 999px; transition: color .2s; }
 .top nav a.link:hover, .top nav a.link[aria-current="page"] { color: var(--text); }
 @media (max-width: 560px) { .top nav a.link.hide-sm { display: none; } }
 
 /* ---------- botones ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 48px; padding: 0 24px; border-radius: 4px; border: 0; cursor: pointer;
+  min-height: 48px; padding: 0 26px; border-radius: 999px; border: 0; cursor: pointer;
   font-family: var(--f-body); font-weight: 600;
   font-size: 16px; letter-spacing: .02em;
   transition: background-color .2s, border-color .2s, color .2s;
@@ -90,12 +90,12 @@ a:hover { color: #E4D3FF; }
 
 /* ---------- tipografía ---------- */
 .display {
-  font-family: var(--f-display); font-weight: 400; color: var(--head);
-  line-height: 1.12; letter-spacing: -.01em; margin: 0;
+  font-family: var(--f-display); font-weight: 600; color: var(--head);
+  line-height: 1.04; letter-spacing: -.015em; margin: 0;
   text-wrap: balance;
 }
-.d-l  { font-size: clamp(30px, 5.4vw, 72px); }
-.d-m  { font-size: clamp(24px, 3.6vw, 46px); }
+.d-l  { font-size: clamp(36px, 6.2vw, 84px); }
+.d-m  { font-size: clamp(28px, 4.2vw, 54px); }
 .label { font-size: 15px; color: var(--purple-soft); font-weight: 600; margin: 0; }
 .lead { color: var(--muted); font-size: clamp(18px, 2.3vw, 22px); line-height: 1.45; margin: 0; max-width: 34em; }
 .small { font-size: 14px; color: var(--dim); }
@@ -112,7 +112,7 @@ a:hover { color: #E4D3FF; }
 
 /* ---------- balizas de sector ---------- */
 .beacons { display: inline-flex; gap: 6px; }
-.beacons i { display: block; width: 28px; height: 4px; border-radius: 2px; background: var(--green); }
+.beacons i { display: block; width: 28px; height: 6px; border-radius: 3px; background: var(--green); }
 .beacons i:last-child { background: var(--purple); }
 
 /* ---------- lista con ticks ---------- */
@@ -157,7 +157,7 @@ a:hover { color: #E4D3FF; }
 .mark.center { align-items: center; margin-left: auto; margin-right: auto; }
 .mark img { width: 100%; filter: drop-shadow(0 0 3px rgba(168,85,247,.75)) drop-shadow(0 0 14px rgba(168,85,247,.35)); animation: mark-in 1.2s var(--ease) both; }
 .mark .bars { display: flex; gap: 6px; width: 62%; }
-.mark .sec { flex: 1; height: 4px; border-radius: 2px; background: rgba(211,198,242,.08); overflow: hidden; }
+.mark .sec { flex: 1; height: 6px; border-radius: 3px; background: rgba(211,198,242,.08); overflow: hidden; }
 .mark .sec i { display: block; height: 100%; border-radius: 2px; background: var(--green); transform-origin: left; transform: scaleX(0); animation: mark-fill .7s linear forwards; }
 .mark .sec:nth-child(1) i { animation-delay: .6s; }
 .mark .sec:nth-child(2) i { animation-delay: 1.3s; }
