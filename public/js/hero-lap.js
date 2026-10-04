@@ -13,7 +13,16 @@
   if (reduce || !inks[0].getTotalLength) { hero.classList.add("lit", "done"); return; }
 
   // Longitud real de cada contorno (las rutas usan pathLength=1 para el trazo, la real para el tiempo)
-  var segs = inks.map(function (p) { return { el: p, s: +p.getAttribute("data-s"), len: p.getTotalLength() }; });
+  var segs = inks.map(function (p) { return { el: p, s: +p.getAttribute("data-s"), len: p.getTotalLength(), jelly: p.closest(".jelly") }; });
+  var lastJelly = null;
+  function boing(j) {
+    if (!j || !hero.classList.contains("lit")) return;
+    j.classList.remove("boing"); void j.getBBox(); j.classList.add("boing");
+  }
+  [].slice.call(svg.querySelectorAll(".jelly")).forEach(function (j) {
+    j.addEventListener("animationend", function () { j.classList.remove("boing"); });
+    j.parentNode.addEventListener("pointerenter", function () { boing(j); });
+  });
   var total = segs.reduce(function (a, b) { return a + b.len; }, 0);
   var bars = { 1: svg.querySelector(".b1 .fill"), 2: svg.querySelector(".b2 .fill"), 3: svg.querySelector(".b3 .fill") };
   var secLen = { 1: 0, 2: 0, 3: 0 };
@@ -49,7 +58,14 @@
     [1, 2, 3].forEach(function (k) { bars[k].style.transform = "scaleX(" + (done[k] / secLen[k]).toFixed(4) + ")"; });
     if (cur && p < 1) {
       var pt = cur.el.getPointAtLength(local);
+      // las letras se mueven (flotan y rebotan): pasar el punto a coordenadas del SVG
+      var m = cur.el.getScreenCTM(), inv = svg.getScreenCTM();
+      if (m && inv) {
+        var sp = svg.createSVGPoint(); sp.x = pt.x; sp.y = pt.y;
+        pt = sp.matrixTransform(m).matrixTransform(inv.inverse());
+      }
       car.setAttribute("cx", pt.x.toFixed(1)); car.setAttribute("cy", pt.y.toFixed(1));
+      if (cur.jelly !== lastJelly) { boing(cur.jelly); lastJelly = cur.jelly; }
       car.setAttribute("data-s", cur.s);
       setSector(cur.s);
       hero.classList.add("moving");
