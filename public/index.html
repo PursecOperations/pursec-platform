@@ -124,79 +124,11 @@
     100% { transform: rotate(18deg) translateY(-180vh); opacity: 0; }
   }
 
-  /* gadgets de telemetría: decorativos, sin datos reales, con más presencia */
-  .hud { position: absolute; width: clamp(200px, 19vw, 300px); padding: 12px 14px 14px; border-radius: 18px;
-    background: linear-gradient(160deg, rgba(40,16,78,.42), rgba(12,6,26,.32)); border: 1px solid rgba(201,167,255,.16);
-    box-shadow: inset 0 1px 0 rgba(233,213,255,.06), 0 18px 50px -24px rgba(124,58,237,.55);
-    opacity: 0; transform: translateY(10px); transition: opacity 1.2s ease, transform 1.2s var(--ease); }
-  .hero.lit .hud { opacity: .92; transform: none; }
-  .hero.lit .hud-tele { transition-delay: .15s; } .hero.lit .hud-tyres { transition-delay: .3s; } .hero.lit .hud-delta { transition-delay: .45s; }
-  .hud-h { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
-  .hud-h b { font: 800 10px/1 var(--f-body); letter-spacing: .2em; color: #D9C2FF; }
-  .hud-h span { font: 700 8.5px/1 var(--f-body); letter-spacing: .14em; color: rgba(211,198,242,.45); white-space: nowrap; }
-  .hud svg { width: 100%; height: auto; display: block; overflow: hidden; }
-  .hud-track { left: 2.5vw; top: 4vh; }
-  .hud-tele { right: 2.5vw; top: 4.5vh; }
-  .hud-tyres { left: 3vw; bottom: 4vh; }
-  .hud-delta { right: 3vw; bottom: 4.5vh; }
-
-  .trk-base { fill: none; stroke: rgba(211,198,242,.14); stroke-width: 9; stroke-linejoin: round; }
-  .trk-s { fill: none; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
-  .s1c { stroke: #22C55E; stroke-dasharray: 33 67; }
-  .s2c { stroke: #4ADE80; stroke-dasharray: 33 67; stroke-dashoffset: -33; opacity: .8; }
-  .s3c { stroke: #A855F7; stroke-dasharray: 34 66; stroke-dashoffset: -66; filter: drop-shadow(0 0 4px rgba(168,85,247,.9)); }
-  .trail { fill: none; stroke: #F2E8FF; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 7 93; animation: trail 8s linear infinite; filter: drop-shadow(0 0 5px rgba(233,213,255,.9)); }
-  .trail.t2 { stroke: #9BF0B9; stroke-dasharray: 5 95; animation-delay: -.9s; filter: drop-shadow(0 0 5px rgba(34,197,94,.9)); }
-  @keyframes trail { from { stroke-dashoffset: 7; } to { stroke-dashoffset: -93; } }
-  .sf { stroke: #F2E8FF; stroke-width: 2; }
-  .hud .dot { fill: #F2E8FF; }
-  .hud .dot.g { fill: #9BF0B9; }
-
-  .hud .grid line { stroke: rgba(211,198,242,.1); stroke-dasharray: 2 4; }
-  .roll, .roll2 { animation: roll 10s linear infinite; }
-  .roll2 { animation-duration: 7s; }
-  @keyframes roll { to { transform: translateX(-240px); } }
-  .spd { fill: none; stroke: #C9A7FF; stroke-width: 1.8; stroke-linejoin: round; filter: drop-shadow(0 0 3px rgba(168,85,247,.8)); }
-  .thr { fill: rgba(34,197,94,.22); stroke: rgba(74,222,128,.7); stroke-width: 1; }
-  .brk rect { fill: #A855F7; }
-  .cur { stroke: rgba(242,232,255,.6); stroke-width: 1; stroke-dasharray: 2 3; }
-
-  .tyres { display: grid; grid-template-columns: 1fr 1.4fr 1fr; grid-template-rows: 1fr 1fr; gap: 8px; align-items: center; justify-items: center; height: 104px; }
-  .car-shape { grid-column: 2; grid-row: 1 / span 2; width: 46%; height: 92%; border-radius: 22px 22px 16px 16px; border: 1.5px solid rgba(201,167,255,.4); background: linear-gradient(180deg, rgba(168,85,247,.16), transparent); }
-  .tyres .ty:nth-child(1) { grid-column: 1; grid-row: 1; } .tyres .ty:nth-child(2) { grid-column: 3; grid-row: 1; }
-  .tyres .ty:nth-child(4) { grid-column: 1; grid-row: 2; } .tyres .ty:nth-child(5) { grid-column: 3; grid-row: 2; }
-  .ty { display: flex; flex-direction: column; align-items: center; gap: 4px; }
-  .ty i { width: 22px; height: 40px; border-radius: 9px; border: 1.5px solid rgba(233,213,255,.35); animation: temp 5s ease-in-out var(--d) infinite alternate; }
-  .ty span { font: 800 8px/1 var(--f-body); letter-spacing: .14em; color: rgba(211,198,242,.5); }
-  @keyframes temp { 0% { background: linear-gradient(to top, #22C55E 0 82%, transparent 82%); box-shadow: 0 0 10px rgba(34,197,94,.5); }
-                    50% { background: linear-gradient(to top, #8B5CF6 0 64%, transparent 64%); box-shadow: 0 0 12px rgba(139,92,246,.6); }
-                    100% { background: linear-gradient(to top, #C084FC 0 48%, transparent 48%); box-shadow: 0 0 14px rgba(192,132,252,.7); } }
-
-  .delta { position: relative; height: 18px; border-radius: 9px; background: linear-gradient(90deg, rgba(34,197,94,.35), rgba(34,197,94,.05) 48%, rgba(168,85,247,.05) 52%, rgba(168,85,247,.4)); margin: 4px 0 10px; }
-  .delta .zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: rgba(242,232,255,.6); }
-  .delta .needle { position: absolute; top: -4px; bottom: -4px; left: 50%; width: 4px; margin-left: -2px; border-radius: 2px; background: #F2E8FF; box-shadow: 0 0 10px rgba(233,213,255,.9); animation: needle 6s ease-in-out infinite; }
-  @keyframes needle { 0%, 100% { transform: translateX(-38px); } 30% { transform: translateX(26px); } 55% { transform: translateX(-14px); } 80% { transform: translateX(44px); } }
-  .dhist polyline { fill: none; stroke: #C9A7FF; stroke-width: 1.6; }
-  .dhist .mid { stroke: rgba(242,232,255,.25); stroke-dasharray: 2 3; }
-
-  .hud-leds { left: 50%; top: 4.5vh; width: auto; padding: 9px 14px; display: flex; gap: 6px; transform: translate(-50%, 10px); border-radius: 999px; }
-  .hero.lit .hud-leds { transform: translate(-50%, 0); }
-  .hud-leds i { width: 10px; height: 10px; border-radius: 50%; background: rgba(211,198,242,.1); animation: led 2.6s linear infinite; animation-delay: calc(var(--i) * .09s); }
-  .hud-leds i.g { --c: #22C55E; } .hud-leds i.y { --c: #4ADE80; } .hud-leds i.p { --c: #A855F7; }
-  @keyframes led { 0%, 8% { background: rgba(211,198,242,.1); box-shadow: none; } 12%, 62% { background: var(--c); box-shadow: 0 0 8px var(--c); } 70%, 100% { background: rgba(211,198,242,.1); box-shadow: none; } }
-
-  @media (max-width: 900px) {
-    .hud { width: 44vw; padding: 9px 10px 10px; border-radius: 14px; }
-    .hud-track { left: 4vw; top: 4vh; } .hud-tele { right: 4vw; top: 4vh; }
-    .hud-tyres { left: 4vw; bottom: 9vh; } .hud-delta { right: 4vw; bottom: 9vh; }
-    .hud-h span { display: none; }
-    .tyres { height: 92px; } .ty i { width: 16px; height: 30px; }
-    .hud-leds { display: none; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .roll, .roll2, .trail, .ty i, .delta .needle, .hud-leds i { animation: none; }
-    .hud .dot { display: none; } .hero.lit .lt { animation: none; }
-  }
+  /* fondo animado (canvas): suelo de pista en perspectiva que avanza, trazas de telemetría que fluyen
+     y un circuito gigante con un cometa. Forma parte del fondo, muy tenue, detrás del título */
+  .bgc { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 1.6s ease; }
+  .hero.go .bgc { opacity: 1; }
+  @media (prefers-reduced-motion: reduce) { .hero.lit .lt { animation: none; } }
   .hero.lit .a1 { animation-duration: 18s; }
   @media (prefers-reduced-motion: reduce) { .aur, .streak { animation: none; } .streak { display: none; } }
 
@@ -383,47 +315,7 @@
       <span class="streak g" style="--x:71%;--d:-3s;--t:7s"></span>
       <span class="streak" style="--x:86%;--d:-5s;--t:9.5s"></span>
 
-      <div class="hud hud-track" aria-hidden="true">
-        <div class="hud-h"><b>TRACK MAP</b><span>S1 · S2 · S3</span></div>
-        <svg viewBox="0 0 220 130">
-          <path id="trk" class="trk-base" pathLength="100" d="M30 104 C12 92 14 62 38 54 L84 42 C104 36 108 20 126 17 C154 13 190 26 194 50 C197 72 178 78 162 88 L120 112 C104 121 80 124 60 118 Z"/>
-          <path class="trk-s s1c" pathLength="100" d="M30 104 C12 92 14 62 38 54 L84 42 C104 36 108 20 126 17 C154 13 190 26 194 50 C197 72 178 78 162 88 L120 112 C104 121 80 124 60 118 Z"/>
-          <path class="trk-s s2c" pathLength="100" d="M30 104 C12 92 14 62 38 54 L84 42 C104 36 108 20 126 17 C154 13 190 26 194 50 C197 72 178 78 162 88 L120 112 C104 121 80 124 60 118 Z"/>
-          <path class="trk-s s3c" pathLength="100" d="M30 104 C12 92 14 62 38 54 L84 42 C104 36 108 20 126 17 C154 13 190 26 194 50 C197 72 178 78 162 88 L120 112 C104 121 80 124 60 118 Z"/>
-          <path class="trail" pathLength="100" d="M30 104 C12 92 14 62 38 54 L84 42 C104 36 108 20 126 17 C154 13 190 26 194 50 C197 72 178 78 162 88 L120 112 C104 121 80 124 60 118 Z"/>
-          <path class="trail t2" pathLength="100" d="M30 104 C12 92 14 62 38 54 L84 42 C104 36 108 20 126 17 C154 13 190 26 194 50 C197 72 178 78 162 88 L120 112 C104 121 80 124 60 118 Z"/>
-          <line class="sf" x1="24" y1="96" x2="36" y2="112"/>
-          <circle r="4" class="dot"><animateMotion dur="8s" repeatCount="indefinite"><mpath href="#trk"/></animateMotion></circle>
-          <circle r="3.2" class="dot g"><animateMotion dur="8s" begin="-0.9s" repeatCount="indefinite"><mpath href="#trk"/></animateMotion></circle>
-        </svg>
-      </div>
-      <div class="hud hud-tele" aria-hidden="true">
-        <div class="hud-h"><b>TELEMETRY</b><span>SPEED · THROTTLE · BRAKE</span></div>
-        <svg viewBox="0 0 240 74">
-          <g class="grid"><line x1="0" y1="18" x2="240" y2="18"/><line x1="0" y1="36" x2="240" y2="36"/><line x1="0" y1="60" x2="240" y2="60"/></g>
-          <g class="roll">
-            <g><polyline class="spd" points="0.0,15.1 2.0,12.9 4.0,11.1 6.0,10.0 8.0,9.5 10.0,9.5 12.0,9.9 14.0,10.2 16.0,10.2 18.0,9.7 20.0,8.9 22.0,7.9 24.0,7.1 26.0,6.9 28.0,7.4 30.0,8.7 32.0,10.5 34.0,12.5 36.0,14.4 38.0,15.9 40.0,16.8 42.0,17.1 44.0,17.1 46.0,17.2 48.0,17.5 50.0,18.4 52.0,19.7 54.0,21.2 56.0,22.7 58.0,23.8 60.0,24.2 62.0,23.8 64.0,22.7 66.0,21.2 68.0,19.7 70.0,18.4 72.0,17.5 74.0,17.2 76.0,17.1 78.0,17.1 80.0,16.8 82.0,15.9 84.0,14.4 86.0,12.5 88.0,10.5 90.0,8.7 92.0,7.4 94.0,6.9 96.0,7.1 98.0,7.9 100.0,8.9 102.0,9.7 104.0,10.2 106.0,10.2 108.0,9.9 110.0,9.5 112.0,9.5 114.0,10.0 116.0,11.1 118.0,12.9 120.0,15.1 122.0,17.3 124.0,19.1 126.0,20.3 128.0,20.8 130.0,20.7 132.0,20.4 134.0,20.0 136.0,20.1 138.0,20.5 140.0,21.4 142.0,22.3 144.0,23.1 146.0,23.3 148.0,22.8 150.0,21.6 152.0,19.8 154.0,17.7 156.0,15.8 158.0,14.3 160.0,13.5 162.0,13.1 164.0,13.1 166.0,13.1 168.0,12.7 170.0,11.9 172.0,10.6 174.0,9.0 176.0,7.5 178.0,6.4 180.0,6.0 182.0,6.4 184.0,7.5 186.0,9.0 188.0,10.6 190.0,11.9 192.0,12.7 194.0,13.1 196.0,13.1 198.0,13.1 200.0,13.5 202.0,14.3 204.0,15.8 206.0,17.7 208.0,19.8 210.0,21.6 212.0,22.8 214.0,23.3 216.0,23.1 218.0,22.3 220.0,21.4 222.0,20.5 224.0,20.1 226.0,20.0 228.0,20.4 230.0,20.7 232.0,20.8 234.0,20.3 236.0,19.1 238.0,17.3 240.0,15.1"/><polygon class="thr" points="0,58 0.0,44.0 2.0,44.0 4.0,44.0 6.0,44.0 8.0,44.0 10.0,44.0 12.0,44.0 14.0,44.0 16.0,44.0 18.0,44.0 20.0,44.0 22.0,44.0 24.0,44.0 26.0,44.0 28.0,44.0 30.0,44.0 32.0,44.0 34.0,44.0 36.0,44.0 38.0,44.7 40.0,47.6 42.0,50.2 44.0,52.5 46.0,54.5 48.0,56.1 50.0,57.2 52.0,57.8 54.0,58.0 56.0,57.7 58.0,56.8 60.0,55.6 62.0,53.8 64.0,51.7 66.0,49.3 68.0,46.6 70.0,44.0 72.0,44.0 74.0,44.0 76.0,44.0 78.0,44.0 80.0,44.0 82.0,44.0 84.0,44.0 86.0,44.0 88.0,44.0 90.0,44.0 92.0,44.0 94.0,44.0 96.0,44.0 98.0,44.0 100.0,44.0 102.0,44.0 104.0,44.0 106.0,44.0 108.0,44.0 110.0,44.0 112.0,44.0 114.0,44.0 116.0,44.0 118.0,44.7 120.0,47.6 122.0,50.2 124.0,52.5 126.0,54.5 128.0,56.1 130.0,57.2 132.0,57.8 134.0,58.0 136.0,57.7 138.0,56.8 140.0,55.6 142.0,53.8 144.0,51.7 146.0,49.3 148.0,46.6 150.0,44.0 152.0,44.0 154.0,44.0 156.0,44.0 158.0,44.0 160.0,44.0 162.0,44.0 164.0,44.0 166.0,44.0 168.0,44.0 170.0,44.0 172.0,44.0 174.0,44.0 176.0,44.0 178.0,44.0 180.0,44.0 182.0,44.0 184.0,44.0 186.0,44.0 188.0,44.0 190.0,44.0 192.0,44.0 194.0,44.0 196.0,44.0 198.0,44.7 200.0,47.6 202.0,50.2 204.0,52.5 206.0,54.5 208.0,56.1 210.0,57.2 212.0,57.8 214.0,58.0 216.0,57.7 218.0,56.8 220.0,55.6 222.0,53.8 224.0,51.7 226.0,49.3 228.0,46.6 230.0,44.0 232.0,44.0 234.0,44.0 236.0,44.0 238.0,44.0 240.0,44.0 240,58"/><g class="brk"><rect x="22" y="64" width="8" height="6" rx="3"/><rect x="62" y="64" width="12" height="6" rx="3"/><rect x="102" y="64" width="16" height="6" rx="3"/><rect x="142" y="64" width="8" height="6" rx="3"/><rect x="182" y="64" width="12" height="6" rx="3"/><rect x="222" y="64" width="16" height="6" rx="3"/></g></g>
-            <g transform="translate(240 0)"><polyline class="spd" points="0.0,15.1 2.0,12.9 4.0,11.1 6.0,10.0 8.0,9.5 10.0,9.5 12.0,9.9 14.0,10.2 16.0,10.2 18.0,9.7 20.0,8.9 22.0,7.9 24.0,7.1 26.0,6.9 28.0,7.4 30.0,8.7 32.0,10.5 34.0,12.5 36.0,14.4 38.0,15.9 40.0,16.8 42.0,17.1 44.0,17.1 46.0,17.2 48.0,17.5 50.0,18.4 52.0,19.7 54.0,21.2 56.0,22.7 58.0,23.8 60.0,24.2 62.0,23.8 64.0,22.7 66.0,21.2 68.0,19.7 70.0,18.4 72.0,17.5 74.0,17.2 76.0,17.1 78.0,17.1 80.0,16.8 82.0,15.9 84.0,14.4 86.0,12.5 88.0,10.5 90.0,8.7 92.0,7.4 94.0,6.9 96.0,7.1 98.0,7.9 100.0,8.9 102.0,9.7 104.0,10.2 106.0,10.2 108.0,9.9 110.0,9.5 112.0,9.5 114.0,10.0 116.0,11.1 118.0,12.9 120.0,15.1 122.0,17.3 124.0,19.1 126.0,20.3 128.0,20.8 130.0,20.7 132.0,20.4 134.0,20.0 136.0,20.1 138.0,20.5 140.0,21.4 142.0,22.3 144.0,23.1 146.0,23.3 148.0,22.8 150.0,21.6 152.0,19.8 154.0,17.7 156.0,15.8 158.0,14.3 160.0,13.5 162.0,13.1 164.0,13.1 166.0,13.1 168.0,12.7 170.0,11.9 172.0,10.6 174.0,9.0 176.0,7.5 178.0,6.4 180.0,6.0 182.0,6.4 184.0,7.5 186.0,9.0 188.0,10.6 190.0,11.9 192.0,12.7 194.0,13.1 196.0,13.1 198.0,13.1 200.0,13.5 202.0,14.3 204.0,15.8 206.0,17.7 208.0,19.8 210.0,21.6 212.0,22.8 214.0,23.3 216.0,23.1 218.0,22.3 220.0,21.4 222.0,20.5 224.0,20.1 226.0,20.0 228.0,20.4 230.0,20.7 232.0,20.8 234.0,20.3 236.0,19.1 238.0,17.3 240.0,15.1"/><polygon class="thr" points="0,58 0.0,44.0 2.0,44.0 4.0,44.0 6.0,44.0 8.0,44.0 10.0,44.0 12.0,44.0 14.0,44.0 16.0,44.0 18.0,44.0 20.0,44.0 22.0,44.0 24.0,44.0 26.0,44.0 28.0,44.0 30.0,44.0 32.0,44.0 34.0,44.0 36.0,44.0 38.0,44.7 40.0,47.6 42.0,50.2 44.0,52.5 46.0,54.5 48.0,56.1 50.0,57.2 52.0,57.8 54.0,58.0 56.0,57.7 58.0,56.8 60.0,55.6 62.0,53.8 64.0,51.7 66.0,49.3 68.0,46.6 70.0,44.0 72.0,44.0 74.0,44.0 76.0,44.0 78.0,44.0 80.0,44.0 82.0,44.0 84.0,44.0 86.0,44.0 88.0,44.0 90.0,44.0 92.0,44.0 94.0,44.0 96.0,44.0 98.0,44.0 100.0,44.0 102.0,44.0 104.0,44.0 106.0,44.0 108.0,44.0 110.0,44.0 112.0,44.0 114.0,44.0 116.0,44.0 118.0,44.7 120.0,47.6 122.0,50.2 124.0,52.5 126.0,54.5 128.0,56.1 130.0,57.2 132.0,57.8 134.0,58.0 136.0,57.7 138.0,56.8 140.0,55.6 142.0,53.8 144.0,51.7 146.0,49.3 148.0,46.6 150.0,44.0 152.0,44.0 154.0,44.0 156.0,44.0 158.0,44.0 160.0,44.0 162.0,44.0 164.0,44.0 166.0,44.0 168.0,44.0 170.0,44.0 172.0,44.0 174.0,44.0 176.0,44.0 178.0,44.0 180.0,44.0 182.0,44.0 184.0,44.0 186.0,44.0 188.0,44.0 190.0,44.0 192.0,44.0 194.0,44.0 196.0,44.0 198.0,44.7 200.0,47.6 202.0,50.2 204.0,52.5 206.0,54.5 208.0,56.1 210.0,57.2 212.0,57.8 214.0,58.0 216.0,57.7 218.0,56.8 220.0,55.6 222.0,53.8 224.0,51.7 226.0,49.3 228.0,46.6 230.0,44.0 232.0,44.0 234.0,44.0 236.0,44.0 238.0,44.0 240.0,44.0 240,58"/><g class="brk"><rect x="22" y="64" width="8" height="6" rx="3"/><rect x="62" y="64" width="12" height="6" rx="3"/><rect x="102" y="64" width="16" height="6" rx="3"/><rect x="142" y="64" width="8" height="6" rx="3"/><rect x="182" y="64" width="12" height="6" rx="3"/><rect x="222" y="64" width="16" height="6" rx="3"/></g></g>
-          </g>
-          <line class="cur" x1="168" y1="0" x2="168" y2="74"/>
-        </svg>
-      </div>
-      <div class="hud hud-tyres" aria-hidden="true">
-        <div class="hud-h"><b>TYRES</b><span>TEMP · WEAR</span></div>
-        <div class="tyres">
-          <div class="ty" style="--d:-0.4s"><i></i><span>FL</span></div>
-          <div class="ty" style="--d:-1.6s"><i></i><span>FR</span></div>
-          <div class="car-shape"></div>
-          <div class="ty" style="--d:-2.3s"><i></i><span>RL</span></div>
-          <div class="ty" style="--d:-0.9s"><i></i><span>RR</span></div>
-        </div>
-      </div>
-      <div class="hud hud-delta" aria-hidden="true">
-        <div class="hud-h"><b>DELTA</b><span>VS BEST LAP</span></div>
-        <div class="delta"><div class="zero"></div><div class="needle"></div></div>
-        <svg viewBox="0 0 240 40" class="dhist"><g class="roll2"><polyline points="0.0,20.0 4.0,26.2 8.0,30.5 12.0,32.0 16.0,30.9 20.0,28.7 24.0,27.2 28.0,27.4 32.0,29.2 36.0,31.5 40.0,32.4 44.0,30.6 48.0,25.9 52.0,19.6 56.0,13.5 60.0,9.6 64.0,8.4 68.0,9.7 72.0,11.8 76.0,13.0 80.0,12.4 84.0,10.3 88.0,8.0 92.0,7.3 96.0,9.5 100.0,14.4 104.0,20.8 108.0,26.7 112.0,30.3 116.0,31.1 120.0,29.7 124.0,27.8 128.0,26.9 132.0,27.9 136.0,30.3 140.0,32.6 144.0,33.0 148.0,30.5 152.0,25.3 156.0,18.8 160.0,13.2 164.0,9.9 168.0,9.4 172.0,10.9 176.0,12.7 180.0,13.1 184.0,11.8 188.0,9.1 192.0,6.9 196.0,6.8 200.0,9.7 204.0,15.1 208.0,21.5 212.0,26.9 216.0,29.9 220.0,30.1 224.0,28.5 228.0,27.0 232.0,26.9 236.0,28.6 240.0,31.4"/><polyline transform="translate(240 0)" points="0.0,20.0 4.0,26.2 8.0,30.5 12.0,32.0 16.0,30.9 20.0,28.7 24.0,27.2 28.0,27.4 32.0,29.2 36.0,31.5 40.0,32.4 44.0,30.6 48.0,25.9 52.0,19.6 56.0,13.5 60.0,9.6 64.0,8.4 68.0,9.7 72.0,11.8 76.0,13.0 80.0,12.4 84.0,10.3 88.0,8.0 92.0,7.3 96.0,9.5 100.0,14.4 104.0,20.8 108.0,26.7 112.0,30.3 116.0,31.1 120.0,29.7 124.0,27.8 128.0,26.9 132.0,27.9 136.0,30.3 140.0,32.6 144.0,33.0 148.0,30.5 152.0,25.3 156.0,18.8 160.0,13.2 164.0,9.9 168.0,9.4 172.0,10.9 176.0,12.7 180.0,13.1 184.0,11.8 188.0,9.1 192.0,6.9 196.0,6.8 200.0,9.7 204.0,15.1 208.0,21.5 212.0,26.9 216.0,29.9 220.0,30.1 224.0,28.5 228.0,27.0 232.0,26.9 236.0,28.6 240.0,31.4"/></g><line x1="0" y1="20" x2="240" y2="20" class="mid"/></svg>
-      </div>
-      <div class="hud hud-leds" aria-hidden="true"><i style="--i:0" class="g"></i><i style="--i:1" class="g"></i><i style="--i:2" class="g"></i><i style="--i:3" class="g"></i><i style="--i:4" class="g"></i><i style="--i:5" class="y"></i><i style="--i:6" class="y"></i><i style="--i:7" class="y"></i><i style="--i:8" class="y"></i><i style="--i:9" class="y"></i><i style="--i:10" class="p"></i><i style="--i:11" class="p"></i><i style="--i:12" class="p"></i><i style="--i:13" class="p"></i><i style="--i:14" class="p"></i></div>
+      <canvas class="bgc"></canvas>
     </div>
     <h1 class="title"><span class="sr">PURSEC, club de análisis técnico de motorsport</span><svg class="lapmark" viewBox="-62 -112 1352 412" aria-hidden="true"><defs>
 <filter id="neon" filterUnits="userSpaceOnUse" x="-200" y="-300" width="1800" height="900" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -639,6 +531,7 @@
 
 <script src="/js/pursec-ui.js" defer></script>
 <script src="/js/hero-lap.js" defer></script>
+<script src="/js/hero-bg.js" defer></script>
 <script src="/js/undercut-demo.js" defer></script>
 <script>
   // Calendario público (lectura permitida por RLS). La clave publicable es pública por diseño.
