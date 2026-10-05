@@ -122,6 +122,13 @@
   .statement .display { max-width: 12ch; }
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
 
+  /* ---- etiqueta "Sector 4": colores de los sectores ---- */
+  .s4l { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 600; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; color: #E4D3FF; }
+  .s4l .bars4 { display: inline-flex; gap: 4px; margin-right: 2px; }
+  .s4l .bars4 i { display: block; width: 18px; height: 5px; border-radius: 3px; background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,.75); }
+  .s4l .bars4 i:last-child { background: var(--purple); box-shadow: 0 0 10px rgba(168,85,247,1); }
+  .s4l .n4 { font-weight: 700; background: linear-gradient(100deg, #4ADE80, #86EFAC 35%, #C084FC 65%, #A855F7); -webkit-background-clip: text; background-clip: text; color: transparent; margin-left: -4px; }
+  .s4l .tsd { color: var(--muted); font-family: var(--f-body); font-size: 14px; font-weight: 700; letter-spacing: .14em; }
   /* ---- herramienta: demo del undercut ---- */
   .tool .grid2 { display: grid; gap: 48px; align-items: center; }
   @media (min-width: 1000px) { .tool .grid2 { grid-template-columns: 4fr 7fr; gap: 64px; } }
@@ -320,7 +327,7 @@
   <section class="chapter tool" id="herramienta">
     <div class="wrap grid2">
       <div class="stack reveal">
-        <p class="label">Herramientas Trackside</p>
+        <p class="label s4l"><span class="bars4" aria-hidden="true"><i></i><i></i><i></i></span>Sector <b class="n4">4</b><span class="tsd">· Trackside</span></p>
         <h2 class="display d-m">Mira un undercut antes de que pase.</h2>
         <p class="lead">El simulador de undercut compara, vuelta a vuelta, al coche que para primero con el que se queda fuera. Mueve los valores y mira quién sale delante.</p>
         <ul class="notes">
