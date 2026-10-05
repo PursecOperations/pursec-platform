@@ -6,20 +6,21 @@
   var hero = document.getElementById("portada");
   if (!hero) return;
   var svg = hero.querySelector(".lapmark");
-  var car = svg.querySelector(".car");
-  var inks = [].slice.call(svg.querySelectorAll(".ink"));
+  var carSvg = hero.querySelector(".carlayer");
+  var car = carSvg.querySelector(".car");
+  var inks = [].slice.call(hero.querySelectorAll(".letters .ink"));
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   if (reduce || !inks[0].getTotalLength) { hero.classList.add("lit", "done"); return; }
 
   // Longitud real de cada contorno (las rutas usan pathLength=1 para el trazo, la real para el tiempo)
-  var segs = inks.map(function (p) { return { el: p, s: +p.getAttribute("data-s"), len: p.getTotalLength(), jelly: p.closest(".jelly") }; });
+  var segs = inks.map(function (p) { return { el: p, s: +p.getAttribute("data-s"), len: p.getTotalLength(), jelly: p.closest(".jelly"), svgEl: p.ownerSVGElement }; });
   var lastJelly = null;
   function boing(j) {
     if (!j || !hero.classList.contains("lit")) return;
-    j.classList.remove("boing"); void j.getBBox(); j.classList.add("boing");
+    j.classList.remove("boing"); void j.offsetWidth; j.classList.add("boing");
   }
-  [].slice.call(svg.querySelectorAll(".jelly")).forEach(function (j) {
+  [].slice.call(hero.querySelectorAll(".jelly")).forEach(function (j) {
     j.addEventListener("animationend", function () { j.classList.remove("boing"); });
     j.parentNode.addEventListener("pointerenter", function () { boing(j); });
   });
@@ -59,11 +60,11 @@
     if (cur && p < 1) {
       var pt = cur.el.getPointAtLength(local);
       // las letras se mueven (flotan y rebotan): pasar el punto a coordenadas del SVG
-      var m = cur.el.getScreenCTM(), inv = svg.getScreenCTM();
-      if (m && inv) {
-        var sp = svg.createSVGPoint(); sp.x = pt.x; sp.y = pt.y;
-        pt = sp.matrixTransform(m).matrixTransform(inv.inverse());
-      }
+      // de las coordenadas de la letra (que flota y rebota) a las de la capa del coche, vía pantalla
+      var ls = cur.svgEl, lr = ls.getBoundingClientRect(), lvb = ls.viewBox.baseVal;
+      var cr = carSvg.getBoundingClientRect(), cvb = carSvg.viewBox.baseVal;
+      var sx = lr.left + (pt.x - lvb.x) / lvb.width * lr.width, sy = lr.top + (pt.y - lvb.y) / lvb.height * lr.height;
+      pt = { x: cvb.x + (sx - cr.left) / cr.width * cvb.width, y: cvb.y + (sy - cr.top) / cr.height * cvb.height };
       car.setAttribute("cx", pt.x.toFixed(1)); car.setAttribute("cy", pt.y.toFixed(1));
       if (cur.jelly !== lastJelly) { boing(cur.jelly); lastJelly = cur.jelly; }
       car.setAttribute("data-s", cur.s);
@@ -96,16 +97,19 @@
     }).observe(hero);
   }
 
-  // Scroll: los tres sectores se separan y la portada se apaga
-  var queued = false;
-  function onScroll() {
-    if (queued) return; queued = true;
-    requestAnimationFrame(function () {
-      queued = false;
-      var p = Math.max(0, Math.min(1, window.scrollY / (hero.offsetHeight * 0.8)));
-      hero.style.setProperty("--split", p.toFixed(3));
-    });
+  // Scroll: los tres sectores se separan y la portada se apaga.
+  // El valor se suaviza en cada fotograma (sin saltos al bajar ni al volver a subir).
+  var target = 0, current = 0, easing = false;
+  function readScroll() {
+    target = Math.max(0, Math.min(1, window.scrollY / (hero.offsetHeight * 0.8)));
+    if (!easing) { easing = true; requestAnimationFrame(ease); }
   }
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  function ease() {
+    current += (target - current) * 0.14;
+    if (Math.abs(target - current) < 0.0008) { current = target; easing = false; }
+    hero.style.setProperty("--split", current.toFixed(4));
+    if (easing) requestAnimationFrame(ease);
+  }
+  window.addEventListener("scroll", readScroll, { passive: true });
+  readScroll();
 })();
