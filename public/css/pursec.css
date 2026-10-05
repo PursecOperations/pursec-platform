@@ -400,3 +400,6 @@ body.menu-open { overflow: hidden; }
   .gumtitle .lt, .gumtitle .lt:hover .jelly, .gumtitle .sec i { animation: none; }
   .gumtitle .sec i { transform: none; }
 }
+
+/* "4" de Sector 4 con los colores de los sectores (verde → morado) */
+.n4g { font-weight: inherit; background: linear-gradient(100deg, #4ADE80, #86EFAC 35%, #C084FC 65%, #A855F7); -webkit-background-clip: text; background-clip: text; color: transparent; }
