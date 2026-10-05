@@ -403,3 +403,15 @@ body.menu-open { overflow: hidden; }
 
 /* "4" de Sector 4 con los colores de los sectores (verde → morado) */
 .n4g { font-weight: inherit; background: linear-gradient(100deg, #4ADE80, #86EFAC 35%, #C084FC 65%, #A855F7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* ---------- acceso al Garage desde la cabecera ---------- */
+.top .act .in { display: inline-flex; align-items: center; justify-content: center; height: 46px; min-width: 46px; padding: 0 12px; border-radius: 12px; font-weight: 800; font-size: 14px; letter-spacing: .04em; color: #E4D3FF;
+  box-shadow: inset 0 0 0 1px rgba(201,167,255,.3); transition: box-shadow .25s ease, color .2s ease; }
+.top .act .in:hover { color: #F3EAFF; box-shadow: inset 0 0 0 1px rgba(201,167,255,.7); }
+@media (max-width: 520px) { .top .act .in { display: none; } }
+.top .sheet .in.big { justify-content: center; min-height: 56px; }
+.top .nl .tx { white-space: nowrap; }
+@media (max-width: 1480px) { .top .nl { padding: 0 15px; letter-spacing: .07em; } .top .nl::after { left: 18px; right: 18px; } }
+@media (min-width: 821px) and (max-width: 1240px) { .top .wm, .top .brand::after { display: none; } .top .brand { padding-right: 10px; } }
+@media (min-width: 821px) and (max-width: 1060px) { .top .nl { padding: 0 10px; font-size: 13.5px; letter-spacing: .05em; } .top .nl::after { left: 12px; right: 12px; } .top .cta { padding: 0 16px; font-size: 13.5px; } .top .act { padding-left: 8px; gap: 8px; } }
+@media (min-width: 1241px) and (max-width: 1480px) { .top .cta { padding: 0 20px 0 22px; letter-spacing: .07em; } }
