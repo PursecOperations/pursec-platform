@@ -219,7 +219,7 @@ a:hover { color: #E4D3FF; }
 .top.open .sheet nav a:nth-child(3) { transition-delay: .1s; }
 .top.open .sheet nav a:nth-child(4) { transition-delay: .15s; }
 .top .sheet nav a .tx {
-  grid-column: 1; font-family: 'Unbounded', var(--f-display); font-weight: 600; font-size: 22px; letter-spacing: .04em; text-transform: uppercase; line-height: 1.1;
+  grid-column: 1; font-family: 'Unbounded', var(--f-display); font-weight: 600; font-size: 23px; letter-spacing: -.005em; line-height: 1.15;
   background: linear-gradient(180deg, #FBF6FF 20%, #CDA9FF 95%); -webkit-background-clip: text; background-clip: text; color: transparent;
   filter: drop-shadow(0 0 12px rgba(168,85,247,.6));
 }
