@@ -21,7 +21,7 @@
   /* ---- portada: el logo es el circuito ----
      Rendimiento: las letras son imágenes pre-renderizadas y todo lo que se mueve lo hace con transform/opacity
      (capas de GPU). Nada se repinta en cada fotograma, así las animaciones van fluidas. */
-  .hero { height: 100svh; min-height: 620px; padding-top: 84px; box-sizing: border-box; position: relative; overflow: hidden; isolation: isolate; display: grid; place-items: center; }
+  .hero { height: 100svh; min-height: 620px; padding-top: 96px; box-sizing: border-box; position: relative; overflow: hidden; isolation: isolate; display: grid; place-items: center; }
   .hero::before { content: ""; position: absolute; left: 50%; bottom: -46vh; width: 170vw; height: 76vh; transform: translateX(-50%);
     background: radial-gradient(closest-side, rgba(168,85,247,.26), rgba(168,85,247,.05) 55%, transparent 100%); z-index: -2; }
   .title { position: relative; margin: 0; width: min(1400px, 96vw); will-change: opacity; }
@@ -264,7 +264,7 @@
 
 <header class="top" id="top">
   <div class="bar">
-    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-emblema.webp" alt="" width="40" height="40"><span class="wm"><b>PURSEC</b><small>Motorsport Club</small></span></a>
+    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-emblema.webp" alt="" width="52" height="52"><span class="wm"><b>PURSEC</b><small>Motorsport Club</small></span></a>
     <nav class="nav" aria-label="Principal"><a class="nl" href="#herramienta"><span class="ix">01</span>Herramientas</a><a class="nl" href="#ciclo"><span class="ix">02</span>El club</a><a class="nl" href="/planes"><span class="ix">03</span>Planes</a><a class="nl" href="/contacto"><span class="ix">04</span>Contacto</a></nav>
     <div class="act">
       <a class="cta" href="/muy-pronto"><span>Lista de espera</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
