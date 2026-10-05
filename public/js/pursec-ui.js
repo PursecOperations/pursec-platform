@@ -45,4 +45,44 @@
       tick();
     }
   }
+
+  // Cabecera: estado al hacer scroll, vuelta de la página (tres sectores) y menú móvil.
+  var top = document.getElementById("top");
+  if (top) {
+    var laps = [].slice.call(top.querySelectorAll(".hlap i")), last = [-1, -1, -1], hq = false, wasScrolled = null;
+    var paint = function () {
+      hq = false;
+      var y = window.scrollY, max = document.documentElement.scrollHeight - window.innerHeight;
+      var sc = y > 12;
+      if (sc !== wasScrolled) { top.classList.toggle("scrolled", sc); wasScrolled = sc; }
+      var p = max > 0 ? Math.min(1, y / max) : 0;
+      for (var k = 0; k < 3; k++) {
+        var v = Math.round(Math.max(0, Math.min(1, p * 3 - k)) * 1000) / 1000;
+        if (v !== last[k]) { laps[k].style.transform = "scaleX(" + v + ")"; last[k] = v; }
+      }
+    };
+    window.addEventListener("scroll", function () { if (!hq) { hq = true; requestAnimationFrame(paint); } }, { passive: true });
+    window.addEventListener("resize", paint);
+    paint();
+
+    var btn = top.querySelector(".menu"), sheet = document.getElementById("sheet");
+    var setOpen = function (open) {
+      btn.setAttribute("aria-expanded", open ? "true" : "false");
+      btn.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      document.body.classList.toggle("menu-open", open);
+      if (open) {
+        sheet.hidden = false;
+        requestAnimationFrame(function () { requestAnimationFrame(function () { top.classList.add("open"); }); });
+      } else {
+        top.classList.remove("open");
+        setTimeout(function () { if (!top.classList.contains("open")) sheet.hidden = true; }, reduce ? 0 : 450);
+      }
+    };
+    if (btn && sheet) {
+      btn.addEventListener("click", function () { setOpen(btn.getAttribute("aria-expanded") !== "true"); });
+      sheet.addEventListener("click", function (e) { if (e.target.closest("a")) setOpen(false); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape" && top.classList.contains("open")) { setOpen(false); btn.focus(); } });
+      window.matchMedia("(min-width: 821px)").addEventListener("change", function (m) { if (m.matches) setOpen(false); });
+    }
+  }
 })();
