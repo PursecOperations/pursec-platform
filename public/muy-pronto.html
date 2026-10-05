@@ -50,15 +50,19 @@
 <body>
 <div class="space" aria-hidden="true"></div>
 
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-emblema.webp" alt="PURSEC" width="44" height="44"></a>
-    <nav aria-label="Principal">
-      <a class="link hide-sm" href="/#ciclo">El club</a>
-      <a class="link" href="/planes">Planes</a>
-      <a class="link hide-sm" href="/contacto">Contacto</a>
-      <a class="btn btn-primary btn-sm" href="/muy-pronto" aria-current="page">Lista de espera</a>
-    </nav>
+<header class="top" id="top">
+  <div class="bar">
+    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-emblema.webp" alt="" width="40" height="40"><span class="wm"><b>PURSEC</b><small>Motorsport Club</small></span></a>
+    <nav class="nav" aria-label="Principal"><a class="nl" href="/#herramienta"><span class="ix">01</span>Herramientas</a><a class="nl" href="/#ciclo"><span class="ix">02</span>El club</a><a class="nl" href="/planes"><span class="ix">03</span>Planes</a><a class="nl" href="/contacto"><span class="ix">04</span>Contacto</a></nav>
+    <div class="act">
+      <a class="cta" href="/muy-pronto" aria-current="page"><span>Lista de espera</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <button class="menu" type="button" aria-expanded="false" aria-controls="sheet" aria-label="Abrir menú"><i></i><i></i></button>
+    </div>
+    <div class="hlap" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span></div>
+  </div>
+  <div class="sheet" id="sheet" hidden>
+    <nav aria-label="Menú"><a href="/#herramienta"><span class="ix">01</span>Herramientas</a><a href="/#ciclo"><span class="ix">02</span>El club</a><a href="/planes"><span class="ix">03</span>Planes</a><a href="/contacto"><span class="ix">04</span>Contacto</a></nav>
+    <a class="cta big" href="/muy-pronto">Lista de espera</a>
   </div>
 </header>
 
