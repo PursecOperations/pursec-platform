@@ -1,0 +1,12 @@
+# Páginas antiguas: la web pública es solo la portada; el resto vive en el Garage
+/planes /#planes 301
+/planes.html /#planes 301
+/contacto /#contacto 301
+/contacto.html /#contacto 301
+/muy-pronto /acceso?modo=crear 301
+/muy-pronto.html /acceso?modo=crear 301
+/garage/race-weekend /garage/#weekend-brief 301
+/garage/sector-4 /garage/#rewind 301
+# Vuelta desde Stripe Checkout (success_url y cancel_url del worker de cobros)
+/cuenta /garage/#membership 302
+/descubrir /garage/#membership 302
