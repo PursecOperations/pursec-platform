@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PURSEC — Club de análisis técnico de motorsport</title>
-<meta name="description" content="Strategy Brief antes de cada carrera, watch-along en directo, debrief técnico y Laboratorio para rehacer escenarios. Análisis con datos públicos y criterio propio.">
+<title>PURSEC — Race Intelligence Club</title>
+<meta name="description" content="Strategy Brief y Race Card antes de cada carrera, Technical Debrief después y The Lab para rehacer escenarios. Análisis con datos públicos y criterio propio.">
 <meta property="og:title" content="PURSEC — Club de análisis técnico de motorsport">
 <meta property="og:description" content="Club de análisis técnico de motorsport: briefs, Race Card, debriefs y simuladores.">
 <meta property="og:url" content="https://pursec.club/">
@@ -15,8 +15,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600&text=Sector4ClubPlanesContacto%20&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800;900&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/pursec.css">
 <style>
   /* ---- portada: el logo es el circuito ----
@@ -35,7 +34,7 @@
   .hero[data-sector="3"] .g2, .hero[data-sector="4"] .g2 { stroke: rgba(34,197,94,.55); stroke-dasharray: none; }
   .hero[data-sector="4"] .g3 { stroke: rgba(168,85,247,.85); stroke-dasharray: none; }
   .hero[data-sector="1"] .g0, .hero[data-sector="2"] .g0, .hero[data-sector="3"] .g0, .hero[data-sector="4"] .g0 { stroke: rgba(201,167,255,.35); stroke-dasharray: none; }
-  .lab { font-family: var(--f-display); font-size: 20px; font-weight: 600; letter-spacing: .08em; fill: var(--dim); transition: fill .4s ease; }
+  .lab { font-family: var(--f-title); font-size: 20px; font-weight: 600; letter-spacing: .08em; fill: var(--dim); transition: fill .4s ease; }
   .hero[data-sector="1"] .l1, .hero[data-sector="2"] .l2 { fill: var(--green); }
   .hero[data-sector="3"] .l3, .hero[data-sector="4"] .l3 { fill: var(--purple-soft); }
   .hero[data-sector="2"] .l1, .hero[data-sector="3"] .l1, .hero[data-sector="3"] .l2, .hero[data-sector="4"] .l1, .hero[data-sector="4"] .l2 { fill: #4C9A68; }
@@ -123,7 +122,7 @@
   .ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
 
   /* ---- etiqueta "Sector 4": colores de los sectores ---- */
-  .s4l { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 600; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; color: #E4D3FF; }
+  .s4l { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-title); font-weight: 600; font-size: 18px; letter-spacing: .06em; text-transform: uppercase; color: #E4D3FF; }
   .s4l .bars4 { display: inline-flex; gap: 4px; margin-right: 2px; }
   .s4l .bars4 i { display: block; width: 18px; height: 5px; border-radius: 3px; background: var(--green); box-shadow: 0 0 8px rgba(34,197,94,.75); }
   .s4l .bars4 i:last-child { background: var(--purple); box-shadow: 0 0 10px rgba(168,85,247,1); }
@@ -143,7 +142,7 @@
     display: flex; flex-direction: column; gap: 18px;
   }
   .p-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .p-head b { font-family: var(--f-display); font-weight: 600; color: var(--head); font-size: 15px; }
+  .p-head b { font-family: var(--f-title); font-weight: 600; color: var(--head); font-size: 15px; }
   .p-head span { font-size: 13px; color: var(--dim); }
   .p-live { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
   .p-live::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 10px var(--green); animation: blink 1.4s ease-in-out infinite; }
@@ -206,7 +205,7 @@
   input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; margin-top: -8px; border-radius: 50%; background: var(--purple); box-shadow: 0 0 10px rgba(168,85,247,.6); }
   input[type=range]::-moz-range-thumb { width: 20px; height: 20px; border: 0; border-radius: 50%; background: var(--purple); }
   .u-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--dim); }
-  #u-replay { background: none; border: 1px solid var(--line-2); color: var(--head); border-radius: 999px; padding: 7px 14px; font: 700 13px var(--f-body); cursor: pointer; }
+  #u-replay { background: rgba(201,167,255,.06); border: 1px solid rgba(201,167,255,.3); color: var(--head); border-radius: 10px; padding: 7px 14px; font: 700 13px var(--f-body); cursor: pointer; }
   #u-replay:hover { border-color: var(--purple-soft); }
 
   /* ---- vuelta del ciclo ---- */
@@ -224,14 +223,14 @@
   .stop.on::before { border-color: var(--green); background: var(--green); box-shadow: 0 0 14px rgba(34,197,94,.7); }
   .stop.last.on::before { border-color: var(--purple); background: var(--purple); box-shadow: 0 0 14px rgba(168,85,247,.8); }
   .stop .when { font-size: 15px; color: var(--muted); }
-  .stop h3 { margin: 0; font-size: clamp(20px, 2.6vw, 30px); font-family: var(--f-display); font-weight: 600; color: var(--head); line-height: 1.15; }
+  .stop h3 { margin: 0; font-size: clamp(20px, 2.6vw, 30px); font-family: var(--f-title); font-weight: 600; color: var(--head); line-height: 1.15; }
   .stop p { margin: 0; color: var(--muted); max-width: 30em; font-size: 18px; }
 
   /* ---- series: cinta en movimiento ---- */
   .ribbon { margin-top: 56px; overflow: hidden; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 0;
     -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
   .ribbon .track { display: flex; width: max-content; animation: ribbon 38s linear infinite; }
-  .ribbon ul { display: flex; gap: 56px; padding: 0 28px; margin: 0; list-style: none; font-family: var(--f-display); font-size: clamp(22px, 3.6vw, 40px); color: #3E3456; white-space: nowrap; }
+  .ribbon ul { display: flex; gap: 56px; padding: 0 28px; margin: 0; list-style: none; font-family: var(--f-title); font-size: clamp(22px, 3.6vw, 40px); color: #3E3456; white-space: nowrap; }
   .ribbon li.on { color: var(--head); text-shadow: 0 0 24px rgba(168,85,247,.6); }
   .ribbon li.on::after { content: "ya"; font-family: var(--f-body); font-size: 13px; color: var(--green); margin-left: 10px; vertical-align: super; text-shadow: none; }
   @keyframes ribbon { to { transform: translateX(-50%); } }
@@ -241,7 +240,7 @@
   .race-list { margin-top: 56px; display: flex; flex-direction: column; }
   .race { display: grid; grid-template-columns: 1fr auto; gap: 6px 24px; align-items: baseline; padding: 28px 0; border-bottom: 1px solid var(--line); }
   .race:first-child { border-top: 1px solid var(--line); }
-  .race .name { font-size: clamp(17px, 2.4vw, 24px); font-family: var(--f-display); color: var(--head); line-height: 1.25; }
+  .race .name { font-size: clamp(17px, 2.4vw, 24px); font-family: var(--f-body); font-weight: 700; color: var(--head); line-height: 1.25; }
   .race .where { grid-column: 1; color: var(--muted); font-size: 15px; }
   .race .rnd { color: var(--dim); font-size: 14px; margin-right: 12px; font-family: var(--f-body); }
   .race .when { grid-row: 1 / span 2; grid-column: 2; text-align: right; font-size: 14px; color: var(--muted); white-space: nowrap; }
@@ -274,17 +273,17 @@
   <div class="bar">
     <div class="amb" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="bm"></i></div>
     <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-emblema.webp" alt="" width="52" height="52"><span class="wm"><b>PURSEC</b><small>Motorsport Club</small></span></a>
-    <nav class="nav" aria-label="Principal"><a class="nl" href="#herramienta"><span class="sg" aria-hidden="true"><i></i><i></i><i></i></span><span class="tx">Sector <b class="s4">4</b></span></a><a class="nl" href="#ciclo"><span class="ix">01</span><span class="tx">Club</span></a><a class="nl" href="/planes"><span class="ix">02</span><span class="tx">Planes</span></a><a class="nl" href="/contacto"><span class="ix">03</span><span class="tx">Contacto</span></a></nav>
+    <nav class="nav" aria-label="Principal"><a class="nl" href="#herramienta"><span class="sg" aria-hidden="true"><i></i><i></i><i></i></span><span class="tx">Sector <b class="s4">4</b></span></a><a class="nl" href="#ciclo"><span class="ix">01</span><span class="tx">Club</span></a><a class="nl" href="/planes"><span class="ix">02</span><span class="tx">Membership</span></a><a class="nl" href="/contacto"><span class="ix">03</span><span class="tx">Pit Radio</span></a></nav>
     <div class="act">
-      <a class="cta" href="/muy-pronto"><span>Lista de espera</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a class="cta" href="/muy-pronto"><span>Early Access</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       <button class="menu" type="button" aria-expanded="false" aria-controls="sheet" aria-label="Abrir menú"><i></i><i></i></button>
     </div>
     <div class="hlap" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span></div>
   </div>
   <div class="sheet" id="sheet" hidden>
     <div class="samb" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><i class="sbm"></i><i class="st t1"></i><i class="st t2"></i><i class="st t3"></i><i class="st t4"></i></div>
-    <nav aria-label="Menú"><a href="#herramienta"><span class="tx">Sector <b class="s4">4</b><span class="sg" aria-hidden="true"><i></i><i></i><i></i></span></span><small>Simuladores y Laboratorio</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="#ciclo"><span class="tx">Club</span><small>Brief, Race Card y debrief</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/planes"><span class="tx">Planes</span><small>Paddock gratis o Trackside</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/contacto"><span class="tx">Contacto</span><small>Dudas, prensa y colaboraciones</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav>
-    <a class="cta big" href="/muy-pronto">Lista de espera</a>
+    <nav aria-label="Menú"><a href="#herramienta"><span class="tx">Sector <b class="s4">4</b><span class="sg" aria-hidden="true"><i></i><i></i><i></i></span></span><small>Simuladores y The Lab</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="#ciclo"><span class="tx">Club</span><small>Brief, Race Card y debrief</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/planes"><span class="tx">Membership</span><small>Paddock gratis o Trackside</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/contacto"><span class="tx">Pit Radio</span><small>Dudas, prensa y colaboraciones</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav>
+    <a class="cta big" href="/muy-pronto">Early Access</a>
   </div>
 </header>
 
@@ -299,7 +298,7 @@
       <span class="streak" style="--x:70%;--d:-9.5s;--t:12.5s"></span>
       <span class="streak g" style="--x:88%;--d:-1s;--t:14s"></span>
     </div>
-    <h1 class="title"><span class="sr">PURSEC, club de análisis técnico de motorsport</span><svg class="lapmark" viewBox="-62 -112 1352 412" aria-hidden="true"><g class="gates"><line class="gate g0" x1="977.5" y1="-3000" x2="-972.6" y2="3000"/>
+    <h1 class="title"><span class="sr">PURSEC, Race Intelligence Club de motorsport</span><svg class="lapmark" viewBox="-62 -112 1352 412" aria-hidden="true"><g class="gates"><line class="gate g0" x1="977.5" y1="-3000" x2="-972.6" y2="3000"/>
 <line class="gate g1" x1="1440.5" y1="-3000" x2="-509.6" y2="3000"/>
 <line class="gate g2" x1="1847.5" y1="-3000" x2="-102.6" y2="3000"/>
 <line class="gate g3" x1="2297.4" y1="-3000" x2="347.4" y2="3000"/></g><g class="labels"><text class="lab l1" x="258.0" y="-74" text-anchor="middle">S1</text>
@@ -311,14 +310,14 @@
   <section class="chapter statement aurora">
     <div class="wrap grid2">
       <div class="stack">
-        <p class="label reveal">Club de análisis técnico de motorsport</p>
-        <h2 class="display d-l reveal">No vendemos datos en directo.</h2>
+        <p class="label reveal">Race Intelligence Club</p>
+        <h2 class="display d-l reveal">Race intelligence, not live data.</h2>
       </div>
       <div class="stack reveal">
         <p class="lead">Vendemos lectura de carrera: qué estrategia esperar, qué decisión la cambió y qué habría pasado si no. Con datos públicos y criterio propio.</p>
         <div class="ctas">
-          <a class="btn btn-primary" href="/muy-pronto">Apuntarme a la lista de espera</a>
-          <a class="btn btn-ghost" href="/planes">Ver planes</a>
+          <a class="btn btn-primary" href="/muy-pronto">Pedir Early Access</a>
+          <a class="btn btn-ghost" href="/planes">Ver Membership</a>
         </div>
       </div>
     </div>
@@ -328,7 +327,7 @@
     <div class="wrap grid2">
       <div class="stack reveal">
         <p class="label s4l"><span class="bars4" aria-hidden="true"><i></i><i></i><i></i></span>Sector <b class="n4">4</b><span class="tsd">· Trackside</span></p>
-        <h2 class="display d-m">Mira un undercut antes de que pase.</h2>
+        <h2 class="display d-m">Call the undercut before the pit wall does.</h2>
         <p class="lead">El simulador de undercut compara, vuelta a vuelta, al coche que para primero con el que se queda fuera. Mueve los valores y mira quién sale delante.</p>
         <ul class="notes">
           <li>Fórmulas fijas: misma entrada, mismo resultado.</li>
@@ -339,8 +338,8 @@
 
       <div class="panel reveal" data-undercut>
         <div class="p-head">
-          <b>Simulador de undercut</b>
-          <span class="p-live">Simulación</span>
+          <b>Undercut Simulator</b>
+          <span class="p-live">Simulation</span>
         </div>
 
         <div class="u-top">
@@ -363,7 +362,7 @@
         </div>
 
         <div class="u-chart">
-          <b>Lo que cuesta el neumático en cada vuelta</b>
+          <b>Tyre Cost per Lap</b>
           <div id="u-bars" aria-hidden="true"></div>
           <div class="u-legend"><span><i style="background:var(--purple-soft)"></i>Coche A</span><span><i style="background:var(--green)"></i>Coche B</span><span><i style="outline:1px dashed var(--muted);background:none"></i>Vuelta con parada (+ pérdida en boxes)</span></div>
         </div>
@@ -386,29 +385,24 @@
   <section class="chapter" id="ciclo">
     <div class="wrap lap-grid">
       <div class="lap-head stack reveal">
-        <p class="label">El ciclo de cada carrera</p>
-        <h2 class="display d-m">Antes, durante y después.</h2>
+        <p class="label">Race Week Cycle</p>
+        <h2 class="display d-m">Brief. Debrief. Lab.</h2>
         <p class="lead">Una vuelta completa por cada gran premio.</p>
       </div>
       <div class="lap" data-lap>
         <article class="stop">
-          <span class="when">Antes</span>
-          <h3>Strategy Brief y Race Card</h3>
+          <span class="when">Pre-race</span>
+          <h3>Strategy Brief + Race Card</h3>
           <p>La estrategia que esperamos y una tarjeta con las ventanas de parada y los escenarios de Safety Car calculados de antemano.</p>
         </article>
         <article class="stop">
-          <span class="when">Durante</span>
-          <h3>Watch-along</h3>
-          <p>Seguimos la carrera en directo con la comunidad: voz y comentario técnico, con la Race Card en la mano.</p>
-        </article>
-        <article class="stop">
-          <span class="when">Después</span>
-          <h3>Debrief</h3>
+          <span class="when">Post-race</span>
+          <h3>Technical Debrief</h3>
           <p>Qué pasó y por qué. Qué acertamos, qué no y qué decisión cambió la carrera.</p>
         </article>
         <article class="stop last">
-          <span class="when">De lunes a jueves</span>
-          <h3>Laboratorio</h3>
+          <span class="when">Monday–Thursday</span>
+          <h3>The Lab</h3>
           <p>Rehaz la carrera: cambia la vuelta de parada o el neumático y mira cómo cambia el resultado.</p>
         </article>
       </div>
@@ -418,15 +412,15 @@
   <section class="chapter aurora">
     <div class="wrap">
       <div class="stack reveal">
-        <p class="label">Series</p>
-        <h2 class="display d-m">Empezamos por la F1.</h2>
-        <p class="lead">Después iremos sumando el resto, una serie cada vez y bien hecha.</p>
+        <p class="label">The Grid</p>
+        <h2 class="display d-m">Every series. One pit wall.</h2>
+        <p class="lead">Fórmula, MotoGP, IndyCar, resistencia y GT3, con el mismo método y la misma tarjeta de carrera.</p>
       </div>
     </div>
-    <div class="ribbon" role="img" aria-label="Series: F1 disponible; F2, F3, MotoGP, Moto2, Moto3, IndyCar, WEC, IMSA y GT3 más adelante">
+    <div class="ribbon" role="img" aria-label="Series: F1, F2, F3, MotoGP, Moto2, Moto3, IndyCar, WEC, IMSA, Le Mans y GT3">
       <div class="track" aria-hidden="true">
-        <ul><li class="on">F1</li><li>F2</li><li>F3</li><li>MotoGP</li><li>Moto2</li><li>Moto3</li><li>IndyCar</li><li>WEC</li><li>IMSA</li><li>Le Mans</li><li>GT3</li></ul>
-        <ul><li class="on">F1</li><li>F2</li><li>F3</li><li>MotoGP</li><li>Moto2</li><li>Moto3</li><li>IndyCar</li><li>WEC</li><li>IMSA</li><li>Le Mans</li><li>GT3</li></ul>
+        <ul><li>F1</li><li>F2</li><li>F3</li><li>MotoGP</li><li>Moto2</li><li>Moto3</li><li>IndyCar</li><li>WEC</li><li>IMSA</li><li>Le Mans</li><li>GT3</li></ul>
+        <ul><li>F1</li><li>F2</li><li>F3</li><li>MotoGP</li><li>Moto2</li><li>Moto3</li><li>IndyCar</li><li>WEC</li><li>IMSA</li><li>Le Mans</li><li>GT3</li></ul>
       </div>
     </div>
   </section>
@@ -434,8 +428,8 @@
   <section class="chapter" id="calendario">
     <div class="wrap">
       <div class="stack reveal">
-        <p class="label">Próximas carreras de F1</p>
-        <h2 class="display d-m">Siguiente en parrilla.</h2>
+        <p class="label">F1 Race Calendar</p>
+        <h2 class="display d-m">Next on the grid.</h2>
       </div>
       <div class="race-list" id="races" aria-live="polite">
         <p class="lead">Cargando calendario…</p>
@@ -447,8 +441,8 @@
   <section class="chapter light">
     <div class="wrap">
       <div class="stack reveal">
-        <p class="label">Planes</p>
-        <h2 class="display d-m">Gratis para seguir. Trackside para entender.</h2>
+        <p class="label">Membership</p>
+        <h2 class="display d-m">Paddock to follow. Trackside to understand.</h2>
       </div>
       <div class="plans reveal">
         <div class="plan">
@@ -459,19 +453,19 @@
         <div class="plan pro">
           <span class="name">Trackside</span>
           <span class="price mono">9,99 € <small>/mes, o 99,99 €/año</small></span>
-          <p>Sin anuncios. Briefs y debriefs completos, Race Card, simuladores, Laboratorio, archivo y comunidad. 7 días de prueba en el plan mensual.</p>
+          <p>Sin anuncios. Briefs y debriefs completos, Race Card, simuladores, The Lab, archivo y comunidad. 7 días de prueba en el plan mensual.</p>
         </div>
       </div>
-      <p style="margin-top:40px" class="reveal"><a class="btn btn-primary" href="/planes">Comparar planes</a></p>
+      <p style="margin-top:40px" class="reveal"><a class="btn btn-primary" href="/planes">Comparar Paddock y Trackside</a></p>
     </div>
   </section>
 
   <section class="screen finale aurora">
     <div class="wrap">
       <span class="beacons reveal" aria-hidden="true"><i></i><i></i><i></i></span>
-      <h2 class="display d-l reveal">Llega a la parrilla preparado.</h2>
-      <p class="lead reveal" style="text-align:center">Apúntate y te avisamos cuando abra el club.</p>
-      <a class="btn btn-primary reveal" href="/muy-pronto">Apuntarme a la lista de espera</a>
+      <h2 class="display d-l reveal">Be ready before lights out.</h2>
+      <p class="lead reveal" style="text-align:center">Apúntate al Early Access y te avisamos cuando abra el Club.</p>
+      <a class="btn btn-primary reveal" href="/muy-pronto">Pedir Early Access</a>
     </div>
   </section>
 </main>
@@ -480,8 +474,8 @@
   <div class="wrap">
     <img src="/img/ps-emblema.webp" alt="PURSEC" width="44" height="44">
     <nav aria-label="Pie">
-      <a href="/planes">Planes</a>
-      <a href="/contacto">Contacto</a>
+      <a href="/planes">Membership</a>
+      <a href="/contacto">Pit Radio</a>
       <a href="/legal">Legal y privacidad</a>
     </nav>
     <span>© 2026 PURSEC</span>
