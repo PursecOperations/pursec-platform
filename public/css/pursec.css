@@ -154,21 +154,35 @@ a:hover { color: #E4D3FF; }
   filter: blur(10px);
 }
 
-/* ---------- logo en hueco + barra de sectores (páginas interiores) ---------- */
-.mark { display: flex; flex-direction: column; gap: 14px; width: min(460px, 78vw); margin-bottom: 20px; }
-.mark.center { align-items: center; margin-left: auto; margin-right: auto; }
-.mark img { width: 100%; filter: drop-shadow(0 0 3px rgba(168,85,247,.75)) drop-shadow(0 0 14px rgba(168,85,247,.35)); animation: mark-in 1.2s var(--ease) both; }
-.mark .bars { display: flex; gap: 6px; width: 62%; }
-.mark .sec { flex: 1; height: 6px; border-radius: 3px; background: rgba(211,198,242,.08); overflow: hidden; }
-.mark .sec i { display: block; height: 100%; border-radius: 2px; background: var(--green); transform-origin: left; transform: scaleX(0); animation: mark-fill .7s linear forwards; }
-.mark .sec:nth-child(1) i { animation-delay: .6s; }
-.mark .sec:nth-child(2) i { animation-delay: 1.3s; }
-.mark .sec:nth-child(3) i { animation: mark-fill .7s linear 2s forwards, mark-purple .01s linear 2.7s forwards; }
-@keyframes mark-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+/* ---------- título chicle PURSEC (mismo que la portada) + barra de sectores, en páginas interiores ---------- */
+.mark { width: min(760px, 90vw); margin-bottom: 28px; }
+.mark.center { margin-left: auto; margin-right: auto; }
+.gumtitle { position: relative; width: 100%; aspect-ratio: 1352 / 360; }
+.gumtitle .lt { position: absolute; display: block; will-change: transform;
+  animation: gt-in 1s cubic-bezier(.3, 1.45, .45, 1) calc(var(--i) * .07s) both, gum var(--dur) cubic-bezier(.45, 0, .55, 1) calc(var(--ph) + 1.2s) infinite; }
+.gumtitle .jelly { display: block; width: 100%; height: 100%; transform-origin: 50% 62%; will-change: transform; }
+.gumtitle img { width: 100%; height: 100%; max-width: none; user-select: none; -webkit-user-drag: none; }
+.gumtitle .lt:hover .jelly { animation: boing .8s cubic-bezier(.28, 1.4, .5, 1); }
+.gumtitle .sec { position: absolute; display: block; border-radius: 999px; background: rgba(211,198,242,.08); overflow: hidden; }
+.gumtitle .sec i { display: block; height: 100%; border-radius: 999px; background: var(--green); transform-origin: left; transform: scaleX(0); animation: mark-fill .7s linear forwards; }
+.gumtitle .s1 i { animation-delay: .7s; }
+.gumtitle .s2 i { animation-delay: 1.4s; }
+.gumtitle .s3 i { background: var(--purple); animation-delay: 2.1s; }
+.gumtitle .s3 { overflow: visible; }
+.gumtitle .s3 i { box-shadow: 0 0 12px rgba(168,85,247,.85); }
+@keyframes gt-in { from { opacity: 0; transform: translate3d(0, 12%, 0) scale(.86); } to { opacity: 1; transform: none; } }
+@keyframes gum {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1, 1); }
+  33% { transform: translate3d(0, -1.6%, 0) rotate(var(--r)) scale(1.015, .99); }
+  66% { transform: translate3d(0, 1.2%, 0) rotate(calc(var(--r) * -.6)) scale(.99, 1.015); }
+}
+@keyframes boing {
+  0% { transform: scale(1, 1); } 28% { transform: scale(1.1, .9); } 52% { transform: scale(.95, 1.06); }
+  74% { transform: scale(1.025, .98); } 100% { transform: scale(1, 1); }
+}
 @keyframes mark-fill { to { transform: scaleX(1); } }
-@keyframes mark-purple { to { background: var(--purple); box-shadow: 0 0 12px rgba(168,85,247,.9); } }
 @media (prefers-reduced-motion: reduce) {
-  .mark img, .mark .sec i { animation: none; transform: none; }
-  .mark .sec:nth-child(3) i { background: var(--purple); }
+  .gumtitle .lt, .gumtitle .lt:hover .jelly, .gumtitle .sec i { animation: none; }
+  .gumtitle .sec i { transform: none; }
 }
 @media (prefers-reduced-motion: reduce) { .top .brand img { transition: none; } }
