@@ -37,7 +37,7 @@
   }
   function avatar(d) { return '<span class="av">' + (d.number ? '#' + d.number : esc((d.name || "").slice(0, 2).toUpperCase())) + '</span>'; }
   function row(d, i, top, href) {
-    var c = d.team ? d.team.color : "#7C3AED";
+    var c = d.team ? d.team.color : "#8E44DC";
     return '<a class="tr" style="--tc:' + c + '" ' + (href ? 'href="' + href + '"' : '') + '><span class="p">' + d.pos + '</span>' + avatar(d) +
       '<span class="n"><b>' + (d.flag ? d.flag + ' ' : '') + esc(d.name) + '</b><small>' + esc(d.team ? d.team.name : "Sustituto / wildcard") + '</small></span><span class="pt">' + d.pts + '</span><span class="bar" style="width:' + (d.pts / top * 100) + '%"></span></a>';
   }
