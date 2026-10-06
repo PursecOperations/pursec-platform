@@ -1,24 +1,21 @@
 {
  "car-f1": {
-  "file": "2025 Singapore GP - Ferrari - Lewis Hamilton - FP2.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2025_Singapore_GP_-_Ferrari_-_Lewis_Hamilton_-_FP2.jpg",
+  "file": "2026 Chinese GP - McLaren - Lando Norris - Qualifying.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_McLaren_-_Lando_Norris_-_Qualifying.jpg",
   "author": "Liauzh",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "license": "CC BY 4.0"
  },
  "car-f2": {
-  "file": "EForce Prague Formula2.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:EForce_Prague_Formula2.jpg",
-  "author": "eForce Prague Formula",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "FIA F2 Austria 2026 Nr. 25 Bennett (1).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:FIA_F2_Austria_2026_Nr._25_Bennett_(1).jpg",
+  "author": "Lukas Raich",
+  "license": "CC BY-SA 4.0"
  },
  "car-f3": {
-  "file": "FIA F3 Imola 2025 Bilinski (3).jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:FIA_F3_Imola_2025_Bilinski_(3).jpg",
-  "author": "Jen_ross83",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+  "file": "Louis Sharp 2026 Formula 3 British Grand Prix (cropped).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Louis_Sharp_2026_Formula_3_British_Grand_Prix_(cropped).jpg",
+  "author": "Hraynor",
+  "license": "CC0"
  },
  "car-fe": {
   "file": "Pepe Marti Formula E Valencia 2025.jpg",
@@ -28,81 +25,70 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
  },
  "car-motogp": {
-  "file": "MotoGP 2025 Malaysian Grand Prix - Aprilia Racing - Marco Bezzecchi.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:MotoGP_2025_Malaysian_Grand_Prix_-_Aprilia_Racing_-_Marco_Bezzecchi.jpg",
-  "author": "Liauzh",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "Marc Márquez on grid at the 2026 German motorcycle Grand Prix 2.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Marc_M%C3%A1rquez_on_grid_at_the_2026_German_motorcycle_Grand_Prix_2.jpg",
+  "author": "TeamEG00",
+  "license": "Public domain"
  },
  "car-indycar": {
-  "file": "Chip Ganassi Racing 2025 Indy 500 Winner - Álex Palou.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Chip_Ganassi_Racing_2025_Indy_500_Winner_-_%C3%81lex_Palou.jpg",
-  "author": "OctaviaCombi",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "Scott McLaughlin IndyCar Road America 2026.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:Scott_McLaughlin_IndyCar_Road_America_2026.jpg",
+  "author": "Brycenrichter",
+  "license": "CC0"
  },
  "car-wec": {
-  "file": "Ferrari 499P - Hybrid, 2023.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Ferrari_499P_-_Hybrid,_2023.jpg",
-  "author": "Wolkenjaeger",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "2026 6 Hours of Spa-Francorchamps AF Corse Ferrari 499P No.83 (DSC08192).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_6_Hours_of_Spa-Francorchamps_AF_Corse_Ferrari_499P_No.83_(DSC08192).jpg",
+  "author": "MarcelX42",
+  "license": "CC BY-SA 4.0"
  },
  "car-imsa": {
-  "file": "2023 Porsche 963 Daytona.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2023_Porsche_963_Daytona.jpg",
-  "author": "350z33",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "2026 6 Hours of Spa-Francorchamps BMW M Team WRT BMW M Hybrid V8 No.20 (DSC06389).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_6_Hours_of_Spa-Francorchamps_BMW_M_Team_WRT_BMW_M_Hybrid_V8_No.20_(DSC06389).jpg",
+  "author": "MarcelX42",
+  "license": "CC BY-SA 4.0"
  },
  "car-gt3": {
-  "file": "Panoz Avezzano racecar 2.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Panoz_Avezzano_racecar_2.jpg",
-  "author": "MIDWST.BLUR",
-  "license": "CC BY 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+  "file": "2026 6 Hours of Spa-Francorchamps Manthey DK Engineering Porsche 911 GT3 R LMGT3 No.91 (DSC08042).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_6_Hours_of_Spa-Francorchamps_Manthey_DK_Engineering_Porsche_911_GT3_R_LMGT3_No.91_(DSC08042).jpg",
+  "author": "MarcelX42",
+  "license": "CC BY-SA 4.0"
  },
  "news-f1-a": {
-  "file": "2025 Singapore GP - Ferrari - Charles Leclerc - FP2.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2025_Singapore_GP_-_Ferrari_-_Charles_Leclerc_-_FP2.jpg",
+  "file": "2026 Chinese GP - McLaren - Oscar Piastri - FP1.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_McLaren_-_Oscar_Piastri_-_FP1.jpg",
   "author": "Liauzh",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "license": "CC BY 4.0"
  },
  "news-f1-b": {
-  "file": "2025 Singapore GP - McLaren - Oscar Piastri - FP2.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2025_Singapore_GP_-_McLaren_-_Oscar_Piastri_-_FP2.jpg",
+  "file": "2026 Chinese GP - Cadillac - MAC-26.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Cadillac_-_MAC-26.jpg",
   "author": "Liauzh",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "license": "CC BY 4.0"
  },
  "news-f1-c": {
-  "file": "2025 Japan GP - Mercedes - George Russell - FP2.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2025_Japan_GP_-_Mercedes_-_George_Russell_-_FP2.jpg",
+  "file": "2026 Chinese GP - Haas - Oliver Bearman - Qualifying.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_Chinese_GP_-_Haas_-_Oliver_Bearman_-_Qualifying.jpg",
   "author": "Liauzh",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "license": "CC BY 4.0"
  },
  "news-wec": {
-  "file": "The winning Toyota GR010 Hybrid at the 2022 Le Mans (54281609623).jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:The_winning_Toyota_GR010_Hybrid_at_the_2022_Le_Mans_(54281609623).jpg",
-  "author": "Martin Lee from London, UK",
-  "license": "CC BY-SA 2.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+  "file": "2026 6 Hours of Spa-Francorchamps Toyota Racing Toyota TR010 Hybrid No.7 (DSC08226).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_6_Hours_of_Spa-Francorchamps_Toyota_Racing_Toyota_TR010_Hybrid_No.7_(DSC08226).jpg",
+  "author": "MarcelX42",
+  "license": "CC BY-SA 4.0"
  },
  "news-motogp": {
-  "file": "MotoGP 2025 Malaysian Grand Prix - Ducati Lenovo - Francesco Bagnaia.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:MotoGP_2025_Malaysian_Grand_Prix_-_Ducati_Lenovo_-_Francesco_Bagnaia.jpg",
-  "author": "Liauzh",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "MotoGP 2026 season launch Kuala Lumpur 04.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:MotoGP_2026_season_launch_Kuala_Lumpur_04.jpg",
+  "author": "Renek78",
+  "license": "CC0"
  },
  "news-gt3": {
-  "file": "GT World Challenge Europe 2024 Nürburg Nr. 48 Auer, Engel, Morad (1).jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:GT_World_Challenge_Europe_2024_N%C3%BCrburg_Nr._48_Auer,_Engel,_Morad_(1).jpg",
-  "author": "Lukas Raich",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "2026 6 Hours of Spa-Francorchamps Iron Lynx Mercedes-AMG LMGT3 No.61 (DSC09619).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_6_Hours_of_Spa-Francorchamps_Iron_Lynx_Mercedes-AMG_LMGT3_No.61_(DSC09619).jpg",
+  "author": "MarcelX42",
+  "license": "CC BY-SA 4.0"
  },
  "news-fe": {
   "file": "2023-04-21 Motorsport, ABB FIA Formula E World Championship, Berlin E-Prix 2023 1DX 0632 by Stepro.jpg",
@@ -112,24 +98,21 @@
   "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
  },
  "news-f2": {
-  "file": "Formula 1 Championship Winning Cars (54844652672).jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Formula_1_Championship_Winning_Cars_(54844652672).jpg",
-  "author": "David Merrett from Daventry, England",
-  "license": "CC BY 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+  "file": "FIA F2 Austria 2026 Nr. 24 van Hoepen (1).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:FIA_F2_Austria_2026_Nr._24_van_Hoepen_(1).jpg",
+  "author": "Lukas Raich",
+  "license": "CC BY-SA 4.0"
  },
  "news-imsa": {
-  "file": "2023 Acura ARX-06 Daytona (cropped).jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:2023_Acura_ARX-06_Daytona_(cropped).jpg",
-  "author": "350z33",
-  "license": "CC BY-SA 4.0",
-  "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+  "file": "2026 6 Hours of Spa-Francorchamps Aston Martin Thor Team Aston Martin Valkyrie No.007 (DSC06822).jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:2026_6_Hours_of_Spa-Francorchamps_Aston_Martin_Thor_Team_Aston_Martin_Valkyrie_No.007_(DSC06822).jpg",
+  "author": "MarcelX42",
+  "license": "CC BY-SA 4.0"
  },
  "news-indycar": {
-  "file": "Marco Andretti 2025 Indy 500 crash.jpg",
-  "page": "https://commons.wikimedia.org/wiki/File:Marco_Andretti_2025_Indy_500_crash.jpg",
-  "author": "Waluigithewalrus",
-  "license": "CC0",
-  "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+  "file": "Álex Palou IndyCar Road America 2026.jpg",
+  "page": "https://commons.wikimedia.org/wiki/File:%C3%81lex_Palou_IndyCar_Road_America_2026.jpg",
+  "author": "Brycenrichter",
+  "license": "CC0"
  }
 }
