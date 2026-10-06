@@ -11,7 +11,7 @@
   function tabs(base) { return '<nav class="tabs" aria-label="Categorías">' + PS.SERIES.map(function (s) { return '<a href="' + base + s.id + '"' + (s.id === sid ? ' aria-current="page"' : '') + '>' + esc(s.short) + '</a>'; }).join("") + '</nav>'; }
   function crumb(items) { return '<div class="crumb">' + items.map(function (i) { return i[1] ? '<a href="' + i[1] + '">' + esc(i[0]) + '</a>' : '<span>' + esc(i[0]) + '</span>'; }).join("<span>/</span>") + '</div>'; }
   function badge(g) { return g && g.real ? '<span class="tag real">Datos reales · ' + esc(g.asOf) + '</span>' : ''; }
-  function srcLine(g) { return g && g.real ? '<p class="src">Fuente: <a href="' + g.src + '" target="_blank" rel="noopener">' + esc(g.srcName) + '</a>. Puede no estar actualizado al minuto. Fotos: <a href="/creditos">créditos</a>.</p>' : ''; }
+  function srcLine(g) { return g && g.real ? '<p class="src">Fuente: <a href="' + g.src + '" target="_blank" rel="noopener">' + esc(g.srcName) + '</a>. Puede no estar actualizado al minuto. Fotos y logos: <a href="/creditos">créditos</a>.</p>' : ''; }
   function credit(key) { var c = CR[key]; return c ? 'Foto: ' + esc(c.author || "Wikimedia Commons") + ' · ' + esc(c.license || "") : ''; }
   function keyOf(path) { return (path || "").replace("/img/fotos/", "").replace(".webp", ""); }
   var fmtT = new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" });
@@ -19,25 +19,30 @@
   var fmtM = new Intl.DateTimeFormat("es-ES", { month: "long", year: "numeric", timeZone: "UTC" });
   function header(t, lede, extra) { return '<section class="ph"><div class="wrap">' + (extra || '') + '<h1 class="tt">' + t + '</h1>' + (lede ? '<p class="lede">' + lede + '</p>' : '') + '</div></section>'; }
 
-  function dPhoto(d) { return PS.driverPhoto(d.team && PS.grid("motogp") && PS.grid("motogp").drivers.indexOf(d) >= 0 ? "motogp" : "f1", d); }
+  function sidOf(d) { var m = PS.grid("motogp"); return m && m.drivers.indexOf(d) >= 0 ? "motogp" : "f1"; }
+  function sidOfT(t) { var m = PS.grid("motogp"); return m && m.teams.indexOf(t) >= 0 ? "motogp" : "f1"; }
+  // logo del equipo sobre placa blanca; si no hay logo libre, nombre del equipo en su color
+  function logo(t, cls) { var l = PS.teamLogo(sidOfT(t), t); return l ? '<span class="lg logo-plate ' + (cls || "") + '"><img src="' + l + '" alt="' + esc(t.name) + '" loading="lazy"></span>' : '<span class="lg wordmark ' + (cls || "") + '" style="--tc:' + t.color + '">' + esc(t.name) + '</span>'; }
   function driverCard(d, href) {
-    var t = d.team, ph = dPhoto(d);
-    return '<a class="dc" style="--tc:' + t.color + '" href="' + href + '">' + (d.number ? '<span class="num">' + d.number + '</span>' : '') + (ph ? '<img class="cut" src="' + ph + '" alt="' + esc(d.name) + '" loading="lazy">' : '') +
+    var t = d.team;
+    return '<a class="dc" style="--tc:' + t.color + '" href="' + href + '">' + (d.number ? '<span class="num">' + d.number + '</span>' : '') +
       '<span class="fn">' + esc(d.first) + '</span><span class="ln">' + esc(d.last) + '</span><span class="tm">' + esc(t.name) + '</span>' +
-      (d.number ? '<span class="nb">#' + d.number + '</span>' : '') + '<span class="fl" title="' + esc(d.nation) + '">' + d.flag + '</span>' +
-      '<span class="pts">P' + (d.pos || "—") + ' · <b>' + (d.pts || 0) + '</b> pts</span></a>';
+      '<span class="foot"><span class="meta"><span class="fl" title="' + esc(d.nation) + '">' + d.flag + '</span><span class="pts">P' + (d.pos || "—") + ' · <b>' + (d.pts || 0) + '</b> pts</span></span>' + logo(t) + '</span></a>';
   }
   function teamCard(t, href) {
-    var ph = t.drivers.map(dPhoto).filter(Boolean);
-    return '<a class="dc team" style="--tc:' + t.color + '" href="' + href + '"><span class="num">' + t.pos + '</span><span class="duo">' + ph.map(function (p) { return '<img src="' + p + '" alt="" loading="lazy">'; }).join("") + '</span>' +
+    return '<a class="dc team" style="--tc:' + t.color + '" href="' + href + '">' + logo(t) + '<span class="num">' + t.pos + '</span>' +
       '<span class="ln">' + esc(t.name) + '</span><span class="tm">' + esc(t.engine || t.full) + '</span>' +
-      '<span class="drv">' + t.drivers.map(function (d) { return d.flag + " " + esc(d.last); }).join("<br>") + '</span><span class="pts">P' + t.pos + ' · <b>' + t.pts + '</b> pts' + (t.calc ? '*' : '') + '</span></a>';
+      '<span class="drv">' + t.drivers.map(function (d) { return d.flag + " " + esc(d.name) + (d.number ? " · #" + d.number : ""); }).join("<br>") + '</span>' +
+      '<span class="foot"><span class="pts">P' + t.pos + ' · <b>' + t.pts + '</b> pts' + (t.calc ? '*' : '') + '</span></span></a>';
   }
+  function avatar(d) { return '<span class="av">' + (d.number ? '#' + d.number : esc((d.name || "").slice(0, 2).toUpperCase())) + '</span>'; }
   function row(d, i, top, href) {
-    var c = d.team ? d.team.color : "#7C3AED", ph = d.team ? dPhoto(d) : null;
-    return '<a class="tr" style="--tc:' + c + '" ' + (href ? 'href="' + href + '"' : '') + '><span class="p">' + d.pos + '</span><span class="av">' + (ph ? '<img src="' + ph + '" alt="" loading="lazy">' : '') + '</span>' +
+    var c = d.team ? d.team.color : "#7C3AED";
+    return '<a class="tr" style="--tc:' + c + '" ' + (href ? 'href="' + href + '"' : '') + '><span class="p">' + d.pos + '</span>' + avatar(d) +
       '<span class="n"><b>' + (d.flag ? d.flag + ' ' : '') + esc(d.name) + '</b><small>' + esc(d.team ? d.team.name : "Sustituto / wildcard") + '</small></span><span class="pt">' + d.pts + '</span><span class="bar" style="width:' + (d.pts / top * 100) + '%"></span></a>';
   }
+  function podDriver(d, p, href) { return '<a class="pod p' + p + '" style="--tc:' + d.team.color + '" href="' + href + '"><span class="ps">' + p + '</span>' + logo(d.team) + '<b>' + esc(d.name) + '</b><small>' + esc(d.team.name) + '</small><em>' + d.pts + '</em></a>'; }
+  function podTeam(t, p, href) { return '<a class="pod p' + p + '" style="--tc:' + t.color + '" href="' + href + '"><span class="ps">' + p + '</span>' + logo(t) + '<b>' + esc(t.name) + '</b><small>' + t.drivers.map(function (d) { return esc(d.last); }).join(" · ") + '</small><em>' + t.pts + '</em></a>'; }
   // series sin parrilla con fuente todavía: bloque honesto con lo que sí sabemos
   function pending(what) {
     var h = PS.HIGHLIGHT[sid], n = PS.nextRace(sid);
@@ -62,7 +67,7 @@
     $('<section class="hero"><div class="wrap"><div class="hgrid">' +
       '<a class="lead" href="/noticias#n0">' + U.photo(U.img(lead.img), lead.t) + '<div class="cap"><span class="tagl">' + esc(PS.BY[lead.s].short) + ' · ' + esc(lead.k) + '</span><h1>' + esc(lead.t) + '</h1><p>' + esc(lead.d) + '</p></div></a>' +
       '<div class="quad">' + quad.map(function (q) { return U.newsCard(q, li(q)); }).join("") + '</div>' +
-      '<div class="side">' + side.map(function (x) { return '<a class="si" href="/noticias#n' + li(x) + '"><div><span class="k">' + esc(PS.BY[x.s].short) + '</span><h3>' + esc(x.t) + '</h3></div>' + U.photo(U.img(x.img), "") + '</a>'; }).join("") + '</div>' +
+      '<div class="side"><span class="sth">Más noticias</span>' + side.map(function (x) { return '<a class="si" href="/noticias#n' + li(x) + '"><div><span class="k">' + esc(PS.BY[x.s].short) + '</span><h3>' + esc(x.t) + '</h3></div>' + U.photo(U.img(x.img), "") + '</a>'; }).join("") + '</div>' +
       '</div></div></section>');
 
     $('<div class="wrap"><a class="upsell" href="/planes"><div class="t"><small>PURSEC Trackside</small><strong>Lee la carrera antes que nadie.</strong><span>Brief, Race Card y Debrief de las 9 series · 7 días gratis · 9,99 €/mes</span><span class="btn w">Probar Trackside</span></div>' + U.photo(U.img("car-imsa"), "") + '</a></div>');
@@ -80,7 +85,7 @@
       [["f1", f1], ["motogp", mg]].map(function (x) {
         var g = x[1], top = g.dStand[0].pts;
         var pod = [g.dStand[1], g.dStand[0], g.dStand[2]];
-        return '<div><div class="h2" style="margin-top:0">' + esc(PS.BY[x[0]].name) + ' ' + badge(g) + '</div><div class="podium">' + pod.map(function (d, i) { var p = [2, 1, 3][i]; return '<a class="pod p' + p + '" style="--tc:' + d.team.color + '" href="/pilotos?s=' + x[0] + '&d=' + d.id + '"><img class="cut" src="' + dPhoto(d) + '" alt="" loading="lazy"><span class="ps">' + p + '</span><b>' + esc(d.name) + '</b><small>' + esc(d.team.name) + '</small><em>' + d.pts + '</em></a>'; }).join("") + '</div>' +
+        return '<div><div class="h2" style="margin-top:0">' + esc(PS.BY[x[0]].name) + ' ' + badge(g) + '</div><div class="podium">' + pod.map(function (d, i) { return podDriver(d, [2, 1, 3][i], "/pilotos?s=" + x[0] + "&d=" + d.id); }).join("") + '</div>' +
           '<div class="tbl">' + g.dStand.slice(3, 8).map(function (d, i) { return row(d, i, top, "/pilotos?s=" + x[0] + "&d=" + d.id); }).join("") + '</div></div>';
       }).join("") + '</div></div></section>');
 
@@ -147,10 +152,10 @@
     if (!g) { $(pending("La clasificación")); return; }
     var top = g.dStand[0].pts || 1, ttop = g.tStand[0].pts || 1;
     var pod = [g.dStand[1], g.dStand[0], g.dStand[2]];
-    var dH = '<div><h2 class="h2" style="margin-top:0">Drivers</h2><div class="podium">' + pod.map(function (d, i) { var p = [2, 1, 3][i]; return '<a class="pod p' + p + '" style="--tc:' + d.team.color + '" href="/pilotos?s=' + sid + '&d=' + d.id + '"><img class="cut" src="' + dPhoto(d) + '" alt="" loading="lazy"><span class="ps">' + p + '</span><b>' + esc(d.name) + '</b><small>' + esc(d.team.name) + '</small><em>' + d.pts + '</em></a>'; }).join("") + '</div>' +
+    var dH = '<div><h2 class="h2" style="margin-top:0">Drivers</h2><div class="podium">' + pod.map(function (d, i) { return podDriver(d, [2, 1, 3][i], "/pilotos?s=" + sid + "&d=" + d.id); }).join("") + '</div>' +
       '<div class="tbl">' + g.dStand.map(function (d, i) { return row(d, i, top, d.ghost ? null : "/pilotos?s=" + sid + "&d=" + d.id); }).join("") + '</div></div>';
     var tpod = [g.tStand[1], g.tStand[0], g.tStand[2]];
-    var tH = '<div><h2 class="h2" style="margin-top:0">Constructors' + (g.tStand[0].calc ? ' <span class="tag">* suma de sus dos pilotos</span>' : '') + '</h2><div class="podium">' + tpod.map(function (t, i) { var p = [2, 1, 3][i]; var ph = t.drivers.map(dPhoto).filter(Boolean)[0]; return '<a class="pod p' + p + '" style="--tc:' + t.color + '" href="/equipos?s=' + sid + '&t=' + t.id + '">' + (ph ? '<img class="cut" src="' + ph + '" alt="" loading="lazy">' : '') + '<span class="ps">' + p + '</span><b>' + esc(t.name) + '</b><small>' + t.drivers.map(function (d) { return esc(d.last); }).join(" · ") + '</small><em>' + t.pts + '</em></a>'; }).join("") + '</div>' +
+    var tH = '<div><h2 class="h2" style="margin-top:0">Constructors' + (g.tStand[0].calc ? ' <span class="tag">* suma de sus dos pilotos</span>' : '') + '</h2><div class="podium">' + tpod.map(function (t, i) { return podTeam(t, [2, 1, 3][i], "/equipos?s=" + sid + "&t=" + t.id); }).join("") + '</div>' +
       '<div class="tbl">' + g.tStand.map(function (t) { return '<a class="tr" style="--tc:' + t.color + '" href="/equipos?s=' + sid + '&t=' + t.id + '"><span class="p">' + t.pos + '</span><span class="av t">' + esc(t.name.slice(0, 2).toUpperCase()) + '</span><span class="n"><b>' + esc(t.name) + '</b><small>' + t.drivers.map(function (d) { return esc(d.last); }).join(" · ") + '</small></span><span class="pt">' + t.pts + '</span><span class="bar" style="width:' + (t.pts / ttop * 100) + '%"></span></a>'; }).join("") + '</div></div>';
     $('<div class="wrap"><div class="stand">' + dH + tH + '</div>' + srcLine(g) + '</div>');
   }
@@ -168,11 +173,11 @@
   }
   function driverProfile(g, d) {
     D.title = d.name + " — PURSEC";
-    var t = d.team, mate = t.drivers.filter(function (x) { return x !== d; }), lead = g.dStand[0], ph = dPhoto(d);
+    var t = d.team, mate = t.drivers.filter(function (x) { return x !== d; }), lead = g.dStand[0];
     $('<section class="ph"><div class="wrap">' + crumb([["Drivers", "/pilotos?s=" + sid], [S.short, "/pilotos?s=" + sid], [d.name, null]]) + '<div class="row" style="margin:0 0 16px">' + badge(g) + '</div>' +
-      '<div class="prof"><div class="card" style="--tc:' + t.color + '">' + (d.number ? '<span class="num">' + d.number + '</span>' : '') + (ph ? '<img class="cut" src="' + ph + '" alt="' + esc(d.name) + '">' : '') +
+      '<div class="prof"><div class="card" style="--tc:' + t.color + '">' + (d.number ? '<span class="num">' + d.number + '</span>' : '') +
         '<span class="fn">' + esc(d.first) + '</span><span class="ln">' + esc(d.last) + '</span><span class="tm">' + esc(t.full || t.name) + '</span>' +
-        '<div style="margin-top:18px;font-size:34px">' + d.flag + '</div>' + (ph ? '<span class="credit">' + credit(keyOf(ph)) + ' · <a href="/creditos">Créditos</a></span>' : '') + '</div>' +
+        '<div class="bottom"><span class="fl">' + d.flag + '</span>' + logo(t) + '</div></div>' +
       '<div><h2 class="h2" style="margin-top:0">Temporada ' + esc(S.season) + '</h2><div class="kv">' +
         '<div><small>Posición</small><b>P' + d.pos + '</b></div><div><small>Puntos</small><b>' + d.pts + '</b></div>' +
         '<div><small>A líder</small><b>' + (d === lead ? "Líder" : "−" + d.gap) + '</b></div>' +
@@ -182,7 +187,7 @@
         '<div><small>Nacionalidad</small><b>' + d.flag + ' ' + esc(d.nation) + '</b></div><div><small>Compañero</small><b>' + mate.map(function (m) { return esc(m.name); }).join(", ") + '</b></div>' +
         '<div class="w"><small>' + (sid === "motogp" ? "Moto" : "Motor") + '</small><b>' + esc(t.engine || "—") + '</b></div>' +
       '</div></div></div>' +
-      '<h2 class="h2">Puntos frente al top 10</h2><div class="tbl">' + g.dStand.slice(0, 10).map(function (x, i) { return row(x, i, lead.pts, x.ghost ? null : "/pilotos?s=" + sid + "&d=" + x.id).replace('class="tr"', 'class="tr"' + (x === d ? ' style="background:rgba(168,85,247,.24)"' : '')); }).join("") + '</div>' +
+      '<h2 class="h2">Puntos frente al top 10</h2><div class="tbl">' + g.dStand.slice(0, 10).map(function (x, i) { var h = row(x, i, lead.pts, x.ghost ? null : "/pilotos?s=" + sid + "&d=" + x.id); return x === d ? h.replace('<a class="tr" style="', '<a class="tr" style="background:rgba(168,85,247,.2);') : h; }).join("") + '</div>' +
       srcLine(g) + '<div class="row"><a class="btn g sm" href="/pilotos?s=' + sid + '">← Todos los pilotos</a><a class="btn g sm" href="/equipos?s=' + sid + '&t=' + t.id + '">Ver ' + esc(t.name) + '</a></div></div></section>');
   }
 
@@ -198,10 +203,9 @@
   }
   function teamProfile(g, t) {
     D.title = t.name + " — PURSEC";
-    var ph = t.drivers.map(dPhoto).filter(Boolean);
     $('<section class="ph"><div class="wrap">' + crumb([["Constructors", "/equipos?s=" + sid], [S.short, "/equipos?s=" + sid], [t.name, null]]) + '<div class="row" style="margin:0 0 16px">' + badge(g) + '</div>' +
-      '<div class="prof"><div class="card" style="--tc:' + t.color + '"><span class="num">' + t.pos + '</span><span class="duo">' + ph.map(function (p) { return '<img src="' + p + '" alt="">'; }).join("") + '</span>' +
-        '<span class="ln">' + esc(t.name) + '</span><span class="tm">' + esc(t.full) + '</span></div>' +
+      '<div class="prof"><div class="card" style="--tc:' + t.color + '"><span class="num">' + t.pos + '</span>' +
+        '<span class="ln">' + esc(t.name) + '</span><span class="tm">' + esc(t.full) + '</span><div class="bottom"><span class="fl">' + t.drivers.map(function (d) { return d.flag; }).join(" ") + '</span>' + logo(t) + '</div></div>' +
       '<div><h2 class="h2" style="margin-top:0">Temporada ' + esc(S.season) + '</h2><div class="kv">' +
         '<div><small>Posición</small><b>P' + t.pos + '</b></div><div><small>Puntos</small><b>' + t.pts + (t.calc ? '*' : '') + '</b></div>' +
       '</div><h2 class="h2">Ficha</h2><div class="kv">' +
@@ -292,9 +296,9 @@
 
   // ======================= CRÉDITOS =======================
   function credits() {
-    $(header('Créditos de fotos', 'Todas las fotos de la web son de Wikimedia Commons, con licencia libre. Las de pilotos están recortadas (fondo eliminado) por PURSEC; las obras derivadas de fotos CC BY-SA se comparten con la misma licencia.', crumb([["Legal", null]])));
+    $(header('Créditos', 'Todas las fotos y logos de la web vienen de Wikimedia Commons, con licencia libre o de dominio público. Los logos pertenecen a sus equipos y se usan solo para identificarlos.', crumb([["Legal", null]])));
     var keys = Object.keys(CR).sort();
-    $('<div class="wrap"><div class="credits">' + keys.map(function (k) { var c = CR[k]; return '<a href="' + c.page + '" target="_blank" rel="noopener"><img src="/img/fotos/' + k + '.webp" alt="" loading="lazy"><span><b>' + esc(c.file.replace(/\.(jpe?g|png)$/i, "")) + '</b>' + esc(c.author || "Autor en Commons") + ' · ' + esc(c.license || "") + '</span></a>'; }).join("") + '</div></div>');
+    $('<div class="wrap"><div class="credits">' + keys.map(function (k) { var c = CR[k]; return '<a href="' + c.page + '" target="_blank" rel="noopener">' + (k.indexOf("logo-") === 0 ? '<img src="/img/logos/' + k.slice(5) + '.webp" alt="" loading="lazy">' : '<img class="ph" src="/img/fotos/' + k + '.webp" alt="" loading="lazy">') + '<span><b>' + esc(c.file.replace(/\.(jpe?g|png)$/i, "")) + '</b>' + esc(c.author || "Autor en Commons") + ' · ' + esc(c.license || "") + '</span></a>'; }).join("") + '</div></div>');
   }
 
   var R = { home: home, categorias: category, calendario: schedule, clasificacion: standings, pilotos: drivers, equipos: teams, proximas: next, weekend: weekend, noticias: news, videos: videos, creditos: credits };

@@ -56,7 +56,34 @@
     sprintcard: { t: "Sprint Card", p: "Las carreras sprint que vienen, en las series que las tienen.", href: "/weekend?k=sprintcard&s=", info: function (s) { if (!s.sprint) return ["Sin formato sprint", ""]; var n = nextSprint(s.id); return n ? [n.name, range(n)] : ["Sin sprint próximo", ""]; } },
     debrief: { t: "Debrief", p: "El análisis técnico de la última carrera de cada categoría.", href: "/weekend?k=debrief&s=", info: function (s) { var l = lastRace(s.id); return l ? [l.name, range(l)] : ["Sin carreras aún", ""]; } }
   };
+  // carreras de un fin de semana (todas las series)
+  var WK = { brief: 1, racecard: 1, sprintcard: 1, debrief: 1 };
+  function monday(iso) { var d = new Date(iso + "T00:00:00Z"), w = (d.getUTCDay() + 6) % 7; d.setUTCDate(d.getUTCDate() - w); return d.toISOString().slice(0, 10); }
+  function addDays(iso, n) { var d = new Date(iso + "T00:00:00Z"); d.setUTCDate(d.getUTCDate() + n); return d.toISOString().slice(0, 10); }
+  function weekendRaces(kind) {
+    var all = []; PS.SERIES.forEach(function (s) { PS.CALS[s.id].forEach(function (r) { all.push({ s: s, r: r }); }); });
+    var t = PS.todayISO(), pool;
+    if (kind === "debrief") pool = all.filter(function (x) { return x.r.date < t; });
+    else pool = all.filter(function (x) { return x.r.date >= t && (kind !== "sprintcard" || (x.s.sprint && x.r.sprint)); });
+    if (!pool.length) return { list: [], from: null, to: null };
+    var pivot = pool.map(function (x) { return x.r.date; }).sort()[kind === "debrief" ? pool.length - 1 : 0];
+    var from = monday(pivot), to = addDays(from, 6);
+    var list = pool.filter(function (x) { return x.r.date >= from && x.r.date <= to; }).sort(function (a, b) { return PS.SERIES.indexOf(a.s) - PS.SERIES.indexOf(b.s); });
+    return { list: list, from: from, to: to };
+  }
+  var fmtW = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "long", timeZone: "UTC" });
+  function weekendHTML(key) {
+    var m = MENUS[key], w = weekendRaces(key), k = { brief: "brief", racecard: "racecard", sprintcard: "sprintcard", debrief: "debrief" }[key];
+    var when = w.from ? (key === "debrief" ? "Último fin de semana: " : "Este fin de semana: ") + fmtW.format(new Date(addDays(w.from, 4) + "T00:00:00Z")) + " – " + fmtW.format(new Date(w.to + "T00:00:00Z")) : "";
+    var n = Math.min(Math.max(w.list.length, 1), 4);
+    var body = w.list.length ? '<div class="wkgrid" style="--n:' + n + '">' + w.list.map(function (x) {
+      return '<a class="wkw" href="/weekend?k=' + k + '&s=' + x.s.id + '"><img src="' + PS.carPhoto(x.s.id) + '" alt="" loading="lazy"><span class="cat">' + esc(x.s.name) + '</span>' +
+        (x.r.sprint && x.s.sprint ? '<span class="st2 tag">Sprint</span>' : '') + '<b>' + x.r.flag + ' ' + esc(x.r.name) + '</b><small>' + esc(x.r.circuit) + ' · ' + range(x.r) + '</small><span class="go">Ver ' + esc(m.t) + ' →</span></a>';
+    }).join("") + '</div>' : '<div class="wkempty">No hay carreras próximas para ' + esc(m.t) + '.</div>';
+    return '<div class="wrap"><div class="mh"><div><h2 class="tt">' + m.t + '</h2><p>' + esc(when || m.p) + '</p></div><button class="x" type="button" data-close aria-label="Cerrar">×</button></div>' + body + '</div>';
+  }
   function megaHTML(key) {
+    if (WK[key]) return weekendHTML(key);
     var m = MENUS[key];
     var tiles = PS.SERIES.map(function (s) {
       var inf = m.info(s), off = /Off-season|terminada|Sin |próximamente/.test(inf[0]);
@@ -73,21 +100,27 @@
   var hd = D.createElement("header");
   hd.className = "hd"; hd.id = "hd";
   hd.innerHTML =
-    '<div class="util"><div class="wrap"><a class="club" href="/club"><i></i><span>PURSEC · Motorsport Club</span></a>' +
-      '<nav aria-label="Utilidades"><a class="store" href="/store">Store</a><a class="lg" href="/planes">Membership</a><a href="/contacto">Contacto</a><a class="lg" href="/aviso-legal">Aviso legal</a><a class="lg" href="/privacidad">Privacidad</a><a class="lg" href="/cookies">Cookies</a><a class="lg" href="/terminos">Términos</a></nav>' +
-      '<div class="acc"><a class="me" href="/garage/" aria-label="Mi cuenta" title="Mi cuenta">' + I.user + '</a><a class="join" href="/planes">Join Trackside</a></div></div></div>' +
-    '<div class="mainnav"><div class="wrap"><a class="logo" href="/" aria-label="PURSEC, portada"><img src="/img/ps-emblema.webp" alt="" width="44" height="44"><b>PURSEC</b></a>' +
+    '<div class="util"><div class="wrap">' +
+      '<nav aria-label="Utilidades"><a class="store" href="/store">Store</a><a href="/planes">Membership</a><a href="/contacto">Contacto</a><a class="lg" href="/aviso-legal">Aviso legal</a><a class="lg" href="/privacidad">Privacidad</a><a class="lg" href="/cookies">Cookies</a><a class="lg" href="/terminos">Términos</a><a class="lg" href="/creditos">Créditos</a></nav>' +
+      '<div class="acc"><a class="me" href="/garage/" aria-label="Mi cuenta">' + I.user + '<span>Mi cuenta</span></a><a class="join" href="/planes">Join Trackside</a></div></div></div>' +
+    '<div class="mainnav"><div class="wrap"><a class="logo" href="/" aria-label="PURSEC, portada"><img src="/img/pursec-gum-logo.webp" alt="PURSEC" width="180" height="44"></a>' +
       '<nav class="mn" aria-label="Principal">' + NAV.map(function (n) { return '<button type="button" data-menu="' + n[0] + '" data-hover aria-expanded="false"' + (CUR === n[0] ? ' aria-current="page"' : '') + '>' + n[1] + I.chev + '</button>'; }).join("") +
         '<a class="s4" href="/sector-4"' + (page === "sector4" ? ' aria-current="page"' : '') + '><span class="box"><span class="bars"><i></i><i></i><i></i></span>Sector 4</span></a></nav>' +
       '<button class="burger" type="button" aria-label="Abrir menú" aria-expanded="false"><i></i><i></i><i></i></button></div></div>' +
     '<div class="nextbar"><div class="wrap"><button class="lbl" type="button" data-menu="next" data-hover aria-expanded="false">Next races ' + I.chev.replace('class="chev"', '') + '</button>' +
       '<div class="chips">' + upcoming.slice(0, 6).map(function (u) { return '<a class="chip" href="/proximas?s=' + u.s.id + '"><span class="sb">' + esc(u.s.short) + '</span><b>' + u.r.flag + ' ' + esc(u.r.name.replace(/^(GP de |Ronda de |E-Prix de )/, "")) + '</b><small>' + range(u.r) + '</small></a>'; }).join("") + '</div>' +
-      '<div class="clock" aria-label="Hora"><span>My time</span><b id="ck-me">--:--</b><span>UTC</span><b id="ck-utc">--:--</b></div></div></div>';
+      '</div></div>';
   body.insertBefore(hd, body.firstChild);
 
   var mega = D.createElement("div"); mega.className = "mega"; mega.hidden = true; mega.setAttribute("role", "dialog"); body.appendChild(mega);
   var openKey = null, opener = null, closeT = null;
-  function placeMega() { var r = hd.getBoundingClientRect(); var top = Math.max(0, r.bottom); mega.style.top = top + "px"; D.documentElement.style.setProperty("--top", top + "px"); }
+  function placeMega() {
+    var r = hd.getBoundingClientRect(), top = Math.max(0, r.bottom);
+    D.documentElement.style.setProperty("--top", top + "px");
+    // los botones del Club están debajo de la cabecera: su panel se abre justo debajo de ellos, sin taparlos
+    if (opener && opener.classList && opener.classList.contains("cbtn") && openKey) { var b = opener.closest(".clubrow") || opener; top = Math.max(top, b.getBoundingClientRect().bottom + 8); }
+    mega.style.top = top + "px";
+  }
   function closeMega() {
     clearTimeout(closeT);
     if (!openKey) return;
@@ -100,7 +133,7 @@
     if (openKey === key) { if (toggle) closeMega(); return; }
     D.querySelectorAll('[data-menu][aria-expanded="true"]').forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
     mega.innerHTML = megaHTML(key); mega.setAttribute("aria-label", MENUS[key].t);
-    placeMega(); mega.hidden = false; openKey = key; opener = btn; body.classList.add("mega-open");
+    openKey = key; opener = btn; placeMega(); mega.hidden = false; body.classList.add("mega-open");
     if (btn) btn.setAttribute("aria-expanded", "true");
     requestAnimationFrame(function () { mega.classList.add("on"); });
   }
@@ -130,7 +163,7 @@
 
   // menú móvil
   var sheet = D.createElement("div"); sheet.className = "msheet"; sheet.hidden = true;
-  sheet.innerHTML = '<div class="top2"><a class="logo" href="/"><img src="/img/ps-emblema.webp" alt="" width="40" height="40"><b>PURSEC</b></a><button class="btn g sm" type="button" data-sclose aria-label="Cerrar menú">×</button></div>' +
+  sheet.innerHTML = '<div class="top2"><a class="logo" href="/"><img src="/img/pursec-gum-logo.webp" alt="PURSEC"></a><button class="btn g sm" type="button" data-sclose aria-label="Cerrar menú">×</button></div>' +
     '<nav aria-label="Menú">' + NAV.map(function (n) { return '<button type="button" data-menu="' + n[0] + '">' + n[1] + I.chev + '</button>'; }).join("") +
     '<button type="button" data-menu="next">Next races' + I.chev + '</button><a class="s4m" href="/sector-4">Sector 4 <span>→</span></a></nav>' +
     '<div class="small"><a href="/store">Store</a><a href="/noticias">News</a><a href="/videos">Videos</a><a href="/purple-lap">Purple Lap</a><a href="/planes">Membership</a><a href="/contacto">Contacto</a><a href="/aviso-legal">Aviso legal</a><a href="/privacidad">Privacidad</a><a href="/cookies">Cookies</a><a href="/terminos">Términos</a><a href="/creditos">Créditos de fotos</a></div>';
@@ -140,25 +173,19 @@
   burger.addEventListener("click", function () { sheet.hidden = false; burger.setAttribute("aria-expanded", "true"); body.style.overflow = "hidden"; });
   sheet.addEventListener("click", function (e) { if (e.target.closest("[data-sclose]")) closeSheet(); });
 
-  function tick() {
-    var now = new Date(), me = D.getElementById("ck-me"), u = D.getElementById("ck-utc");
-    if (me) me.textContent = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
-    if (u) u.textContent = String(now.getUTCHours()).padStart(2, "0") + ":" + String(now.getUTCMinutes()).padStart(2, "0");
-  }
-  tick(); setInterval(tick, 20000);
 
   // ---------- gadgets (todas las páginas menos la portada) ----------
   var SOCIAL = '<div class="social"><a href="#" data-pending aria-label="Instagram de PURSEC">' + I.ig + 'Instagram</a><a href="#" data-pending aria-label="TikTok de PURSEC">' + I.tt + 'TikTok</a><a href="#" data-pending aria-label="YouTube de PURSEC">' + I.yt + 'YouTube</a><a href="#" data-pending aria-label="X de PURSEC">' + I.x + 'X</a><a href="#" data-pending aria-label="Discord del Club">' + I.dc + 'Discord</a></div>';
   function newsCard(n, i) { return '<a class="nc" href="/noticias#n' + i + '">' + photo(img(n.img), n.t) + '<span class="k">' + esc(PS.BY[n.s].short) + ' · ' + esc(n.k) + '</span><h3>' + esc(n.t) + '</h3></a>'; }
   function reel(v, i) { return '<a class="vv" href="/videos#v' + i + '">' + photo(img(v.img), "", "tint") + '<span class="net tag">' + esc(v.n) + '</span><span class="play" aria-hidden="true"></span><h3>' + esc(v.t) + '</h3></a>'; }
-  if (page && page !== "home") {
+  if (page && ["home", "acceso", "early"].indexOf(page) < 0) {
     var g = D.createElement("section"); g.className = "gadgets"; g.setAttribute("aria-label", "Más de PURSEC");
     var sid = PS.BY[Q.get("s")] ? Q.get("s") : null;
     var all = PS.NEWS.map(function (n, i) { return [n, i]; });
     var news = all.filter(function (x) { return x[0].s === sid; }).concat(all.filter(function (x) { return x[0].s !== sid; })).slice(0, 4);
     g.innerHTML = '<div class="wrap"><div class="gg">' +
       '<div class="gcard"><h3>Latest news <a href="/noticias">Ver todo →</a></h3><div class="minis">' + news.map(function (x) { return newsCard(x[0], x[1]); }).join("") + '</div></div>' +
-      '<div class="gcard tsell"><img src="' + img("car-wec") + '" alt=""><span class="tag">PURSEC Trackside</span><b>Entiende la carrera antes de que empiece.</b><ul><li>Weekend Brief y Race Card completos</li><li>Debrief técnico de cada carrera</li><li>Sector 4 y vídeos exclusivos</li><li>Sin anuncios</li></ul><a class="btn w" href="/planes">Probar 7 días gratis</a></div>' +
+      '<div class="gcard tsell"><span class="tag">PURSEC Trackside</span><b>Entiende la carrera antes de que empiece.</b><ul><li>Weekend Brief y Race Card completos</li><li>Debrief técnico de cada carrera</li><li>Sector 4 y vídeos exclusivos</li><li>Sin anuncios</li></ul><a class="btn w" href="/planes">Probar 7 días gratis</a></div>' +
       '<div class="gcard"><h3>Reels & TikToks <a href="/videos">Ver vídeos →</a></h3><div class="reels">' + PS.VIDEOS.map(reel).join("") + '</div></div>' +
       '<div class="gcard"><h3>Accesos rápidos</h3><div class="qlinks">' +
         [["Next races", "/proximas?s=" + (sid || "f1")], ["Schedules", "/calendario?s=" + (sid || "f1")], ["Standings", "/clasificacion?s=" + (sid || "f1")], ["Weekend Brief", "/weekend?k=brief&s=" + (sid || "f1")], ["Purple Lap", "/purple-lap"], ["Store", "/store"]].map(function (l) { return '<a class="ql" href="' + l[1] + '">' + l[0] + '<span>→</span></a>'; }).join("") +
@@ -170,9 +197,9 @@
   // ---------- pie ----------
   var ft = D.createElement("footer"); ft.className = "ft";
   ft.innerHTML = '<div class="wrap"><div class="ftg">' +
-    '<div class="brandf"><img src="/img/ps-emblema.webp" alt="PURSEC" width="52" height="52"><p>Club de análisis técnico de motorsport. Strategy Brief, Race Card, Debrief y Sector 4 para todas las series.</p>' + SOCIAL + '</div>' +
+    '<div class="brandf"><img class="gl" src="/img/pursec-gum-logo.webp" alt="PURSEC"><p>Club de análisis técnico de motorsport. Strategy Brief, Race Card, Debrief y Sector 4 para todas las series.</p>' + SOCIAL + '</div>' +
     '<div><h4>Series</h4>' + PS.SERIES.map(function (s) { return '<a href="/categorias?s=' + s.id + '">' + esc(s.name) + '</a>'; }).join("") + '</div>' +
-    '<div><h4>Club</h4><a href="/weekend?k=brief&s=f1">Weekend Brief</a><a href="/weekend?k=racecard&s=f1">Race Card</a><a href="/weekend?k=sprintcard&s=f1">Sprint Card</a><a href="/weekend?k=debrief&s=f1">Debrief</a><a href="/sector-4">Sector 4</a><a href="/purple-lap">Purple Lap</a><a href="/club">Cómo funciona</a></div>' +
+    '<div><h4>Club</h4><a href="/weekend?k=brief&s=f1">Weekend Brief</a><a href="/weekend?k=racecard&s=f1">Race Card</a><a href="/weekend?k=sprintcard&s=f1">Sprint Card</a><a href="/weekend?k=debrief&s=f1">Debrief</a><a href="/sector-4">Sector 4</a><a href="/purple-lap">Purple Lap</a></div>' +
     '<div><h4>Contenido</h4><a href="/noticias">News</a><a href="/videos">Videos</a><a href="/proximas?s=f1">Next races</a><a href="/store">Store</a><a href="/planes">Membership</a><a href="/garage/">Mi cuenta</a></div>' +
     '<div><h4>Legal</h4><a href="/contacto">Contacto</a><a href="/aviso-legal">Aviso legal</a><a href="/privacidad">Privacidad</a><a href="/cookies">Cookies</a><a href="/terminos">Términos y condiciones</a><a href="/creditos">Créditos de fotos</a><a href="#" data-cookie-settings>Configuración de cookies</a></div>' +
     '</div><div class="bottom"><span>© 2026 PURSEC</span><span>PURSEC es un proyecto independiente, sin relación con ningún campeonato, equipo o piloto. Fotos de <a href="/creditos">Wikimedia Commons</a> con licencia libre; los nombres de series, equipos y pilotos se usan solo para identificar los hechos deportivos que analizamos.</span></div></div>';
@@ -199,7 +226,7 @@
   // ---------- bienvenida (solo sin sesión) ----------
   function hasSession() { try { for (var i = 0; i < localStorage.length; i++) { if (/^sb-.*-auth-token$/.test(localStorage.key(i))) return true; } } catch (e) {} return false; }
   function welcome() {
-    if (hasSession()) return;
+    if (hasSession() || ["acceso", "planes", "early"].indexOf(page) >= 0) return;
     try { if (sessionStorage.getItem("pursec_wl")) return; } catch (e) {}
     var w = D.createElement("aside"); w.className = "wl"; w.setAttribute("aria-label", "Únete al Club");
     w.innerHTML = '<button class="x" type="button" aria-label="Cerrar">×</button><span class="lt" aria-hidden="true"><i></i><i></i><i></i></span>' +

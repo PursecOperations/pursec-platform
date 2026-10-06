@@ -467,13 +467,15 @@
 
 
   // ---------- fotos reales (Wikimedia Commons, licencias libres; créditos en /creditos) ----------
-  var FOTOS = ["car-f1", "car-f2", "car-f3", "car-fe", "car-gt3", "car-imsa", "car-indycar", "car-motogp", "car-wec", "drv-f1-alexander-albon", "drv-f1-andrea-kimi-antonelli", "drv-f1-arvid-lindblad", "drv-f1-carlos-sainz-jr", "drv-f1-charles-leclerc", "drv-f1-esteban-ocon", "drv-f1-fernando-alonso", "drv-f1-franco-colapinto", "drv-f1-gabriel-bortoleto", "drv-f1-george-russell", "drv-f1-isack-hadjar", "drv-f1-lance-stroll", "drv-f1-lando-norris", "drv-f1-lewis-hamilton", "drv-f1-liam-lawson", "drv-f1-max-verstappen", "drv-f1-nico-hulkenberg", "drv-f1-oliver-bearman", "drv-f1-oscar-piastri", "drv-f1-pierre-gasly", "drv-f1-sergio-perez", "drv-f1-valtteri-bottas", "drv-motogp-ai-ogura", "drv-motogp-alex-marquez", "drv-motogp-alex-rins", "drv-motogp-brad-binder", "drv-motogp-diogo-moreira", "drv-motogp-enea-bastianini", "drv-motogp-fabio-di-giannantonio", "drv-motogp-fabio-quartararo", "drv-motogp-fermin-aldeguer", "drv-motogp-francesco-bagnaia", "drv-motogp-franco-morbidelli", "drv-motogp-jack-miller", "drv-motogp-joan-mir", "drv-motogp-johann-zarco", "drv-motogp-jorge-martin", "drv-motogp-luca-marini", "drv-motogp-marc-marquez", "drv-motogp-marco-bezzecchi", "drv-motogp-maverick-vinales", "drv-motogp-pedro-acosta", "drv-motogp-raul-fernandez", "drv-motogp-toprak-razgatlioglu", "news-f1-a", "news-f1-b", "news-f1-c", "news-f2", "news-fe", "news-gt3", "news-imsa", "news-indycar", "news-motogp", "news-wec"];
+  var FOTOS = ["car-f1", "car-f2", "car-f3", "car-fe", "car-gt3", "car-imsa", "car-indycar", "car-motogp", "car-wec", "news-f1-a", "news-f1-b", "news-f1-c", "news-f2", "news-fe", "news-gt3", "news-imsa", "news-indycar", "news-motogp", "news-wec"];
+  var LOGOS = ["f1-alpine", "f1-aston-martin", "f1-audi", "f1-cadillac", "f1-haas", "f1-mclaren", "f1-mercedes", "f1-red-bull-racing", "f1-williams", "motogp-aprilia-racing", "motogp-ducati-lenovo", "motogp-gresini-ducati", "motogp-honda-hrc", "motogp-pramac-yamaha", "motogp-red-bull-ktm", "motogp-vr46-ducati", "motogp-yamaha"];
   function slug(x) { return x.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function driverPhoto(sid, d) {
     var f = slug(d.first), l = slug(d.last);
     var hit = FOTOS.filter(function (k) { return k.indexOf("drv-" + sid + "-") === 0 && k.indexOf(l) >= 0 && k.indexOf(f.slice(0, 4)) >= 0; })[0];
     return hit ? "/img/fotos/" + hit + ".webp" : null;
   }
+  function teamLogo(sid, t) { var k = sid + "-" + slug(t.name); return LOGOS.indexOf(k) >= 0 ? "/img/logos/" + k + ".webp" : null; }
   function carPhoto(sid) { return "/img/fotos/car-" + sid + ".webp"; }
 
   // ---------- lo más destacado de cada serie (real, con fuente) ----------
@@ -511,7 +513,7 @@
 
   window.PS = {
     SERIES: SERIES, BY: BY, CALS: CALS, NEWS: NEWS, VIDEOS: VIDEOS,
-    nextRace: nextRace, sessions: sessions, driverPhoto: driverPhoto, carPhoto: carPhoto, HIGHLIGHT: HIGHLIGHT, slug: slug, status: status, grid: buildGrid, todayISO: todayISO, rng: rng,
+    nextRace: nextRace, sessions: sessions, driverPhoto: driverPhoto, carPhoto: carPhoto, teamLogo: teamLogo, HIGHLIGHT: HIGHLIGHT, slug: slug, status: status, grid: buildGrid, todayISO: todayISO, rng: rng,
     SOURCE_F1: "https://www.formula1.com/en/racing/2026"
   };
 })();
