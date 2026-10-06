@@ -3,7 +3,7 @@
 **Estado:** versión oficial y definitiva de momento. **No publicada** en pursec.club.
 
 - Rama: `claude/rediseno-f1` · PR #16 (abierto, sin fusionar).
-- Etiqueta fija de esta versión: `web-oficial-v4`.
+- Versión fijada: el último commit de la rama `claude/rediseno-f1` a 6 oct 2026 (las etiquetas de git no se pueden subir desde este entorno).
 - Vista previa: https://claude-rediseno-f1-pursec-platform.pursec-telemetry-hq.workers.dev
 
 ## Qué es
