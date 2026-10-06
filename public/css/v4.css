@@ -1,10 +1,10 @@
 /* PURSEC v4.2 — sobrio y fiable: fondo negro fijo con luz lila, 1280 px de ancho útil, tarjetas con radio de 10 px,
    un único acento (lila). Títulos en Sora, texto en Inter. Los colores de equipo solo como acento. */
 :root {
-  --bg: #07050C; --s1: #0E0A17; --s2: #151021; --s3: #1D1630;
-  --line: rgba(255, 255, 255, .08); --line2: rgba(255, 255, 255, .14);
+  --bg: #15111F; --s1: #1C1729; --s2: #241E34; --s3: #2D2641;
+  --line: rgba(255, 255, 255, .09); --line2: rgba(255, 255, 255, .16);
   --lila: #A855F7; --lila-hi: #C084FC; --lila-lo: #7C3AED; --lila-soft: rgba(168, 85, 247, .14); --neon: #D8B4FE;
-  --ink: #0B0614; --text: #D9D3E8; --head: #F7F4FC; --muted: #A69CBF; --dim: #7D7496; --green: #22C55E;
+  --ink: #120B1E; --text: #D9D3E8; --head: #F7F4FC; --muted: #A69CBF; --dim: #7D7496; --green: #22C55E;
   --f-title: 'Sora', system-ui, sans-serif; --f-body: 'Inter', system-ui, sans-serif;
   --max: 1280px; --g: 16px; --r: 10px; --ease: cubic-bezier(.2, .7, .2, 1);
   --hover-glow: 0 0 0 1px rgba(192, 132, 252, .55), 0 8px 28px -6px rgba(168, 85, 247, .65);
@@ -15,7 +15,7 @@
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; color: var(--text); font: 400 16px/1.6 var(--f-body); overflow-x: hidden; -webkit-font-smoothing: antialiased; background: var(--bg); }
 body::before { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(1100px 520px at 50% -140px, rgba(124, 58, 237, .30), transparent 70%), radial-gradient(900px 600px at 50% 120%, rgba(124, 58, 237, .08), transparent 70%); }
+  background: radial-gradient(1100px 520px at 50% -140px, rgba(124, 58, 237, .34), transparent 70%), radial-gradient(900px 600px at 50% 120%, rgba(124, 58, 237, .12), transparent 70%); }
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; padding: 0; }
@@ -45,7 +45,7 @@ a:hover .ph-img > img { transform: scale(1.035); }
 
 /* ===================== CABECERA ===================== */
 .hd { position: sticky; top: 0; z-index: 50; }
-.util { background: #030206; height: 44px; border-bottom: 1px solid var(--line); }
+.util { background: #110D1A; height: 44px; border-bottom: 1px solid var(--line); }
 .util .wrap { display: flex; align-items: center; height: 100%; gap: 6px; }
 .util nav { flex: 1; display: flex; align-items: center; gap: 4px; min-width: 0; overflow-x: auto; scrollbar-width: none; }
 .util nav::-webkit-scrollbar { display: none; }
@@ -60,7 +60,7 @@ a:hover .ph-img > img { transform: scale(1.035); }
 @media (max-width: 1100px) { .util nav a.lg { display: none; } }
 @media (max-width: 560px) { .util .acc a.me span { display: none; } .util nav a { padding: 0 8px; font-size: 11.5px; } }
 
-.mainnav { height: 72px; background: rgba(14, 10, 23, .97); border-bottom: 1px solid var(--line2); }
+.mainnav { height: 72px; background: rgba(29, 23, 42, .97); border-bottom: 1px solid var(--line2); }
 .mainnav .wrap { display: flex; align-items: center; height: 100%; gap: 4px; }
 .logo { display: flex; align-items: center; margin-right: 28px; flex-shrink: 0; }
 .logo img { height: 44px; width: auto; filter: drop-shadow(0 4px 14px rgba(168, 85, 247, .35)); transition: transform .3s var(--ease); }
@@ -84,7 +84,7 @@ a:hover .ph-img > img { transform: scale(1.035); }
 @media (max-width: 1080px) { .mn > button { padding: 0 10px; font-size: 14px; } .logo { margin-right: 14px; } .logo img { height: 36px; } }
 @media (max-width: 920px) { .mn { display: none; } .burger { display: block; } .logo img { height: 34px; } }
 
-.nextbar { background: #030206; border-bottom: 1px solid var(--line); }
+.nextbar { background: #110D1A; border-bottom: 1px solid var(--line); }
 .nextbar .wrap { display: flex; align-items: center; gap: 12px; height: 52px; }
 .nextbar .lbl { flex-shrink: 0; display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; border-radius: 6px; font: 700 11.5px/1 var(--f-body); letter-spacing: .14em; text-transform: uppercase; color: #FFF; background: var(--lila-lo); transition: background .2s, box-shadow .2s; }
 .nextbar .lbl:hover, .nextbar .lbl[aria-expanded="true"] { background: var(--lila); box-shadow: 0 0 20px -4px var(--lila); }
@@ -99,7 +99,7 @@ a:hover .ph-img > img { transform: scale(1.035); }
 .chip small { font: 600 12px/1 var(--f-body); color: var(--muted); }
 
 /* ===================== PANELES DE MEDIA PANTALLA ===================== */
-.mega { position: fixed; left: 0; right: 0; z-index: 45; height: min(54vh, 600px); min-height: 400px; background: rgba(10, 7, 17, .985);
+.mega { position: fixed; left: 0; right: 0; z-index: 45; height: min(54vh, 600px); min-height: 400px; background: rgba(25, 20, 36, .985);
   border-bottom: 1px solid var(--line2); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .95); opacity: 0; transform: translateY(-8px); transition: opacity .2s ease, transform .28s var(--ease); overflow: hidden; }
 .mega.on { opacity: 1; transform: none; }
 .mega[hidden] { display: none; }
@@ -523,7 +523,7 @@ a:hover .play { background: var(--lila); box-shadow: 0 0 22px var(--lila); }
 .social svg { width: 20px; height: 20px; color: var(--lila-hi); }
 
 /* ===================== PIE ===================== */
-.ft { padding: 52px 0 32px; background: #030206; border-top: 1px solid var(--line2); }
+.ft { padding: 52px 0 32px; background: #110D1A; border-top: 1px solid var(--line2); }
 .ftg { display: grid; gap: 28px; grid-template-columns: repeat(2, 1fr); }
 @media (min-width: 900px) { .ftg { grid-template-columns: 2fr 1fr 1fr 1fr 1fr; } }
 .ft h4 { margin: 0 0 14px; font: 800 12px/1 var(--f-title); letter-spacing: .16em; text-transform: uppercase; color: var(--head); }
