@@ -3,184 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PURSEC — Membership</title>
-<meta name="description" content="Paddock gratis o Trackside por 9,99 €/mes (7 días de prueba) o 99,99 €/año. Briefs, debriefs, simuladores y Sector 4.">
-<meta property="og:title" content="PURSEC — Planes">
-<meta property="og:url" content="https://pursec.club/planes">
-<meta name="theme-color" content="#050409">
+<title>Membership — PURSEC</title>
+<meta name="description" content="Paddock gratis o Trackside: el club completo de análisis de motorsport.">
+<meta property="og:title" content="Membership — PURSEC">
+<meta property="og:description" content="Paddock gratis o Trackside: el club completo de análisis de motorsport.">
+<meta property="og:image" content="https://pursec.club/img/pursec-logo.png">
+<meta name="theme-color" content="#0F131C">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/img/ps-emblema-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800;900&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/pursec.css">
-<style>
-  .intro { padding: clamp(72px, 12vh, 128px) 0 72px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; }
-  .intro .lead { text-align: center; }
-  .toggle { display: inline-flex; border: 1px solid rgba(201,167,255,.3); border-radius: 14px; background: rgba(14,10,26,.8); padding: 3px; margin-top: 12px; }
-  .toggle button { min-height: 42px; padding: 0 20px; border: 0; border-radius: 11px; background: transparent; color: var(--muted); font: 600 15px var(--f-body); cursor: pointer; transition: background-color .25s, color .25s; }
-  .toggle button[aria-pressed="true"] { background: var(--head); color: var(--bg); }
-  .toggle .save { font-family: var(--f-body); font-size: 12px; margin-left: 6px; color: var(--green); }
-  .toggle button[aria-pressed="true"] .save { color: #15803D; }
-
-  .plans { display: grid; gap: 64px; max-width: 1000px; margin: 0 auto; }
-  @media (min-width: 820px) { .plans { grid-template-columns: 1fr 1fr; gap: 0; } .plan:first-child { padding-right: 56px; } .plan + .plan { border-left: 1px solid var(--line); padding-left: 56px; } }
-  .plan { display: flex; flex-direction: column; gap: 20px; }
-  .plan .name { display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; color: var(--muted); }
-  .plan.pro .name > span:first-child { color: var(--purple-soft); }
-  .badge { font-family: var(--f-body); font-size: 12px; color: var(--green); border: 1px solid rgba(34,197,94,.45); padding: 3px 10px; border-radius: 999px; }
-  .plan .price { font-size: clamp(52px, 7vw, 76px); font-weight: 600; line-height: 1; color: var(--head); }
-  .plan .price small { font-family: var(--f-body); font-size: 18px; font-weight: 500; color: var(--muted); letter-spacing: 0; }
-  .plan .note { margin: 0; color: var(--muted); font-size: 15px; min-height: 48px; max-width: 28em; }
-  .plan .btn { align-self: flex-start; margin-top: 8px; }
-
-  table.cmp { width: 100%; border-collapse: collapse; margin-top: 48px; }
-  table.cmp th, table.cmp td { padding: 20px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-  table.cmp thead th { font-size: 14px; color: var(--muted); font-weight: 600; }
-  table.cmp thead th.pro { color: var(--purple-soft); }
-  table.cmp td.c { width: 22%; color: var(--dim); }
-  table.cmp td.c.yes { color: var(--head); }
-  @media (max-width: 560px) { table.cmp { font-size: 15px; } table.cmp td.c { width: 25%; } table.cmp th, table.cmp td { padding: 16px 4px; } }
-
-  .faq { margin-top: 48px; display: grid; gap: 48px 64px; }
-  @media (min-width: 820px) { .faq { grid-template-columns: 1fr 1fr; } }
-  .faq h3 { margin: 0 0 12px; font-size: 18px; font-family: var(--f-title); font-weight: 600; color: var(--head); line-height: 1.3; }
-  .faq p { margin: 0; color: var(--muted); }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wdth,wght@75..125,300..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/v4.css">
 </head>
-<body>
-<div class="space" aria-hidden="true"></div>
-
-<header class="top" id="top">
-  <div class="bar">
-    <div class="amb" aria-hidden="true"><i class="o1"></i><i class="o2"></i><i class="bm"></i></div>
-    <a class="brand" href="/" aria-label="PURSEC, inicio"><img src="/img/ps-emblema.webp" alt="" width="52" height="52"><span class="wm"><b>PURSEC</b><small>Motorsport Club</small></span></a>
-    <nav class="nav" aria-label="Principal"><a class="nl" href="/#herramienta"><span class="sg" aria-hidden="true"><i></i><i></i><i></i></span><span class="tx">Sector <b class="s4">4</b></span></a><a class="nl" href="/#ciclo"><span class="ix">01</span><span class="tx">Club</span></a><a class="nl" href="/planes" aria-current="page"><span class="ix">02</span><span class="tx">Membership</span></a><a class="nl" href="/contacto"><span class="ix">03</span><span class="tx">Pit Radio</span></a></nav>
-    <div class="act">
-      <a class="in" href="/garage/" aria-label="Entrar" title="Entrar"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="2"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></a>
-      <a class="cta" href="/muy-pronto"><span>Early Access</span><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      <button class="menu" type="button" aria-expanded="false" aria-controls="sheet" aria-label="Abrir menú"><i></i><i></i></button>
-    </div>
-    <div class="hlap" aria-hidden="true"><span><i></i></span><span><i></i></span><span><i></i></span></div>
-  </div>
-  <div class="sheet" id="sheet" hidden>
-    <div class="samb" aria-hidden="true"><i class="s1"></i><i class="s2"></i><i class="s3"></i><i class="sbm"></i><i class="st t1"></i><i class="st t2"></i><i class="st t3"></i><i class="st t4"></i></div>
-    <nav aria-label="Menú"><a href="/#herramienta"><span class="tx">Sector <b class="s4">4</b><span class="sg" aria-hidden="true"><i></i><i></i><i></i></span></span><small>Simuladores y laboratorio de carrera</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/#ciclo"><span class="tx">Club</span><small>Brief, Race Card y debrief</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/planes" aria-current="page"><span class="tx">Membership</span><small>Paddock gratis o Trackside</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a><a href="/contacto"><span class="tx">Pit Radio</span><small>Dudas, prensa y colaboraciones</small><svg class="ar" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path d="M3 8h9M8.5 4.5 12 8l-3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a></nav>
-    <a class="btn btn-ghost in big" href="/garage/">Entrar</a>
-    <a class="cta big" href="/muy-pronto">Early Access</a>
-  </div>
-</header>
-
-<main class="wrap">
-  <section class="intro">
-    <div class="mark center">
-      <div class="gumtitle" role="img" aria-label="PURSEC"><span class="lt" style="left:-2.311%;top:-5.069%;width:30.159%;height:89.861%;--ph:-0.3s;--dur:4.2s;--r:1.6deg;--i:0"><span class="jelly"><img src="/img/portada/gum-0.webp" alt="" width="897" height="712" decoding="async"></span></span><span class="lt" style="left:16.235%;top:5.903%;width:24.612%;height:89.027%;--ph:-1.9s;--dur:4.9s;--r:-1.4deg;--i:1"><span class="jelly"><img src="/img/portada/gum-1.webp" alt="" width="732" height="705" decoding="async"></span></span><span class="lt" style="left:29.013%;top:1.042%;width:27.903%;height:89.652%;--ph:-0.9s;--dur:3.9s;--r:1.9deg;--i:2"><span class="jelly"><img src="/img/portada/gum-2.webp" alt="" width="830" height="710" decoding="async"></span></span><span class="lt" style="left:45.118%;top:0.556%;width:26.424%;height:98.264%;--ph:-2.6s;--dur:5.2s;--r:-1.7deg;--i:3"><span class="jelly"><img src="/img/portada/gum-3.webp" alt="" width="786" height="778" decoding="async"></span></span><span class="lt" style="left:58.598%;top:-1.528%;width:28.236%;height:91.042%;--ph:-1.4s;--dur:4.4s;--r:1.5deg;--i:4"><span class="jelly"><img src="/img/portada/gum-4.webp" alt="" width="840" height="721" decoding="async"></span></span><span class="lt" style="left:75.000%;top:1.111%;width:24.186%;height:93.056%;--ph:-3.1s;--dur:4.7s;--r:-2deg;--i:5"><span class="jelly"><img src="/img/portada/gum-5.webp" alt="" width="719" height="737" decoding="async"></span></span><span class="sec s1" style="left:-1.124%;top:92.222%;width:32.766%;height:2.223%"><i></i></span><span class="sec s2" style="left:33.121%;top:92.222%;width:28.624%;height:2.223%"><i></i></span><span class="sec s3" style="left:63.225%;top:92.222%;width:31.805%;height:2.223%"><i></i></span></div>
-    </div>
-    <p class="label">Membership</p>
-    <h1 class="display d-l">Watch the race.<br>Read the race.</h1>
-    <p class="lead">Paddock es gratis para siempre. Trackside es el club completo: el análisis entero, las herramientas y la comunidad.</p>
-    <div class="toggle" role="group" aria-label="Forma de pago">
-      <button type="button" id="b-m" aria-pressed="true">Mensual</button>
-      <button type="button" id="b-y" aria-pressed="false">Anual <span class="save">−17 %</span></button>
-    </div>
-  </section>
-
-  <div class="plans">
-    <div class="plan">
-      <div class="name"><span>Paddock</span></div>
-      <div class="price mono">0 € <small>para siempre</small></div>
-      <p class="note">Con anuncios.</p>
-      <ul class="ticks">
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A79FBA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Noticias y calendario</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A79FBA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Resumen del Strategy Brief y del debrief</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A79FBA" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Infografías de cada carrera</li>
-      </ul>
-      <a class="btn btn-ghost" href="/muy-pronto">Avisarme del lanzamiento</a>
-    </div>
-
-    <div class="plan pro">
-      <div class="name"><span>Trackside</span><span class="badge" id="badge">7 días gratis</span></div>
-      <div class="price mono"><span id="price">9,99 €</span> <small id="period">/mes</small></div>
-      <p class="note" id="note">Prueba gratis que cubre siempre un fin de semana de carrera. Después, 9,99 €/mes. Cancela cuando quieras.</p>
-      <ul class="ticks">
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Todo Paddock, sin anuncios</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Strategy Brief, Race Card y debrief completos</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Simuladores de estrategia y Sector 4</li>
-        <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A7FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>Archivo, comunidad y acceso anticipado a la ropa</li>
-      </ul>
-      <a class="btn btn-primary" href="/muy-pronto">Avisarme cuando abra</a>
-    </div>
-  </div>
-
-  <section class="chapter">
-    <div class="stack reveal">
-      <p class="label">Spec Sheet</p>
-      <h2 class="display d-m">Paddock vs Trackside.</h2>
-    </div>
-    <table class="cmp reveal">
-      <thead><tr><th scope="col">Qué</th><th scope="col">Paddock</th><th scope="col" class="pro">Trackside</th></tr></thead>
-      <tbody>
-        <tr><td>News &amp; Calendar</td><td class="c yes">Sí</td><td class="c yes">Sí</td></tr>
-        <tr><td>Infographics</td><td class="c yes">Sí</td><td class="c yes">Sí</td></tr>
-        <tr><td>Strategy Brief</td><td class="c">Resumen</td><td class="c yes">Completo</td></tr>
-        <tr><td>Race Card</td><td class="c">Parte</td><td class="c yes">Completa</td></tr>
-        <tr><td>Technical Debrief</td><td class="c">Resumen</td><td class="c yes">Completo</td></tr>
-        <tr><td>Simulators: Strategy, Undercut, Safety Car, Championship</td><td class="c">—</td><td class="c yes">Sí</td></tr>
-        <tr><td>Sector <b class="n4g">4</b></td><td class="c">—</td><td class="c yes">Sí</td></tr>
-        <tr><td>Season Archive</td><td class="c">—</td><td class="c yes">Sí</td></tr>
-        <tr><td>Community</td><td class="c">—</td><td class="c yes">Sí</td></tr>
-        <tr><td>Anuncios</td><td class="c">Sí</td><td class="c yes">No</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="chapter">
-    <div class="stack reveal">
-      <p class="label">Pit FAQ</p>
-      <h2 class="display d-m">Questions from the paddock.</h2>
-    </div>
-    <div class="faq reveal">
-      <div><h3>¿Cuánto dura la prueba?</h3><p>7 días. Si en esos 7 días no hay carrera, dura hasta el lunes siguiente a la próxima carrera. Verás la fecha exacta antes de confirmar. Una prueba por persona.</p></div>
-      <div><h3>¿Puedo cancelar?</h3><p>Sí, cuando quieras y desde tu cuenta. Mantienes el acceso hasta el final del periodo pagado.</p></div>
-      <div><h3>¿El plan anual tiene prueba?</h3><p>No. El anual son 99,99 € al año, unos 8,33 € al mes.</p></div>
-      <div><h3>¿Retransmitís las carreras?</h3><p>No. Ni imágenes ni datos oficiales en directo. Hacemos análisis y comentario con datos públicos, y citamos siempre la fuente.</p></div>
-    </div>
-  </section>
+<body data-page="planes">
+<main>
+<section class="ph" style="text-align:center"><div class="wrap">
+<span class="kick">Membership</span><h1 class="tt">Mira la carrera. <span class="ac">Entiéndela.</span></h1>
+<p class="lede" style="margin-left:auto;margin-right:auto">Paddock es gratis para siempre. Trackside es el club completo: el análisis entero, las herramientas y la comunidad.</p>
+<div class="toggle" role="group" aria-label="Forma de pago"><button type="button" id="b-m" aria-pressed="true">Mensual</button><button type="button" id="b-y" aria-pressed="false">Anual · −17 %</button></div>
+</div></section>
+<div class="wrap"><div class="plans2">
+<div class="plan2"><div class="nm">Paddock</div><div class="pr">0 € <small>para siempre</small></div><p class="note">Con anuncios.</p>
+<ul><li>Noticias y calendario de las 9 series</li><li>Resumen del Weekend Brief y del Debrief</li><li>Infografías de cada carrera</li></ul>
+<a class="btn g" href="/acceso?modo=crear">Crear cuenta gratis</a></div>
+<div class="plan2 pro"><div class="nm">Trackside <span class="tag" id="badge">7 días gratis</span></div><div class="pr"><span id="price">9,99 €</span> <small id="period">/mes</small></div>
+<p class="note" id="note">Prueba gratis que cubre siempre un fin de semana de carrera. Después, 9,99 €/mes. Cancela cuando quieras.</p>
+<ul><li>Todo Paddock, sin anuncios</li><li>Weekend Brief, Race Card y Debrief completos</li><li>Simuladores de estrategia y Sector 4</li><li>Archivo, comunidad y vídeos exclusivos</li></ul>
+<a class="btn p" href="/muy-pronto">Avisarme cuando abra</a></div>
+</div>
+<h2 class="h2">Paddock vs Trackside</h2>
+<table class="cmp"><thead><tr><th>Qué incluye</th><th class="c">Paddock</th><th class="c">Trackside</th></tr></thead><tbody>
+<tr><td>News &amp; Calendar</td><td class="c yes">Sí</td><td class="c yes">Sí</td></tr>
+<tr><td>Infographics</td><td class="c yes">Sí</td><td class="c yes">Sí</td></tr>
+<tr><td>Weekend Brief</td><td class="c">Resumen</td><td class="c yes">Completo</td></tr>
+<tr><td>Race Card y Sprint Card</td><td class="c">Parte</td><td class="c yes">Completas</td></tr>
+<tr><td>Technical Debrief</td><td class="c">Resumen</td><td class="c yes">Completo</td></tr>
+<tr><td>Sector 4 y simuladores</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+<tr><td>Trackside Videos</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+<tr><td>Archivo y comunidad</td><td class="c">—</td><td class="c yes">Sí</td></tr>
+<tr><td>Anuncios</td><td class="c">Sí</td><td class="c yes">No</td></tr>
+</tbody></table>
+<h2 class="h2">Preguntas frecuentes</h2>
+<div class="faq">
+<div><h3>¿Cuánto dura la prueba?</h3><p>7 días. Si en esos 7 días no hay carrera, dura hasta el lunes siguiente a la próxima carrera. Verás la fecha exacta antes de confirmar. Una prueba por persona.</p></div>
+<div><h3>¿Puedo cancelar?</h3><p>Sí, cuando quieras y desde tu cuenta. Mantienes el acceso hasta el final del periodo pagado.</p></div>
+<div><h3>¿El plan anual tiene prueba?</h3><p>No. El anual son 99,99 € al año, unos 8,33 € al mes.</p></div>
+<div><h3>¿Retransmitís las carreras?</h3><p>No. Hacemos análisis y comentario con datos públicos, y citamos siempre la fuente.</p></div>
+</div>
+<p class="src">Precios con IVA incluido.</p></div>
 </main>
-
-<footer class="foot">
-  <div class="wrap">
-    <img src="/img/ps-emblema.webp" alt="PURSEC" width="44" height="44">
-    <nav aria-label="Pie">
-      <a href="/planes">Membership</a>
-      <a href="/contacto">Pit Radio</a>
-      <a href="/legal">Legal y privacidad</a>
-    </nav>
-    <span>© 2026 PURSEC</span>
-    <span class="note">Precios con IVA incluido. PURSEC es un proyecto independiente, sin relación con ningún campeonato, equipo o piloto.</span>
-  </div>
-</footer>
-
-<script src="/js/pursec-ui.js" defer></script>
+<script src="/js/v4-data.js"></script>
+<script src="/js/v4-credits.js"></script>
+<script src="/js/v4-shell.js"></script>
+<script src="/js/v4-pages.js"></script>
 <script>
-  (function () {
-    var m = document.getElementById("b-m"), y = document.getElementById("b-y");
-    var price = document.getElementById("price"), period = document.getElementById("period");
-    var note = document.getElementById("note"), badge = document.getElementById("badge");
-    function set(yearly) {
-      m.setAttribute("aria-pressed", String(!yearly));
-      y.setAttribute("aria-pressed", String(yearly));
-      price.textContent = yearly ? "99,99 €" : "9,99 €";
-      period.textContent = yearly ? "/año" : "/mes";
-      badge.hidden = yearly;
-      note.textContent = yearly
-        ? "Equivale a 8,33 €/mes. Sin prueba. Cancela cuando quieras y no se renueva."
-        : "Prueba gratis que cubre siempre un fin de semana de carrera. Después, 9,99 €/mes. Cancela cuando quieras.";
-    }
-    m.addEventListener("click", function () { set(false); });
-    y.addEventListener("click", function () { set(true); });
-  })();
+(function () {
+  var m = document.getElementById("b-m"), y = document.getElementById("b-y");
+  var price = document.getElementById("price"), period = document.getElementById("period"), note = document.getElementById("note"), badge = document.getElementById("badge");
+  function set(yearly) {
+    m.setAttribute("aria-pressed", String(!yearly)); y.setAttribute("aria-pressed", String(yearly));
+    price.textContent = yearly ? "99,99 €" : "9,99 €"; period.textContent = yearly ? "/año" : "/mes"; badge.hidden = yearly;
+    note.textContent = yearly ? "Equivale a 8,33 €/mes. Sin prueba. Cancela cuando quieras y no se renueva." : "Prueba gratis que cubre siempre un fin de semana de carrera. Después, 9,99 €/mes. Cancela cuando quieras.";
+  }
+  m.addEventListener("click", function () { set(false); }); y.addEventListener("click", function () { set(true); });
+})();
 </script>
+
 </body>
 </html>
