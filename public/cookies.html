@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Política de cookies — PURSEC</title>
+<meta name="description" content="Política de cookies de PURSEC (pursec.club).">
+<meta property="og:title" content="Política de cookies — PURSEC">
+<meta property="og:description" content="Política de cookies de PURSEC (pursec.club).">
+<meta property="og:image" content="https://pursec.club/img/pursec-logo.png">
+<meta name="theme-color" content="#050409">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/img/ps-emblema-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;500;600;700;800;900&family=Unbounded:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/v4.css">
+</head>
+<body data-page="legal">
+<main>
+<section class="ph"><div class="wrap"><div class="crumb"><span>Legal</span></div><h1>Política de cookies</h1>
+<div class="row"><span class="demo">Borrador · pendiente de revisión profesional</span></div></div></section>
+<div class="wrap legal"><div class="box prose"><h2>Qué son</h2>
+<p>Pequeños archivos que la web guarda en tu navegador. Algunas son necesarias para que la web funcione; otras solo se usan si las aceptas.</p>
+<h2>Cookies que usamos</h2>
+<table>
+<thead>
+<tr>
+<th>Cookie / tecnología</th>
+<th>De quién</th>
+<th>Para qué</th>
+<th>Tipo</th>
+<th>¿Necesita tu permiso?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sesión de la cuenta (almacenamiento local de Supabase)</td>
+<td>PURSEC (Supabase)</td>
+<td>Mantenerte con la sesión iniciada</td>
+<td>Técnica</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Preferencia de consentimiento</td>
+<td>Google (mensaje de consentimiento)</td>
+<td>Recordar lo que elegiste</td>
+<td>Técnica</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Cookies de Stripe en la página de pago</td>
+<td>Stripe</td>
+<td>Seguridad y prevención del fraude en el pago</td>
+<td>Técnica</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Cookies de Google AdSense</td>
+<td>Google</td>
+<td>Mostrar y medir anuncios (solo plan Paddock)</td>
+<td>Publicidad</td>
+<td><strong>Sí</strong></td>
+</tr>
+<tr>
+<td>Chat de soporte</td>
+<td>[PENDIENTE: Tidio, si se mantiene]</td>
+<td>Chat en la web</td>
+<td>[PENDIENTE]</td>
+<td>[PENDIENTE]</td>
+</tr>
+</tbody>
+</table>
+<p>Los miembros Trackside no ven anuncios y no reciben cookies de publicidad.</p>
+<h2>Cómo das o retiras tu consentimiento</h2>
+<p>La primera vez que entras ves un mensaje con tres opciones: <strong>Consentir</strong>, <strong>No consentir</strong> y <strong>Gestionar opciones</strong>. Rechazar es tan fácil como aceptar. Puedes cambiar tu elección cuando quieras desde el enlace "Configuración de cookies" del pie de página.</p>
+<p>Los anuncios y el chat solo se cargan después de aceptar.</p>
+<h2>Cómo borrarlas desde el navegador</h2>
+<p>Puedes borrar o bloquear cookies en los ajustes de tu navegador (Chrome, Firefox, Safari, Edge). Si bloqueas las técnicas, puede que no puedas iniciar sesión.</p>
+<p>Más información: guía sobre el uso de las cookies de la AEPD.</p></div><div class="box" id="gestionar"><h3>Gestionar opciones</h3>
+<p>Las técnicas son necesarias y no se pueden desactivar. Las de publicidad solo se cargan si las activas.</p>
+<label style="display:flex;gap:10px;align-items:center;margin:10px 0"><input type="checkbox" checked disabled> Técnicas (sesión y preferencias)</label>
+<label style="display:flex;gap:10px;align-items:center;margin:10px 0"><input type="checkbox" id="ck-ads"> Publicidad (solo plan Paddock)</label>
+<button class="btn p sm" type="button" id="ck-save">Guardar mi elección</button> <span id="ck-ok" style="margin-left:10px;color:var(--lila2);font-weight:800"></span></div>
+<script>(function(){var K="pursec_consent_v1",b=document.getElementById("ck-ads");try{var v=JSON.parse(localStorage.getItem(K)||"null");b.checked=!!(v&&v.choice==="accept");}catch(e){}
+document.getElementById("ck-save").addEventListener("click",function(){try{localStorage.setItem(K,JSON.stringify({v:1,choice:b.checked?"accept":"reject",at:new Date().toISOString()}));}catch(e){}document.getElementById("ck-ok").textContent="Guardado.";var c=document.querySelector(".ck");if(c)c.remove();});})();</script></div>
+</main>
+<script src="/js/v4-data.js"></script>
+<script src="/js/v4-cars.js"></script>
+<script src="/js/v4-shell.js"></script>
+<script src="/js/v4-pages.js"></script>
+</body>
+</html>
