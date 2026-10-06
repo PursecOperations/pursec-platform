@@ -18,19 +18,19 @@
     { id: "f2", short: "F2", name: "Formula 2", type: "open", hue: 262, season: "2026", sprint: true,
       tag: "La última puerta antes de la F1.", carsPerTeam: 2, driversPerCar: 1, teams: 11,
       intro: "Monoplaza único para todos: mismo chasis, mismo motor y mismos neumáticos. Gana el piloto y el equipo que mejor lee la carrera. Sprint Race el sábado con parrilla invertida y Feature Race el domingo con parada obligatoria.",
-      facts: [["Coches", "22"], ["Potencia", "≈620 cv"], ["Vel. punta", "≈335 km/h"], ["Feature", "≈170 km"], ["Chasis", "Único"], ["Rondas", "12 (demo)"]],
+      facts: [["Coches", "22"], ["Potencia", "≈620 cv"], ["Vel. punta", "≈335 km/h"], ["Feature", "≈170 km"], ["Chasis", "Único"], ["Rondas", "14"]],
       keys: [["Reverse grid", "El top 10 de la clasificación sale invertido en la Sprint Race."], ["Mandatory stop", "En la Feature Race hay que usar los dos compuestos."], ["Spec car", "Sin desarrollo: la diferencia está en el setup y en el piloto."]],
       points: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1] },
     { id: "f3", short: "F3", name: "Formula 3", type: "open", hue: 250, season: "2026", sprint: true,
       tag: "Treinta coches, cero margen.", carsPerTeam: 3, driversPerCar: 1, teams: 10,
       intro: "La parrilla más llena del paddock: 30 pilotos, coches idénticos y carreras sin parada. Aquí se aprende a adelantar en el tráfico y a cuidar el neumático durante toda la carrera.",
-      facts: [["Coches", "30"], ["Potencia", "≈380 cv"], ["Vel. punta", "≈300 km/h"], ["Carrera", "≈40 min"], ["Paradas", "0"], ["Rondas", "9 (demo)"]],
+      facts: [["Coches", "30"], ["Potencia", "≈380 cv"], ["Vel. punta", "≈300 km/h"], ["Carrera", "≈40 min"], ["Paradas", "0"], ["Rondas", "9"]],
       keys: [["Pack racing", "Las diferencias son de décimas: el slipstream manda."], ["No pit stops", "Un juego de neumáticos para toda la carrera."], ["Qualifying", "Con 30 coches, una vuelta limpia vale media carrera."]],
       points: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1] },
     { id: "fe", short: "FE", name: "Formula E", type: "fe", hue: 290, season: "2025-26", sprint: false,
       tag: "Eléctrico, urbano y estratégico.", carsPerTeam: 2, driversPerCar: 1, teams: 11,
       intro: "Monoplazas 100 % eléctricos en circuitos urbanos. La carrera se gana con la energía: cuándo ahorrar, cuándo atacar y cuándo usar el Attack Mode. Clasificación en duelos cara a cara.",
-      facts: [["Coches", "22"], ["Potencia", "≈470 cv"], ["0-100", "≈1,8 s"], ["Carrera", "≈45 min"], ["Regeneración", "≈600 kW"], ["Rondas", "16"]],
+      facts: [["Coches", "22"], ["Potencia", "≈470 cv"], ["0-100", "≈1,8 s"], ["Carrera", "≈45 min"], ["Regeneración", "≈600 kW"], ["Rondas", "17"]],
       keys: [["Energy target", "Todos salen con la misma energía: gana quien la reparte mejor."], ["Attack Mode", "Potencia extra temporal a cambio de salirse de la trazada."], ["Duels", "La clasificación final se decide en eliminatorias 1 contra 1."]],
       points: [25, 18, 15, 12, 10, 8, 6, 4, 2, 1] },
     { id: "motogp", short: "MotoGP", name: "MotoGP", type: "bike", hue: 300, season: "2026", sprint: true,
@@ -42,7 +42,7 @@
     { id: "indycar", short: "IndyCar", name: "IndyCar", type: "indy", hue: 240, season: "2026", sprint: false,
       tag: "Óvalos, urbanos y circuitos.", carsPerTeam: 2, driversPerCar: 1, teams: 12,
       intro: "Chasis único con Aeroscreen y motores V6 híbridos. Corre en óvalos a más de 370 km/h, en calles y en circuitos permanentes. Push-to-pass, cautions y estrategia de combustible deciden muchas carreras.",
-      facts: [["Coches", "≈27"], ["Potencia", "≈800 cv"], ["Vel. punta", "≈380 km/h"], ["Indy 500", "805 km"], ["Chasis", "Único"], ["Rondas", "17"]],
+      facts: [["Coches", "≈27"], ["Potencia", "≈800 cv"], ["Vel. punta", "≈380 km/h"], ["Indy 500", "805 km"], ["Chasis", "Único"], ["Rondas", "18"]],
       keys: [["Fuel saving", "Ahorrar combustible puede quitar una parada entera."], ["Push-to-pass", "Potencia extra con un tiempo total limitado por carrera."], ["Cautions", "Los periodos de neutralización reordenan la estrategia."]],
       points: [50, 40, 35, 32, 30, 28, 26, 24, 22, 20, 19, 18, 17, 16, 15] },
     { id: "wec", short: "WEC", name: "WEC", type: "proto", hue: 268, season: "2026", sprint: false,
@@ -96,6 +96,8 @@
     ],
     f2: [
       ["Ronda de Australia","Albert Park","Australia","🇦🇺","2026-03-06","2026-03-08",11,1],
+      ["Ronda de Miami","Miami International Autodrome","EE. UU.","🇺🇸","2026-05-01","2026-05-03",-4,1],
+      ["Ronda de Canadá","Circuit Gilles Villeneuve","Canadá","🇨🇦","2026-05-22","2026-05-24",-4,1],
       ["Ronda de Mónaco","Circuit de Monaco","Mónaco","🇲🇨","2026-06-05","2026-06-07",2,1],
       ["Ronda de Barcelona","Circuit de Barcelona-Catalunya","España","🇪🇸","2026-06-12","2026-06-14",2,1],
       ["Ronda de Austria","Red Bull Ring","Austria","🇦🇹","2026-06-26","2026-06-28",2,1],
@@ -105,8 +107,8 @@
       ["Ronda de Italia","Monza","Italia","🇮🇹","2026-09-04","2026-09-06",2,1],
       ["Ronda de Madrid","Madring","España","🇪🇸","2026-09-11","2026-09-13",2,1],
       ["Ronda de Azerbaiyán","Baku City Circuit","Azerbaiyán","🇦🇿","2026-09-24","2026-09-26",4,1],
-      ["Ronda de Catar","Losail","Catar","🇶🇦","2026-11-27","2026-11-29",3,1,4],
-      ["Ronda de Abu Dabi","Yas Marina","EAU","🇦🇪","2026-12-04","2026-12-06",4,1,2]
+      ["Ronda de Catar","Losail","Catar","🇶🇦","2026-11-27","2026-11-29",3,1],
+      ["Ronda de Abu Dabi","Yas Marina","EAU","🇦🇪","2026-12-04","2026-12-06",4,1]
     ],
     f3: [
       ["Ronda de Australia","Albert Park","Australia","🇦🇺","2026-03-06","2026-03-08",11,1],
@@ -120,23 +122,28 @@
       ["Ronda de Madrid","Madring","España","🇪🇸","2026-09-11","2026-09-13",2,1]
     ],
     fe: [
-      ["E-Prix de São Paulo","Anhembi","Brasil","🇧🇷","2025-12-06","2025-12-06",-3,0],
+      ["E-Prix de São Paulo","São Paulo Street Circuit","Brasil","🇧🇷","2025-12-06","2025-12-06",-3,0],
       ["E-Prix de Ciudad de México","Autódromo Hermanos Rodríguez","México","🇲🇽","2026-01-10","2026-01-10",-6,0],
-      ["E-Prix de Miami","Homestead-Miami","EE. UU.","🇺🇸","2026-01-31","2026-01-31",-5,0],
-      ["E-Prix de Yeda","Jeddah Corniche","Arabia Saudí","🇸🇦","2026-02-13","2026-02-14",3,0],
-      ["E-Prix de Madrid","Jarama","España","🇪🇸","2026-03-21","2026-03-21",1,0],
-      ["E-Prix de Berlín","Tempelhof","Alemania","🇩🇪","2026-05-02","2026-05-03",2,0],
-      ["E-Prix de Mónaco","Circuit de Monaco","Mónaco","🇲🇨","2026-05-16","2026-05-17",2,0],
-      ["E-Prix de Shanghái","Shanghai International Circuit","China","🇨🇳","2026-06-06","2026-06-07",8,0],
-      ["E-Prix de Yakarta","Jakarta International e-Prix Circuit","Indonesia","🇮🇩","2026-06-20","2026-06-20",7,0],
-      ["E-Prix de Tokio","Tokyo Street Circuit","Japón","🇯🇵","2026-07-25","2026-07-26",9,0],
-      ["E-Prix de Londres","ExCeL London","Reino Unido","🇬🇧","2026-08-15","2026-08-16",1,0]
+      ["E-Prix de Miami","Miami International Autodrome","EE. UU.","🇺🇸","2026-01-31","2026-01-31",-5,0],
+      ["E-Prix de Yeda (1)","Jeddah Corniche Circuit","Arabia Saudí","🇸🇦","2026-02-13","2026-02-13",3,0],
+      ["E-Prix de Yeda (2)","Jeddah Corniche Circuit","Arabia Saudí","🇸🇦","2026-02-14","2026-02-14",3,0],
+      ["E-Prix de Madrid","Circuito del Jarama","España","🇪🇸","2026-03-21","2026-03-21",1,0],
+      ["E-Prix de Berlín (1)","Tempelhof","Alemania","🇩🇪","2026-05-02","2026-05-02",2,0],
+      ["E-Prix de Berlín (2)","Tempelhof","Alemania","🇩🇪","2026-05-03","2026-05-03",2,0],
+      ["E-Prix de Mónaco (1)","Circuit de Monaco","Mónaco","🇲🇨","2026-05-16","2026-05-16",2,0],
+      ["E-Prix de Mónaco (2)","Circuit de Monaco","Mónaco","🇲🇨","2026-05-17","2026-05-17",2,0],
+      ["E-Prix de Sanya","Sanya Street Circuit","China","🇨🇳","2026-06-20","2026-06-20",8,0],
+      ["E-Prix de Shanghái (1)","Shanghai International Circuit","China","🇨🇳","2026-07-04","2026-07-04",8,0],
+      ["E-Prix de Shanghái (2)","Shanghai International Circuit","China","🇨🇳","2026-07-05","2026-07-05",8,0],
+      ["E-Prix de Tokio (1)","Tokyo Street Circuit","Japón","🇯🇵","2026-07-25","2026-07-25",9,0],
+      ["E-Prix de Tokio (2)","Tokyo Street Circuit","Japón","🇯🇵","2026-07-26","2026-07-26",9,0],
+      ["E-Prix de Londres (1)","ExCeL London","Reino Unido","🇬🇧","2026-08-15","2026-08-15",1,0],
+      ["E-Prix de Londres (2)","ExCeL London","Reino Unido","🇬🇧","2026-08-16","2026-08-16",1,0]
     ],
     motogp: [
       ["GP de Tailandia","Chang International Circuit","Tailandia","🇹🇭","2026-02-27","2026-03-01",7,1],
       ["GP de Brasil","Goiânia","Brasil","🇧🇷","2026-03-20","2026-03-22",-3,1],
       ["GP de las Américas","Circuit of the Americas","EE. UU.","🇺🇸","2026-03-27","2026-03-29",-5,1],
-      ["GP de Catar","Losail","Catar","🇶🇦","2026-04-10","2026-04-12",3,1],
       ["GP de España","Jerez","España","🇪🇸","2026-04-24","2026-04-26",2,1],
       ["GP de Francia","Le Mans Bugatti","Francia","🇫🇷","2026-05-08","2026-05-10",2,1],
       ["GP de Cataluña","Circuit de Barcelona-Catalunya","España","🇪🇸","2026-05-15","2026-05-17",2,1],
@@ -153,59 +160,64 @@
       ["GP de Indonesia","Mandalika","Indonesia","🇮🇩","2026-10-09","2026-10-11",8,1],
       ["GP de Australia","Phillip Island","Australia","🇦🇺","2026-10-23","2026-10-25",11,1],
       ["GP de Malasia","Sepang International Circuit","Malasia","🇲🇾","2026-10-30","2026-11-01",8,1],
-      ["GP de Portugal","Portimão","Portugal","🇵🇹","2026-11-13","2026-11-15",0,1],
-      ["GP de la Comunitat Valenciana","Ricardo Tormo","España","🇪🇸","2026-11-20","2026-11-22",1,1]
+      ["GP de Catar","Lusail","Catar","🇶🇦","2026-11-06","2026-11-08",3,1],
+      ["GP de Portugal","Portimão","Portugal","🇵🇹","2026-11-20","2026-11-22",0,1],
+      ["GP de la Comunitat Valenciana","Ricardo Tormo","España","🇪🇸","2026-11-27","2026-11-29",1,1]
     ],
     indycar: [
       ["GP de St. Petersburg","Streets of St. Petersburg","EE. UU.","🇺🇸","2026-02-27","2026-03-01",-5,0],
-      ["Phoenix","Phoenix Raceway","EE. UU.","🇺🇸","2026-03-06","2026-03-07",-7,0],
+      ["Phoenix 250","Phoenix Raceway","EE. UU.","🇺🇸","2026-03-05","2026-03-07",-7,0],
       ["GP de Arlington","Streets of Arlington","EE. UU.","🇺🇸","2026-03-13","2026-03-15",-5,0],
-      ["GP de Alabama","Barber Motorsports Park","EE. UU.","🇺🇸","2026-03-27","2026-03-29",-5,0],
+      ["Indy GP de Alabama","Barber Motorsports Park","EE. UU.","🇺🇸","2026-03-27","2026-03-29",-5,0],
       ["GP de Long Beach","Streets of Long Beach","EE. UU.","🇺🇸","2026-04-17","2026-04-19",-7,0],
-      ["GP de Indianápolis","Indianapolis Road Course","EE. UU.","🇺🇸","2026-05-08","2026-05-09",-4,0],
+      ["Sonsio Grand Prix","Indianapolis Road Course","EE. UU.","🇺🇸","2026-05-07","2026-05-09",-4,0],
       ["Indianapolis 500","Indianapolis Motor Speedway","EE. UU.","🇺🇸","2026-05-22","2026-05-24",-4,0],
       ["GP de Detroit","Streets of Detroit","EE. UU.","🇺🇸","2026-05-29","2026-05-31",-4,0],
-      ["Gateway","World Wide Technology Raceway","EE. UU.","🇺🇸","2026-06-05","2026-06-06",-5,0],
-      ["Road America","Road America","EE. UU.","🇺🇸","2026-06-19","2026-06-21",-5,0],
+      ["WWT Raceway 500","World Wide Technology Raceway","EE. UU.","🇺🇸","2026-06-05","2026-06-07",-5,0],
+      ["GP de Road America","Road America","EE. UU.","🇺🇸","2026-06-19","2026-06-21",-5,0],
       ["Mid-Ohio","Mid-Ohio Sports Car Course","EE. UU.","🇺🇸","2026-07-03","2026-07-05",-4,0],
-      ["GP de Toronto","Streets of Toronto","Canadá","🇨🇦","2026-07-17","2026-07-19",-4,0],
-      ["Laguna Seca","WeatherTech Raceway Laguna Seca","EE. UU.","🇺🇸","2026-08-07","2026-08-09",-7,0],
-      ["Milwaukee","Milwaukee Mile","EE. UU.","🇺🇸","2026-08-29","2026-08-30",-5,0]
+      ["GP de Music City","Nashville Superspeedway","EE. UU.","🇺🇸","2026-07-18","2026-07-20",-5,0],
+      ["GP de Portland","Portland International Raceway","EE. UU.","🇺🇸","2026-08-07","2026-08-09",-7,0],
+      ["Indy de Markham","Markham","Canadá","🇨🇦","2026-08-14","2026-08-16",-4,0],
+      ["GP de Washington D. C.","Washington D. C.","EE. UU.","🇺🇸","2026-08-21","2026-08-23",-4,0],
+      ["Milwaukee 250 (1)","Milwaukee Mile","EE. UU.","🇺🇸","2026-08-27","2026-08-29",-5,0],
+      ["Milwaukee 250 (2)","Milwaukee Mile","EE. UU.","🇺🇸","2026-08-28","2026-08-30",-5,0],
+      ["GP de Monterey","Laguna Seca","EE. UU.","🇺🇸","2026-09-04","2026-09-06",-7,0]
     ],
     wec: [
-      ["1812 km de Catar","Losail","Catar","🇶🇦","2026-03-26","2026-03-28",3,0],
       ["6 Horas de Imola","Imola","Italia","🇮🇹","2026-04-17","2026-04-19",2,0],
       ["6 Horas de Spa","Spa-Francorchamps","Bélgica","🇧🇪","2026-05-07","2026-05-09",2,0],
       ["24 Horas de Le Mans","Circuit de la Sarthe","Francia","🇫🇷","2026-06-10","2026-06-14",2,0],
       ["6 Horas de São Paulo","Interlagos","Brasil","🇧🇷","2026-07-10","2026-07-12",-3,0],
       ["Lone Star Le Mans","Circuit of the Americas","EE. UU.","🇺🇸","2026-09-04","2026-09-06",-5,0],
       ["6 Horas de Fuji","Fuji Speedway","Japón","🇯🇵","2026-09-25","2026-09-27",9,0],
-      ["8 Horas de Baréin","Bahrain International Circuit","Baréin","🇧🇭","2026-11-05","2026-11-07",3,0]
+      ["6 Horas de Barcelona","Circuit de Barcelona-Catalunya","España","🇪🇸","2026-10-16","2026-10-18",2,0],
+      ["6 Horas de Monza","Monza","Italia","🇮🇹","2026-11-06","2026-11-08",1,0]
     ],
     imsa: [
       ["24 Horas de Daytona","Daytona International Speedway","EE. UU.","🇺🇸","2026-01-22","2026-01-25",-5,0],
-      ["12 Horas de Sebring","Sebring","EE. UU.","🇺🇸","2026-03-18","2026-03-21",-4,0],
+      ["12 Horas de Sebring","Sebring","EE. UU.","🇺🇸","2026-03-19","2026-03-21",-4,0],
       ["GP de Long Beach","Streets of Long Beach","EE. UU.","🇺🇸","2026-04-17","2026-04-18",-7,0],
-      ["Laguna Seca","WeatherTech Raceway Laguna Seca","EE. UU.","🇺🇸","2026-05-01","2026-05-03",-7,0],
-      ["GP de Detroit","Streets of Detroit","EE. UU.","🇺🇸","2026-05-29","2026-05-30",-4,0],
-      ["6 Horas de Watkins Glen","Watkins Glen","EE. UU.","🇺🇸","2026-06-25","2026-06-28",-4,0],
-      ["Canadian Tire Motorsport Park","CTMP","Canadá","🇨🇦","2026-07-10","2026-07-12",-4,0],
+      ["Monterey SportsCar Championship","Laguna Seca","EE. UU.","🇺🇸","2026-05-01","2026-05-03",-7,0],
+      ["Detroit Sports Car Classic","Streets of Detroit","EE. UU.","🇺🇸","2026-05-29","2026-05-30",-4,0],
+      ["6 Horas de Watkins Glen","Watkins Glen","EE. UU.","🇺🇸","2026-06-26","2026-06-28",-4,0],
+      ["Chevrolet Grand Prix","Canadian Tire Motorsport Park","Canadá","🇨🇦","2026-07-10","2026-07-12",-4,0],
       ["Road America","Road America","EE. UU.","🇺🇸","2026-07-31","2026-08-02",-5,0],
-      ["Virginia International Raceway","VIR","EE. UU.","🇺🇸","2026-08-21","2026-08-23",-4,0],
-      ["Indianápolis","Indianapolis Road Course","EE. UU.","🇺🇸","2026-09-18","2026-09-20",-4,0],
-      ["Petit Le Mans","Road Atlanta","EE. UU.","🇺🇸","2026-10-07","2026-10-10",-4,0]
+      ["GT Challenge at VIR","Virginia International Raceway","EE. UU.","🇺🇸","2026-08-21","2026-08-23",-4,0],
+      ["Battle on the Bricks","Indianapolis Motor Speedway","EE. UU.","🇺🇸","2026-09-18","2026-09-20",-4,0],
+      ["Petit Le Mans","Road Atlanta","EE. UU.","🇺🇸","2026-10-01","2026-10-03",-4,0]
     ],
     gt3: [
       ["Paul Ricard","Circuit Paul Ricard","Francia","🇫🇷","2026-04-10","2026-04-12",2,0],
-      ["Brands Hatch","Brands Hatch","Reino Unido","🇬🇧","2026-05-01","2026-05-03",1,1],
-      ["Monza","Monza","Italia","🇮🇹","2026-05-29","2026-05-31",2,0],
-      ["24 Horas de Spa","Spa-Francorchamps","Bélgica","🇧🇪","2026-06-24","2026-06-28",2,0],
-      ["Misano","Misano","Italia","🇮🇹","2026-07-17","2026-07-19",2,1],
-      ["Magny-Cours","Magny-Cours","Francia","🇫🇷","2026-07-31","2026-08-02",2,1],
+      ["Brands Hatch","Brands Hatch","Reino Unido","🇬🇧","2026-05-02","2026-05-03",1,1],
+      ["Monza","Monza","Italia","🇮🇹","2026-05-28","2026-05-31",2,0],
+      ["24 Horas de Spa","Spa-Francorchamps","Bélgica","🇧🇪","2026-06-23","2026-06-28",2,0],
+      ["Misano","Misano","Italia","🇮🇹","2026-07-16","2026-07-19",2,1],
+      ["Magny-Cours","Magny-Cours","Francia","🇫🇷","2026-07-30","2026-08-02",2,1],
       ["Nürburgring","Nürburgring","Alemania","🇩🇪","2026-08-28","2026-08-30",2,0],
-      ["Valencia","Ricardo Tormo","España","🇪🇸","2026-09-18","2026-09-20",2,1],
-      ["Zandvoort","Zandvoort","Países Bajos","🇳🇱","2026-09-25","2026-09-27",2,1],
-      ["Barcelona","Circuit de Barcelona-Catalunya","España","🇪🇸","2026-10-09","2026-10-11",2,0]
+      ["Zandvoort","Zandvoort","Países Bajos","🇳🇱","2026-09-18","2026-09-20",2,1],
+      ["Barcelona","Circuit de Barcelona-Catalunya","España","🇪🇸","2026-10-02","2026-10-04",2,1],
+      ["Portimão","Algarve International Circuit","Portugal","🇵🇹","2026-10-16","2026-10-18",1,0]
     ]
   };
 
@@ -369,6 +381,7 @@
   function buildGrid(sid) {
     if (GRID[sid]) return GRID[sid];
     if (REAL[sid]) return (GRID[sid] = realGrid(sid));
+    return null;
     var s = BY[sid], R = rng("pursec-" + sid), used = {};
     var teams = [], drivers = [], num = 1;
     var offset = Math.floor(R() * TEAM_NAMES.length);
@@ -452,9 +465,53 @@
     { s: "fe", t: "Attack Mode en 1 minuto", d: "0:59", n: "tiktok" }, { s: "gt3", t: "Qué es el BoP", d: "0:62", n: "short" }
   ];
 
+
+  // ---------- fotos reales (Wikimedia Commons, licencias libres; créditos en /creditos) ----------
+  var FOTOS = ["car-f1", "car-f2", "car-f3", "car-fe", "car-gt3", "car-imsa", "car-indycar", "car-motogp", "car-wec", "drv-f1-alexander-albon", "drv-f1-andrea-kimi-antonelli", "drv-f1-arvid-lindblad", "drv-f1-carlos-sainz-jr", "drv-f1-charles-leclerc", "drv-f1-esteban-ocon", "drv-f1-fernando-alonso", "drv-f1-franco-colapinto", "drv-f1-gabriel-bortoleto", "drv-f1-george-russell", "drv-f1-isack-hadjar", "drv-f1-lance-stroll", "drv-f1-lando-norris", "drv-f1-lewis-hamilton", "drv-f1-liam-lawson", "drv-f1-max-verstappen", "drv-f1-nico-hulkenberg", "drv-f1-oliver-bearman", "drv-f1-oscar-piastri", "drv-f1-pierre-gasly", "drv-f1-sergio-perez", "drv-f1-valtteri-bottas", "drv-motogp-ai-ogura", "drv-motogp-alex-marquez", "drv-motogp-alex-rins", "drv-motogp-brad-binder", "drv-motogp-diogo-moreira", "drv-motogp-enea-bastianini", "drv-motogp-fabio-di-giannantonio", "drv-motogp-fabio-quartararo", "drv-motogp-fermin-aldeguer", "drv-motogp-francesco-bagnaia", "drv-motogp-franco-morbidelli", "drv-motogp-jack-miller", "drv-motogp-joan-mir", "drv-motogp-johann-zarco", "drv-motogp-jorge-martin", "drv-motogp-luca-marini", "drv-motogp-marc-marquez", "drv-motogp-marco-bezzecchi", "drv-motogp-maverick-vinales", "drv-motogp-pedro-acosta", "drv-motogp-raul-fernandez", "drv-motogp-toprak-razgatlioglu", "news-f1-a", "news-f1-b", "news-f1-c", "news-f2", "news-fe", "news-gt3", "news-imsa", "news-indycar", "news-motogp", "news-wec"];
+  function slug(x) { return x.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+  function driverPhoto(sid, d) {
+    var f = slug(d.first), l = slug(d.last);
+    var hit = FOTOS.filter(function (k) { return k.indexOf("drv-" + sid + "-") === 0 && k.indexOf(l) >= 0 && k.indexOf(f.slice(0, 4)) >= 0; })[0];
+    return hit ? "/img/fotos/" + hit + ".webp" : null;
+  }
+  function carPhoto(sid) { return "/img/fotos/car-" + sid + ".webp"; }
+
+  // ---------- lo más destacado de cada serie (real, con fuente) ----------
+  var HIGHLIGHT = {
+    f2: { t: "Camara lidera el campeonato tras Bakú", src: "https://www.formula1.com/en/latest/article/f2-camara-handed-feature-race-2-victory-as-he-leads-championship-after-baku.2oNL6wjBs0AjQBWzjzL1ij", srcName: "Formula1.com" },
+    f3: { t: "Ugo Ugochukwu, campeón 2026: el primero de EE. UU.", src: "https://www.formula1.com/en/latest/article/f3-ugochukwu-is-crowned-2026-champion-as-taponen-earns-maiden-win.7ksMVdTT8EyqtHDCSlLNXW", srcName: "Formula1.com" },
+    fe: { t: "Pascal Wehrlein, campeón 2025-26 (su segundo título)", src: "https://www.autosport.com/formula-e/news/formula-e-london-e-prix-pascal-wehrlein-takes-second-title-despite-zero-points-in-season-finale/10846704/", srcName: "Autosport" },
+    indycar: { t: "Álex Palou, campeón por quinta vez", src: "https://www.indycar.com/news/2026/09/09-07-victory-lap", srcName: "IndyCar.com" },
+    wec: { t: "Toyota gana las 6 Horas de Fuji; Barcelona, el 18 de octubre", src: "https://racingnews365.com/2026-wec-six-hours-of-fuji-results", srcName: "RacingNews365" },
+    imsa: { t: "Petit Le Mans cerró la temporada el 3 de octubre", src: "https://racer.com/2026/09/23/54-entries-endless-plotlines-as-imsa-heads-into-petit-le-mans-season-finale", srcName: "RACER" },
+    gt3: { t: "Auer y Engel (Mercedes-AMG #48) llegan líderes a Portimão", src: "https://en.wikipedia.org/wiki/2026_GT_World_Challenge_Europe", srcName: "Wikipedia" }
+  };
+
+  // ---------- noticias reales (titulares resumidos por PURSEC, con fuente) ----------
+  NEWS = [
+    { s: "f1", k: "Debrief", img: "news-f1-a", t: "Verstappen gana en Sepang y Antonelli sale líder con 84 puntos de margen", d: "Primera victoria del año para Verstappen. Antonelli, segundo, suma 320 puntos; Russell abandonó por un problema técnico.", src: "https://www.crash.net/f1/results/1106501/1/f1-bahrain-grand-prix-malaysia-full-race-results", srcName: "Crash.net" },
+    { s: "motogp", k: "Standings", img: "car-motogp", t: "Martin llega a Mandalika líder, 12 puntos por delante de Marc Márquez", d: "Tras su doblete en el Red Bull Ring, Jorge Martin manda en el Mundial con 306 puntos.", src: "https://www.crash.net/motogp/results/1104906/1/austria-new-2026-motogp-world-championship-standings", srcName: "Crash.net" },
+    { s: "wec", k: "Race", img: "news-wec", t: "Toyota remonta desde la octava posición y gana en casa las 6 Horas de Fuji", d: "Buemi, Hartley y Hirakawa ganaron con el #8 en condiciones cambiantes.", src: "https://racingnews365.com/2026-wec-six-hours-of-fuji-results", srcName: "RacingNews365" },
+    { s: "indycar", k: "Champion", img: "news-indycar", t: "Álex Palou, coronado campeón de IndyCar por quinta vez", d: "El español celebró su quinto título en la gala de final de temporada.", src: "https://www.indycar.com/news/2026/09/09-07-victory-lap", srcName: "IndyCar.com" },
+    { s: "f2", k: "Standings", img: "news-f2", t: "Camara sale de Bakú como líder de la Fórmula 2", d: "Victoria heredada en la segunda Feature Race y liderato del campeonato a falta de Catar y Abu Dabi.", src: "https://www.formula1.com/en/latest/article/f2-camara-handed-feature-race-2-victory-as-he-leads-championship-after-baku.2oNL6wjBs0AjQBWzjzL1ij", srcName: "Formula1.com" },
+    { s: "f3", k: "Champion", img: "car-f3", t: "Ugochukwu, campeón de F3 en Madring: el primero de Estados Unidos", d: "Título decidido en la última cita; Taponen logró su primera victoria.", src: "https://www.formula1.com/en/latest/article/f3-ugochukwu-is-crowned-2026-champion-as-taponen-earns-maiden-win.7ksMVdTT8EyqtHDCSlLNXW", srcName: "Formula1.com" },
+    { s: "fe", k: "Champion", img: "news-fe", t: "Wehrlein se lleva su segundo título de Formula E en Londres", d: "Campeón pese a no puntuar en la última carrera de la temporada.", src: "https://www.autosport.com/formula-e/news/formula-e-london-e-prix-pascal-wehrlein-takes-second-title-despite-zero-points-in-season-finale/10846704/", srcName: "Autosport" },
+    { s: "gt3", k: "Standings", img: "news-gt3", t: "Auer y Engel llegan líderes a la gran final de Portimão", d: "El Mercedes-AMG #48 suma 128,5 puntos antes de la última cita de resistencia.", src: "https://en.wikipedia.org/wiki/2026_GT_World_Challenge_Europe", srcName: "Wikipedia" },
+    { s: "imsa", k: "Preview", img: "news-imsa", t: "Petit Le Mans: 54 coches para decidir los títulos de IMSA", d: "Diez horas en Road Atlanta para cerrar el año con todos los campeonatos abiertos.", src: "https://racer.com/2026/09/23/54-entries-endless-plotlines-as-imsa-heads-into-petit-le-mans-season-finale", srcName: "RACER" },
+    { s: "motogp", k: "Race", img: "news-motogp", t: "Pedro Acosta logra su primera victoria en MotoGP", d: "El murciano ganó en el Red Bull Ring y subió a la cuarta plaza del Mundial.", src: "https://www.crash.net/motogp/news/1105012/1/pedro-acosta-scores-maiden-motogp-win-marc-marquez-fifth-austria", srcName: "Crash.net" },
+    { s: "f1", k: "Standings", img: "news-f1-b", t: "Mercedes suma 556 puntos y Ferrari se consolida segunda", d: "La tabla de constructores tras 16 de 23 rondas.", src: "https://www.crash.net/f1/news/1106505/1/f1-championship-standings-after-bahrain-grand-prix-malaysia", srcName: "Crash.net" },
+    { s: "f1", k: "Standings", img: "news-f1-c", t: "Russell abandona en Sepang y la lucha por el subcampeonato se aprieta", d: "Hamilton, a 22 puntos de Russell; Leclerc, Norris y Verstappen, empatados a menos de 50.", src: "https://www.crash.net/f1/news/1106505/1/f1-championship-standings-after-bahrain-grand-prix-malaysia", srcName: "Crash.net" }
+  ];
+  VIDEOS = [
+    { s: "f1", img: "news-f1-c", t: "El Undercut en 62 segundos", d: "0:62", n: "reel" }, { s: "motogp", img: "car-motogp", t: "La presión mínima del neumático, explicada", d: "0:61", n: "tiktok" },
+    { s: "wec", img: "car-wec", t: "Cómo se adelanta a un GT3 sin perder tiempo", d: "0:60", n: "reel" }, { s: "fe", img: "car-fe", t: "Attack Mode en 1 minuto", d: "0:59", n: "tiktok" },
+    { s: "indycar", img: "car-indycar", t: "Por qué IndyCar ahorra combustible", d: "0:62", n: "short" }, { s: "imsa", img: "car-imsa", t: "Wave-by: recuperar la vuelta", d: "0:55", n: "reel" },
+    { s: "gt3", img: "car-gt3", t: "Qué es el BoP", d: "0:62", n: "short" }, { s: "f2", img: "car-f2", t: "Parrilla invertida: cómo funciona", d: "0:58", n: "tiktok" }
+  ];
+
   window.PS = {
     SERIES: SERIES, BY: BY, CALS: CALS, NEWS: NEWS, VIDEOS: VIDEOS,
-    nextRace: nextRace, sessions: sessions, status: status, grid: buildGrid, todayISO: todayISO, rng: rng,
+    nextRace: nextRace, sessions: sessions, driverPhoto: driverPhoto, carPhoto: carPhoto, HIGHLIGHT: HIGHLIGHT, slug: slug, status: status, grid: buildGrid, todayISO: todayISO, rng: rng,
     SOURCE_F1: "https://www.formula1.com/en/racing/2026"
   };
 })();
