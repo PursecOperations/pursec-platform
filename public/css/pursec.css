@@ -42,6 +42,11 @@ a:hover { color: #E4D3FF; }
 .mono { font-family: var(--f-body); font-weight: 500; font-variant-numeric: tabular-nums; }
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
 :focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
+/* Enlace "Saltar al contenido": invisible hasta que se llega con el teclado */
+.skip { position: fixed; top: 12px; left: 12px; z-index: 100; padding: 10px 16px; border-radius: 4px;
+  background: var(--purple); color: var(--bg); font-weight: 800; transform: translateY(-200%); transition: transform .15s; }
+.skip:focus, .skip:focus-visible { transform: none; color: var(--bg); outline-color: var(--text); }
+main:focus { outline: none; }
 
 /* ---------- espacio de fondo: estrellas casi invisibles ---------- */
 .space {
