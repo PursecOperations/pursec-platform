@@ -9,6 +9,5 @@ Sustituye al emblema de estilo carreras del 3 oct 2026. Misma P y S que el títu
 - `emblema-ps-transparente-1024.png` — versión con volumen y halo, PNG con transparencia.
 
 En la web: `public/img/ps-emblema.webp` (cabecera y pie, con volumen), `public/img/ps-emblema.svg` (versión plana), `public/favicon.svg`, `public/img/ps-emblema-32.png`, `public/apple-touch-icon.png`, `public/img/ps-emblema-512.png`.
-En las infografías: `packages/infographics/src/emblem.js` (pie de cada infografía).
 
 El título largo: en la portada y en las páginas interiores se usa el lettering chicle (`public/img/portada/gum-0..5.webp`). `public/img/pursec-logo-hueco.svg` queda solo como archivo de marca.
