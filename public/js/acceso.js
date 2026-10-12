@@ -16,6 +16,7 @@
     Object.keys(tabs).forEach(function (k) {
       var on = k === which;
       tabs[k][0].setAttribute("aria-selected", String(on));
+      tabs[k][0].tabIndex = on ? 0 : -1;
       tabs[k][1].hidden = !on;
     });
     $("f-new").hidden = true;
@@ -23,6 +24,20 @@
   }
   $("t-in").addEventListener("click", function () { show("in"); });
   $("t-up").addEventListener("click", function () { show("up"); });
+  // Teclado: flechas, Inicio y Fin cambian de pestaña (patrón ARIA de pestañas)
+  ["t-in", "t-up"].forEach(function (id) {
+    $(id).addEventListener("keydown", function (e) {
+      var to = null;
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") to = id === "t-in" ? "up" : "in";
+      else if (e.key === "Home") to = "in";
+      else if (e.key === "End") to = "up";
+      if (!to) return;
+      e.preventDefault();
+      show(to);
+      tabs[to][0].focus();
+    });
+  });
+  $("t-up").tabIndex = -1;
   if (params.get("modo") === "crear") show("up");
 
   // Errores de Supabase en palabras de usuario
