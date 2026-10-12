@@ -1,4 +1,4 @@
--- Tienda de ropa (Fase 4). NO aplicada todavía: se aplica cuando Oriol apruebe pasar la tienda a producción.
+-- Tienda de ropa (Fase 4). Aplicada en pursec-core-db el 12-10-2026 con el sí de Oriol (solo añade tablas).
 -- Precios en Supabase (fuente única). Stripe cobra con price_data; Printful fabrica con el sync_variant_id.
 
 -- ---------------------------------------------------------------- productos
