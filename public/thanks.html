@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Order received — PURSEC</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Archivo:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root{color-scheme:dark}
+  body{margin:0;min-height:100svh;display:grid;place-items:center;padding:24px;box-sizing:border-box;
+    background:radial-gradient(55% 45% at 50% 40%,rgba(88,28,170,.25),rgba(88,28,170,0) 70%),linear-gradient(180deg,#020106,#07040E);
+    color:#F3EAFF;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;text-align:center}
+  main{max-width:560px;display:flex;flex-direction:column;align-items:center;gap:18px}
+  img{width:96px;height:96px}
+  h1{margin:0;font-family:'Unbounded','Arial Black',sans-serif;font-size:clamp(30px,6vw,52px);line-height:1;letter-spacing:-.03em}
+  p{margin:0;color:#CFC3E8;line-height:1.6}
+  .mono{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;color:#9F7FD6}
+  a.btn{display:inline-flex;align-items:center;height:50px;padding:0 24px;border-radius:999px;background:#F3EAFF;color:#140E20;text-decoration:none;font-weight:600;font-size:13px;letter-spacing:.16em;text-transform:uppercase}
+  a.btn:hover{background:#C48BFF}
+</style>
+</head>
+<body>
+<main>
+  <img src="/img/drop/emblem.webp" alt="PURSEC">
+  <span class="mono" id="state">CHECKING YOUR ORDER…</span>
+  <h1 id="title">Order received.</h1>
+  <p id="text">Your piece is being made for you in Europe. You'll get an email with tracking as soon as it ships.</p>
+  <a class="btn" href="/">Back to PURSEC</a>
+</main>
+<script>
+(async function(){
+  const id=new URLSearchParams(location.search).get('session_id');
+  const state=document.getElementById('state');
+  if(!id){ state.textContent='LIFE MOVES FAST, MOVE FASTER'; return; }
+  try{
+    const r=await fetch('https://pursec-shop.pursec-telemetry-hq.workers.dev/order-status?session_id='+encodeURIComponent(id));
+    const d=await r.json();
+    if(d.paid){ state.textContent='PAYMENT CONFIRMED'; }
+    else{ state.textContent='PAYMENT PENDING';
+      document.getElementById('title').textContent='Almost there.';
+      document.getElementById('text').textContent='We are waiting for your payment to clear. You will get an email as soon as it does.'; }
+  }catch(_){ state.textContent='LIFE MOVES FAST, MOVE FASTER'; }
+})();
+</script>
+</body>
+</html>
