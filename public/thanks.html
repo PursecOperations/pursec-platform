@@ -33,7 +33,7 @@
 (async function(){
   const id=new URLSearchParams(location.search).get('session_id');
   const state=document.getElementById('state');
-  if(!id){ state.textContent='LIFE MOVES FAST, MOVE FASTER'; return; }
+  if(!id){ state.textContent='THANK YOU'; return; }
   try{
     const r=await fetch('https://pursec-shop.pursec-telemetry-hq.workers.dev/order-status?session_id='+encodeURIComponent(id));
     const d=await r.json();
@@ -41,7 +41,7 @@
     else{ state.textContent='PAYMENT PENDING';
       document.getElementById('title').textContent='Almost there.';
       document.getElementById('text').textContent='We are waiting for your payment to clear. You will get an email as soon as it does.'; }
-  }catch(_){ state.textContent='LIFE MOVES FAST, MOVE FASTER'; }
+  }catch(_){ state.textContent='THANK YOU'; }
 })();
 </script>
 </body>
