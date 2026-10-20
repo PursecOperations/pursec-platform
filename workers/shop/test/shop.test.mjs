@@ -10,16 +10,13 @@ const ENV = {
   SUPABASE_SERVICE_KEY: "sb_secret_test",
   STRIPE_SECRET_KEY: "sk_test_x",
   STRIPE_WEBHOOK_SECRET: "whsec_test",
-  PRINTFUL_TOKEN: "pf_test",
-  PRINTFUL_WEBHOOK_TOKEN: "tok123",
   SHIPPING_EUR: "4.95",
   SITE_URL: "https://pursec.club",
-  PRINTFUL_CONFIRM: "false",
 };
 
 const VARIANTS = [
-  { id: 11, size: "M", color: "Black", printful_sync_variant_id: 9001, product: { id: 1, slug: "heavy-hoodie", name: "Heavy Hoodie", price_eur: "79.00", active: true } },
-  { id: 12, size: "L", color: "Black", printful_sync_variant_id: null, product: { id: 1, slug: "heavy-hoodie", name: "Heavy Hoodie", price_eur: "79.00", active: true } },
+  { id: 11, size: "M", color: "Black", stock: 3, product: { id: 1, slug: "heavy-hoodie", name: "Heavy Hoodie", price_eur: "79.00", active: true } },
+  { id: 12, size: "L", color: "Black", stock: 0, product: { id: 1, slug: "heavy-hoodie", name: "Heavy Hoodie", price_eur: "79.00", active: true } },
 ];
 
 // ---------------------------------------------------------------- fetch simulado
@@ -61,7 +58,8 @@ test("el precio sale de Supabase y el envío es obligatorio", () => {
   assert.ok(p.shipping_address_collection.allowed_countries.includes("ES"));
   assert.equal(p.metadata.cart, "[[11,2]]");
   assert.throws(() => buildSessionParams([{ variant_id: 11, quantity: 1 }], VARIANTS, { ...ENV, SHIPPING_EUR: "" }), /CONFIG/);
-  assert.throws(() => buildSessionParams([{ variant_id: 12, quantity: 1 }], VARIANTS, ENV), /Printful/);
+  assert.throws(() => buildSessionParams([{ variant_id: 12, quantity: 1 }], VARIANTS, ENV), /Sold out/);
+  assert.throws(() => buildSessionParams([{ variant_id: 11, quantity: 4 }], VARIANTS, ENV), /Sold out/);
   assert.throws(() => buildSessionParams([{ variant_id: 99, quantity: 1 }], VARIANTS, ENV), /no está a la venta/);
 });
 
@@ -102,63 +100,67 @@ test("la dirección de envío se lee del formato nuevo y del antiguo", () => {
   assert.equal(shippingFrom(old).zip, "08001");
 });
 
-test("pago completado -> pedido en Supabase -> borrador en Printful -> submitted", async () => {
-  const ORDER_ID = "0f8fad5b-d9cb-469f-a165-70867728950e";
+const ORDER_ID = "0f8fad5b-d9cb-469f-a165-70867728950e";
+async function postWebhook(env = ENV) {
+  const payload = JSON.stringify({ type: "checkout.session.completed", data: { object: SESSION } });
+  return worker.fetch(new Request("https://shop.test/stripe-webhook", { method: "POST", headers: { "stripe-signature": await signed(payload) }, body: payload }), env);
+}
+
+test("pago completado -> pedido en Supabase -> se descuenta el stock", async () => {
   route((c) => c.method === "GET" && c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [] });
   route((c) => c.url.includes("/rest/v1/product_variants"), { body: [VARIANTS[0]] });
   route((c) => c.method === "POST" && c.url.includes("/rest/v1/orders"), { body: [{ id: ORDER_ID, status: "paid" }] });
-  route((c) => c.url.startsWith("https://api.printful.com/orders"), { body: { code: 200, result: { id: 555 } } });
-  route((c) => c.method === "PATCH" && c.url.includes(`/rest/v1/orders?id=eq.${ORDER_ID}`), { body: [] });
-
-  const payload = JSON.stringify({ type: "checkout.session.completed", data: { object: SESSION } });
-  const res = await worker.fetch(new Request("https://shop.test/stripe-webhook", { method: "POST", headers: { "stripe-signature": await signed(payload) }, body: payload }), ENV);
+  route((c) => c.url.includes("/rest/v1/rpc/apply_order_stock"), { body: [] });
+  const res = await postWebhook();
   assert.equal(res.status, 200);
   const out = await res.json();
-  assert.equal(out.printful_order_id, 555);
-  assert.equal(out.confirmed, false);
-
-  const pfCall = calls.find((c) => c.url.startsWith("https://api.printful.com/orders"));
-  assert.equal(pfCall.url, "https://api.printful.com/orders"); // sin confirm=true: borrador
-  const pfBody = JSON.parse(pfCall.body);
-  assert.equal(pfBody.external_id, ORDER_ID.replace(/-/g, ""));
-  assert.equal(pfBody.recipient.country_code, "ES");
-  assert.deepEqual(pfBody.items, [{ sync_variant_id: 9001, quantity: 1 }]);
-  const patch = calls.filter((c) => c.method === "PATCH").pop();
-  assert.deepEqual(JSON.parse(patch.body), { status: "submitted", printful_order_id: 555, error: null });
-});
-
-test("con PRINTFUL_CONFIRM=true el pedido se confirma", async () => {
-  route((c) => c.method === "GET" && c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [{ id: "0f8fad5b-d9cb-469f-a165-70867728950e", status: "paid" }] });
-  route((c) => c.url.includes("/rest/v1/product_variants"), { body: [VARIANTS[0]] });
-  route((c) => c.url.startsWith("https://api.printful.com/orders"), { body: { result: { id: 556 } } });
-  route((c) => c.method === "PATCH", { body: [] });
-  const payload = JSON.stringify({ type: "checkout.session.completed", data: { object: SESSION } });
-  const res = await worker.fetch(new Request("https://shop.test/stripe-webhook", { method: "POST", headers: { "stripe-signature": await signed(payload) }, body: payload }), { ...ENV, PRINTFUL_CONFIRM: "true" });
-  assert.equal(res.status, 200);
-  assert.ok(calls.some((c) => c.url === "https://api.printful.com/orders?confirm=true"));
-});
-
-test("un aviso repetido no crea un segundo pedido en Printful", async () => {
-  route((c) => c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [{ id: "x", status: "submitted" }] });
-  const payload = JSON.stringify({ type: "checkout.session.completed", data: { object: SESSION } });
-  const res = await worker.fetch(new Request("https://shop.test/stripe-webhook", { method: "POST", headers: { "stripe-signature": await signed(payload) }, body: payload }), ENV);
-  assert.equal((await res.json()).already, "submitted");
+  assert.equal(out.order_id, ORDER_ID);
+  assert.equal(out.stock_issue, false);
+  const insert = JSON.parse(calls.find((c) => c.method === "POST" && c.url.includes("/rest/v1/orders")).body);
+  assert.equal(insert.status, "paid");
+  assert.equal(insert.shipping.country_code, "ES");
+  assert.deepEqual(insert.items, [{ variant_id: 11, name: "Heavy Hoodie", size: "M", color: "Black", qty: 1, unit_eur: 79 }]);
+  const rpc = JSON.parse(calls.find((c) => c.url.includes("apply_order_stock")).body);
+  assert.deepEqual(rpc, { p_items: [{ variant_id: 11, qty: 1 }], p_ref: ORDER_ID });
   assert.ok(!calls.some((c) => c.url.includes("printful")));
 });
 
-test("si Printful falla, el pedido queda en failed y Stripe reintenta (500)", async () => {
-  const ORDER_ID = "0f8fad5b-d9cb-469f-a165-70867728950e";
+test("si se pagó sin stock suficiente, el pedido queda marcado", async () => {
   route((c) => c.method === "GET" && c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [] });
   route((c) => c.url.includes("/rest/v1/product_variants"), { body: [VARIANTS[0]] });
   route((c) => c.method === "POST" && c.url.includes("/rest/v1/orders"), { body: [{ id: ORDER_ID, status: "paid" }] });
-  route((c) => c.url.startsWith("https://api.printful.com/orders"), { status: 400, body: { error: { message: "Invalid address" } } });
-  route((c) => c.method === "PATCH", { body: [] });
-  const payload = JSON.stringify({ type: "checkout.session.completed", data: { object: SESSION } });
-  const res = await worker.fetch(new Request("https://shop.test/stripe-webhook", { method: "POST", headers: { "stripe-signature": await signed(payload) }, body: payload }), ENV);
+  route((c) => c.url.includes("/rest/v1/rpc/apply_order_stock"), { body: [{ variant_id: 11, missing: 1 }] });
+  route((c) => c.method === "PATCH" && c.url.includes(`/rest/v1/orders?id=eq.${ORDER_ID}`), { body: [] });
+  const res = await postWebhook();
+  assert.equal((await res.json()).stock_issue, true);
+  const patch = JSON.parse(calls.find((c) => c.method === "PATCH").body);
+  assert.equal(patch.stock_issue, true);
+  assert.match(patch.notes, /sin stock/);
+});
+
+test("un aviso repetido no descuenta el stock dos veces", async () => {
+  route((c) => c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [{ id: ORDER_ID, status: "paid", stock_issue: false }] });
+  route((c) => c.url.includes("/rest/v1/stock_movements"), { body: [{ id: 1 }] });
+  const res = await postWebhook();
+  assert.equal((await res.json()).already, "paid");
+  assert.ok(!calls.some((c) => c.url.includes("apply_order_stock")));
+});
+
+test("si el pedido existe pero el stock no se descontó, se descuenta al reintentar", async () => {
+  route((c) => c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [{ id: ORDER_ID, status: "paid", stock_issue: false }] });
+  route((c) => c.url.includes("/rest/v1/stock_movements"), { body: [] });
+  route((c) => c.url.includes("/rest/v1/product_variants"), { body: [VARIANTS[0]] });
+  route((c) => c.url.includes("/rest/v1/rpc/apply_order_stock"), { body: [] });
+  const res = await postWebhook();
+  assert.equal(res.status, 200);
+  assert.ok(calls.some((c) => c.url.includes("apply_order_stock")));
+  assert.ok(!calls.some((c) => c.method === "POST" && c.url.endsWith("/rest/v1/orders?on_conflict=stripe_session_id")));
+});
+
+test("si Supabase falla, Stripe reintenta (500)", async () => {
+  route((c) => c.url.includes("/rest/v1/orders?stripe_session_id"), { status: 503, body: { message: "down" } });
+  const res = await postWebhook();
   assert.equal(res.status, 500);
-  const patch = JSON.parse(calls.filter((c) => c.method === "PATCH").pop().body);
-  assert.equal(patch.status, "failed");
-  assert.match(patch.error, /Invalid address/);
 });
 
 test("eventos que no son de pago se ignoran", async () => {
@@ -167,16 +169,9 @@ test("eventos que no son de pago se ignoran", async () => {
   assert.equal((await res.json()).ignored, "charge.succeeded");
 });
 
-// ---------------------------------------------------------------- webhook de Printful
-test("Printful: sin token no entra; package_shipped guarda el seguimiento", async () => {
-  const bad = await worker.fetch(new Request("https://shop.test/printful-webhook?token=no", { method: "POST", body: "{}" }), ENV);
-  assert.equal(bad.status, 401);
-
-  route((c) => c.method === "PATCH" && c.url.includes("orders?id=eq.0f8fad5b-d9cb-469f-a165-70867728950e"), { body: [] });
-  const ev = { type: "package_shipped", data: { order: { external_id: "0f8fad5bd9cb469fa16570867728950e" }, shipment: { tracking_number: "TRK1", tracking_url: "https://track.test/TRK1", carrier: "DHL" } } };
-  const res = await worker.fetch(new Request("https://shop.test/printful-webhook?token=tok123", { method: "POST", body: JSON.stringify(ev) }), ENV);
-  assert.equal(res.status, 200);
-  assert.deepEqual(JSON.parse(calls[0].body), { status: "shipped", tracking_number: "TRK1", tracking_url: "https://track.test/TRK1", carrier: "DHL" });
+test("la ruta antigua de Printful ya no existe", async () => {
+  const res = await worker.fetch(new Request("https://shop.test/printful-webhook?token=x", { method: "POST", body: "{}" }), ENV);
+  assert.equal(res.status, 404);
 });
 
 test("salud y rutas desconocidas", async () => {

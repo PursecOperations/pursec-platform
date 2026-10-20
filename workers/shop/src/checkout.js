@@ -26,7 +26,7 @@ export function buildSessionParams(lines, variants, env) {
   const line_items = lines.map(({ variant_id, quantity }) => {
     const v = byId.get(variant_id);
     if (!v || !v.product || !v.product.active) throw new Error(`La variante ${variant_id} no está a la venta`);
-    if (!v.printful_sync_variant_id) throw new Error(`La variante ${variant_id} no está conectada con Printful`);
+    if (!(Number(v.stock) >= quantity)) throw new Error(`Sold out: ${v.product.name} — ${v.size}`);
     return {
       quantity,
       price_data: {
@@ -78,7 +78,7 @@ export async function handleCheckout(request, env) {
   const ids = lines.map((l) => l.variant_id).join(",");
   const variants = await supabase(
     env,
-    `product_variants?id=in.(${ids})&active=eq.true&select=id,size,color,printful_sync_variant_id,product:products(id,slug,name,price_eur,active)`
+    `product_variants?id=in.(${ids})&active=eq.true&select=id,size,color,stock,product:products(id,slug,name,price_eur,active)`
   );
   let params;
   try {

@@ -2,16 +2,15 @@
 //
 //   POST /checkout          la web crea el pago (Stripe Checkout) con variantes de Supabase
 //   GET  /order-status      la página de gracias comprueba si el pago se completó
-//   POST /stripe-webhook    Stripe avisa del pago -> pedido en Supabase -> pedido en Printful
-//   POST /printful-webhook  Printful avisa del envío -> seguimiento en Supabase (?token=...)
+//   POST /stripe-webhook    Stripe avisa del pago -> pedido en Supabase + descuento de stock
 //   GET  /                  comprobación de salud
 //
 // Secretos (Cloudflare -> Settings -> Variables and Secrets):
-//   SUPABASE_SERVICE_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PRINTFUL_TOKEN, PRINTFUL_WEBHOOK_TOKEN
+//   SUPABASE_SERVICE_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET
 // Variables públicas en wrangler.jsonc.
 
 import { handleCheckout } from "./checkout.js";
-import { handleStripeWebhook, handlePrintfulWebhook, handleOrderStatus } from "./orders.js";
+import { handleStripeWebhook, handleOrderStatus } from "./orders.js";
 
 const PREVIEW_ORIGIN = /^https:\/\/([a-z0-9-]+-)?pursec-platform\.pursec-telemetry-hq\.workers\.dev$/;
 
@@ -45,7 +44,6 @@ export default {
       if (pathname === "/checkout" && (request.method === "POST" || request.method === "OPTIONS")) return await withCors(request, env, handleCheckout);
       if (pathname === "/order-status" && (request.method === "GET" || request.method === "OPTIONS")) return await withCors(request, env, handleOrderStatus);
       if (pathname === "/stripe-webhook" && request.method === "POST") return await handleStripeWebhook(request, env);
-      if (pathname === "/printful-webhook" && request.method === "POST") return await handlePrintfulWebhook(request, env);
       if (pathname === "/" && request.method === "GET") return new Response("PURSEC tienda operativa", { status: 200 });
       return new Response("No encontrado", { status: 404 });
     } catch (err) {

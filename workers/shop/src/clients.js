@@ -1,4 +1,4 @@
-// Clientes mínimos de Supabase (REST), Stripe y Printful, sin dependencias.
+// Clientes mínimos de Supabase (REST) y Stripe, sin dependencias.
 
 export async function supabase(env, path, { method = "GET", headers = {}, body } = {}) {
   const key = env.SUPABASE_SERVICE_KEY;
@@ -49,20 +49,6 @@ export async function stripe(env, path, { method = "GET", params, idempotencyKey
   const data = await res.json();
   if (!res.ok) throw new Error(`Stripe ${method} ${path}: ${res.status} ${data?.error?.message || ""}`);
   return data;
-}
-
-export async function printful(env, path, { method = "GET", body } = {}) {
-  if (!env.PRINTFUL_TOKEN) throw new Error("Falta el secreto PRINTFUL_TOKEN en el Worker");
-  const headers = { Authorization: `Bearer ${env.PRINTFUL_TOKEN}`, "Content-Type": "application/json" };
-  if (env.PRINTFUL_STORE_ID) headers["X-PF-Store-Id"] = env.PRINTFUL_STORE_ID;
-  const res = await fetch(`https://api.printful.com/${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(`Printful ${method} ${path.split("?")[0]}: ${res.status} ${data?.error?.message || data?.result || ""}`);
-  return data.result;
 }
 
 export function json(data, status = 200, headers = {}) {

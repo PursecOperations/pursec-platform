@@ -1,6 +1,7 @@
-// Pedidos: Stripe (pago) -> Supabase (orders) -> Printful (fabricación y envío).
+// Pedidos con stock propio: Stripe (pago) -> Supabase (orders + descuento de stock).
+// El envío lo hace Oriol con su app de etiquetas; el agente Orders marca el pedido como enviado.
 
-import { supabase, stripe, printful, json } from "./clients.js";
+import { supabase, stripe, json } from "./clients.js";
 
 const SIGNATURE_TOLERANCE_S = 300;
 
@@ -37,10 +38,10 @@ export async function handleStripeWebhook(request, env) {
   const session = event.data.object;
   if (session.mode !== "payment" || session.payment_status !== "paid") return json({ received: true, pending: true });
   try {
-    const result = await fulfil(env, session);
+    const result = await recordOrder(env, session);
     return json({ received: true, ...result });
   } catch (err) {
-    // 500 -> Stripe reintenta. El pedido queda en "failed" con el error para revisarlo.
+    // 500 -> Stripe reintenta durante días. El agente de imprevistos lo ve en el resumen.
     return new Response(`Error con el pedido ${session.id}: ${err.message}`, { status: 500 });
   }
 }
@@ -67,20 +68,27 @@ export function parseCartMeta(session) {
   return raw.map(([variant_id, quantity]) => ({ variant_id: Number(variant_id), quantity: Number(quantity) }));
 }
 
-export async function fulfil(env, session) {
-  const existing = await supabase(env, `orders?stripe_session_id=eq.${encodeURIComponent(session.id)}&select=id,status`);
+// Guarda el pedido y descuenta el stock una sola vez, aunque Stripe repita el aviso.
+export async function recordOrder(env, session) {
+  const existing = await supabase(env, `orders?stripe_session_id=eq.${encodeURIComponent(session.id)}&select=id,status,stock_issue`);
   let order = existing?.[0];
-  if (order && order.status !== "failed" && order.status !== "paid") return { order_id: order.id, already: order.status };
+
+  if (order) {
+    // Si el pedido ya existe, solo falta algo cuando el descuento de stock no llegó a hacerse.
+    if (order.stock_issue) return { order_id: order.id, already: order.status };
+    const moved = await supabase(env, `stock_movements?ref=eq.${order.id}&select=id&limit=1`);
+    if (moved?.length) return { order_id: order.id, already: order.status };
+  }
 
   const lines = parseCartMeta(session);
   if (lines.length === 0) throw new Error("La sesión no trae el carrito en metadata");
   const ids = lines.map((l) => l.variant_id).join(",");
-  const variants = await supabase(env, `product_variants?id=in.(${ids})&select=id,size,printful_sync_variant_id,product:products(name,price_eur)`);
+  const variants = await supabase(env, `product_variants?id=in.(${ids})&select=id,size,color,product:products(name,price_eur)`);
   const byId = new Map((variants || []).map((v) => [v.id, v]));
   const items = lines.map((l) => {
     const v = byId.get(l.variant_id);
-    if (!v?.printful_sync_variant_id) throw new Error(`Variante ${l.variant_id} sin Printful`);
-    return { variant_id: v.id, name: v.product?.name, size: v.size, qty: l.quantity, unit_eur: Number(v.product?.price_eur), sync_variant_id: v.printful_sync_variant_id };
+    if (!v) throw new Error(`Variante ${l.variant_id} no encontrada`);
+    return { variant_id: v.id, name: v.product?.name, size: v.size, color: v.color, qty: l.quantity, unit_eur: Number(v.product?.price_eur) };
   });
   const recipient = shippingFrom(session);
 
@@ -94,7 +102,7 @@ export async function fulfil(env, session) {
         email: recipient.email || null,
         customer_name: recipient.name || null,
         shipping: recipient,
-        items: items.map(({ sync_variant_id, ...rest }) => rest),
+        items,
         amount_total_eur: (session.amount_total || 0) / 100,
         status: "paid",
       },
@@ -102,47 +110,18 @@ export async function fulfil(env, session) {
     order = rows[0];
   }
 
-  try {
-    const confirm = env.PRINTFUL_CONFIRM === "true";
-    const pf = await printful(env, `orders${confirm ? "?confirm=true" : ""}`, {
-      method: "POST",
-      body: {
-        external_id: order.id.replace(/-/g, ""),
-        shipping: "STANDARD",
-        recipient,
-        items: items.map((i) => ({ sync_variant_id: i.sync_variant_id, quantity: i.qty })),
-      },
+  const shortfalls = await supabase(env, "rpc/apply_order_stock", {
+    method: "POST",
+    body: { p_items: items.map((i) => ({ variant_id: i.variant_id, qty: i.qty })), p_ref: order.id },
+  });
+  if (Array.isArray(shortfalls) && shortfalls.length) {
+    await supabase(env, `orders?id=eq.${order.id}`, {
+      method: "PATCH",
+      body: { stock_issue: true, notes: `Pagado sin stock suficiente: ${JSON.stringify(shortfalls)}` },
     });
-    await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: { status: "submitted", printful_order_id: pf.id, error: null } });
-    return { order_id: order.id, printful_order_id: pf.id, confirmed: confirm };
-  } catch (err) {
-    await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: { status: "failed", error: String(err.message).slice(0, 500) } });
-    throw err;
+    return { order_id: order.id, stock_issue: true };
   }
-}
-
-// ---------------------------------------------------------------- Printful -> estado y seguimiento
-const PF_STATUS = { package_shipped: "shipped", order_failed: "failed", order_canceled: "canceled", order_put_hold: "submitted", order_updated: null };
-
-export async function handlePrintfulWebhook(request, env) {
-  const token = new URL(request.url).searchParams.get("token");
-  if (!env.PRINTFUL_WEBHOOK_TOKEN || token !== env.PRINTFUL_WEBHOOK_TOKEN) return new Response("No autorizado", { status: 401 });
-  const event = await request.json();
-  const ext = event?.data?.order?.external_id;
-  if (!ext || !/^[0-9a-f]{32}$/.test(ext)) return json({ received: true, ignored: "sin external_id" });
-  const id = `${ext.slice(0, 8)}-${ext.slice(8, 12)}-${ext.slice(12, 16)}-${ext.slice(16, 20)}-${ext.slice(20)}`;
-  const status = PF_STATUS[event.type];
-  const patch = {};
-  if (status) patch.status = status;
-  if (event.type === "package_shipped") {
-    const sh = event.data.shipment || {};
-    patch.tracking_number = sh.tracking_number || null;
-    patch.tracking_url = sh.tracking_url || null;
-    patch.carrier = sh.carrier || null;
-  }
-  if (event.type === "order_failed") patch.error = String(event.data?.reason || "Printful: pedido fallido").slice(0, 500);
-  if (Object.keys(patch).length) await supabase(env, `orders?id=eq.${id}`, { method: "PATCH", body: patch });
-  return json({ received: true, type: event.type });
+  return { order_id: order.id, stock_issue: false };
 }
 
 // ---------------------------------------------------------------- página de gracias
