@@ -14,7 +14,6 @@
   a{color:#7A1FE0}
   header{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid #E7DEF5;padding-bottom:18px;margin-bottom:28px}
   header a.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#140E20;font:700 16px 'Unbounded',sans-serif;letter-spacing:.06em}
-  header img{width:32px;height:32px}
   h1{font:700 clamp(28px,5vw,40px)/1.1 'Unbounded',sans-serif;letter-spacing:-.02em;margin:0 0 8px}
   h2{font:700 20px/1.2 'Unbounded',sans-serif;margin:40px 0 10px;letter-spacing:-.01em}
   h3{font-size:16px;margin:22px 0 6px}
@@ -28,7 +27,7 @@
 <body>
 <div class="wrap">
   <header>
-    <a class="logo" href="/"><img src="/img/drop/emblem.webp" alt="">PURSEC</a>
+    <a class="logo" href="/">PURSEC</a>
     <a href="/" class="mono">← Back to the shop</a>
   </header>
 
@@ -47,14 +46,15 @@
     <li>Prices are in euros and include VAT. The shipping cost is shown before you pay.</li>
     <li>Payment is processed by Stripe. We never see or store your card details.</li>
     <li>The contract is formed when your payment is confirmed. You receive the confirmation by email.</li>
-    <li>Each piece is produced after you order it. Product photos show the real garment; small differences in colour between screens are possible.</li>
+    <li>Pieces ship from our own stock. Product photos show the real garment; small differences in colour between screens are possible.</li>
+    <li>If a size sells out after you pay (very rare), we tell you by email and refund it in full, or you can wait for the restock.</li>
     <li>Applicable law: Spanish law, without limiting the rights you have as a consumer in your country of residence.</li>
   </ul>
 
   <h2 id="shipping">Shipping</h2>
   <ul>
     <li>We ship to countries of the European Union.</li>
-    <li>Production time: <span class="pend">[PENDIENTE: días laborables según Printful]</span>. Delivery after production: <span class="pend">[PENDIENTE: días según destino]</span>.</li>
+    <li>We dispatch orders within <span class="pend">[PENDIENTE: días laborables hasta el envío]</span>. Delivery after dispatch: <span class="pend">[PENDIENTE: días según destino y transportista]</span>.</li>
     <li>You receive a tracking link by email when your order ships.</li>
     <li>If a parcel arrives damaged or the wrong item arrives, write to hola@pursec.club within 14 days with a photo and we will replace it at no cost.</li>
   </ul>
@@ -81,12 +81,12 @@
   <p>Data controller: <span class="pend">[PENDIENTE: titular]</span> · hola@pursec.club.</p>
   <h3>What we collect and why</h3>
   <ul>
-    <li><b>Orders:</b> name, email, phone and shipping address, to make, ship and support your order and to keep invoices (legal obligation). Kept as long as tax law requires.</li>
+    <li><b>Orders:</b> name, email, phone and shipping address, to ship and support your order and to keep invoices (legal obligation). Kept as long as tax law requires.</li>
     <li><b>The list:</b> your email, only if you join it with your consent, to tell you when a drop opens. You can leave at any time from any email or by writing to us.</li>
   </ul>
   <h3>Who processes it for us</h3>
   <ul>
-    <li>Stripe (payments), Printful (production and shipping), Supabase (database, EU region), Cloudflare (website hosting).</li>
+    <li>Stripe (payments), Supabase (database, EU region), Cloudflare (website hosting) and the shipping carrier that delivers your order <span class="pend">[PENDIENTE: transportista o app de etiquetas]</span>.</li>
     <li>Some of these providers may process data outside the EU under the European Commission's standard contractual clauses.</li>
   </ul>
   <h3>Your rights</h3>
@@ -96,7 +96,7 @@
   <p>pursec.club does not use advertising or analytics cookies. The checkout page, hosted by Stripe, uses cookies that are strictly necessary to process the payment and prevent fraud. Fonts are loaded from Google Fonts, which receives your IP address when the page loads. <span class="pend">[PENDIENTE: decidir si alojamos las fuentes en nuestro servidor para evitarlo]</span></p>
 
   <h2 id="product">Product safety &amp; labelling</h2>
-  <p>Each product page lists the fibre composition and care instructions. Garments are made on demand by Printful in its facilities in the EU or the UK. Responsible economic operator in the EU: <span class="pend">[PENDIENTE: confirmar datos del fabricante con Printful]</span>.</p>
+  <p>Each product page lists the fibre composition and care instructions. Manufacturer: <span class="pend">[PENDIENTE: nombre y dirección del fabricante]</span>. Responsible economic operator in the EU: <span class="pend">[PENDIENTE: PURSEC o el fabricante, según el proveedor]</span>.</p>
 </div>
 </body>
 </html>
