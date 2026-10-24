@@ -20,6 +20,8 @@ Al fusionar el PR: cambiarla a `main` (Settings -> Builds -> Production branch).
 | `SUPABASE_SERVICE_KEY` | Supabase -> pursec-core-db -> Project Settings -> API Keys -> clave secreta (`sb_secret_...`) |
 | `STRIPE_SECRET_KEY` | Stripe -> Desarrolladores -> Claves de API -> clave secreta. En pruebas, la del sandbox (`sk_test_...`) |
 | `STRIPE_WEBHOOK_SECRET` | Stripe (sandbox) -> Workbench -> Webhooks -> `pursec-shop-test` -> Signing secret (`whsec_...`) |
+| `PACKLINKPRO_API_KEY` | Packlink PRO -> Configuración -> Integraciones -> API key. Al pagar un pedido se crea su borrador de envío (sin pagar) siempre con depósito en oficina y entrega a domicilio (Correos más barato; si no hay, el más barato). Si falla, el error queda en `orders.notes` y reenviar el evento desde Stripe lo reintenta. |
+| `ALERT_WEBHOOK_URL` | Webhook de Make (escenario "PURSEC - Avisos de envío") que manda un email a Oriol al momento cuando el envío no es Correos (con los puntos de depósito más cercanos a la dirección predeterminada) o cuando Packlink falla. Sin él, el aviso queda solo en `orders.notes`. |
 
 ## Variables públicas (en `wrangler.jsonc`)
 - `SHIPPING_EUR`: precio del envío que paga el cliente (4,95 €). Vacío = la tienda no deja pagar.

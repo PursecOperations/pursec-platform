@@ -1,7 +1,8 @@
-// Pedidos con stock propio: Stripe (pago) -> Supabase (orders + descuento de stock).
-// El envío lo hace Oriol con su app de etiquetas; el agente Orders marca el pedido como enviado.
+// Pedidos con stock propio: Stripe (pago) -> Supabase (orders + descuento de stock) -> borrador en Packlink PRO.
+// Oriol paga e imprime la etiqueta en Packlink; el agente Orders marca el pedido como enviado.
 
 import { supabase, stripe, json } from "./clients.js";
+import { packlinkKey, createDraftForOrder, sendAlert } from "./packlink.js";
 
 const SIGNATURE_TOLERANCE_S = 300;
 
@@ -39,7 +40,10 @@ export async function handleStripeWebhook(request, env) {
   if (session.mode !== "payment" || session.payment_status !== "paid") return json({ received: true, pending: true });
   try {
     const result = await recordOrder(env, session);
-    return json({ received: true, ...result });
+    // El borrador de envío no debe tumbar el pedido: si falla, queda anotado en orders.notes
+    // y el resumen diario lo avisa. Reenviar el evento desde Stripe lo vuelve a intentar.
+    const packlink = await ensurePacklinkDraft(env, result.order_id);
+    return json({ received: true, ...result, packlink });
   } catch (err) {
     // 500 -> Stripe reintenta durante días. El agente de imprevistos lo ve en el resumen.
     return new Response(`Error con el pedido ${session.id}: ${err.message}`, { status: 500 });
@@ -122,6 +126,41 @@ export async function recordOrder(env, session) {
     return { order_id: order.id, stock_issue: true };
   }
   return { order_id: order.id, stock_issue: false };
+}
+
+// ---------------------------------------------------------------- borrador en Packlink
+// Solo para pedidos pagados, con stock y sin borrador previo (Stripe puede repetir el aviso).
+export async function ensurePacklinkDraft(env, orderId) {
+  if (!packlinkKey(env)) return "sin clave";
+  let order;
+  try {
+    [order] = await supabase(env, `orders?id=eq.${orderId}&select=id,email,customer_name,shipping,items,status,stock_issue,packlink_ref,notes`);
+  } catch (err) {
+    return `error leyendo el pedido: ${err.message}`;
+  }
+  if (!order) return "pedido no encontrado";
+  if (order.packlink_ref) return `ya creado ${order.packlink_ref}`;
+  if (order.stock_issue) return "sin stock: no se crea envío";
+  if (order.status !== "paid") return `estado ${order.status}: no se crea envío`;
+  try {
+    const { ref, service, alert } = await createDraftForOrder(env, order);
+    const patch = { packlink_ref: ref };
+    if (alert) patch.notes = [order.notes, `AVISO envío: ${alert}`].filter(Boolean).join("\n");
+    await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: patch });
+    if (alert) {
+      let sent = false;
+      try { sent = await sendAlert(env, "PURSEC: envío que NO es Correos", alert); } catch { /* queda en notes */ }
+      return `borrador ${ref} (${service}) — aviso ${sent ? "enviado" : "sin enviar (solo en notes)"}`;
+    }
+    return `borrador ${ref} (${service})`;
+  } catch (err) {
+    const note = `Packlink ${new Date().toISOString().slice(0, 16)}: ${err.message}`.slice(0, 500);
+    try {
+      await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: { notes: [order.notes, note].filter(Boolean).join("\n") } });
+    } catch { /* la nota es secundaria */ }
+    try { await sendAlert(env, "PURSEC: no se pudo crear el envío en Packlink", `Pedido ${order.id}: ${err.message.slice(0, 300)}`); } catch { /* queda en notes */ }
+    return `error: ${err.message.slice(0, 200)}`;
+  }
 }
 
 // ---------------------------------------------------------------- página de gracias
