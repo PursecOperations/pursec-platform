@@ -9,6 +9,16 @@ const SUPABASE_KEY = "sb_publishable_aKv-FR4J-9LYHz45Np-u_Q_TUoF9ybe";
 const SHOP_API = "https://pursec-shop.pursec-telemetry-hq.workers.dev";
 const SHIPPING_EUR = 4.95, FREE_FROM = 70, MAX_QTY = 5, MAX_LINES = 10;
 const SIZE_ORDER = ["XXS","XS","S","M","L","XL","XXL","2XL","3XL","One size"];
+/* Banda sonora de cada página. Pega el enlace de Spotify (canción, álbum o playlist).
+   null = la mesa muestra "coming soon". "default" se usa en las páginas sin canción propia. */
+const SOUNDTRACK = {
+  default: null,
+  home: null,      // Drop 01
+  shop: null,
+  product: null,
+  help: null,
+  legal: null,
+};
 const CATEGORIES = { hoodies:"Hoodies", tees:"Tees", sweatshirts:"Sweatshirts", bottoms:"Bottoms", outerwear:"Outerwear", accessories:"Accessories" };
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -58,6 +68,7 @@ function chrome() {
   if (ftr) ftr.outerHTML = `
   <footer class="ftr">
     <div class="rule" data-reveal style="margin:calc(-1 * clamp(48px,7vw,90px)) calc(-1 * var(--g)) 0"></div>
+    ${deckHTML()}
     <div class="cols">
       <div class="about"><h4>PURSEC</h4><p>Streetwear in short drops of a few pieces. Shipped from our own stock in Spain.</p></div>
       <div><h4>Shop</h4><ul><li><a href="/shop">All pieces</a></li><li><a href="/#drop">Drop 01</a></li><li><a href="/#lookbook">Lookbook</a></li><li><a href="/#list">The list</a></li></ul></div>
@@ -78,7 +89,8 @@ function chrome() {
     <header><span class="h3">Size guide</span><button class="x" data-close aria-label="Close">×</button></header>
     <div class="body" style="padding-top:18px">${sizeGuideHTML()}</div>
   </aside>
-  <div class="toast" role="status" aria-live="polite"></div>`;
+  <div class="toast" role="status" aria-live="polite"></div>
+  <a class="sound-hint" href="#deck" aria-label="Soundtrack at the bottom of the page"><span class="cap"></span><span class="lbl mono">Sound</span></a>`;
 
   // menú móvil
   const burger = $(".burger");
@@ -97,6 +109,62 @@ function chrome() {
     if (e.target.closest("[data-close]")) closeDrawers();
   });
   addEventListener("keydown", (e) => { if (e.key === "Escape") { closeDrawers(); document.body.classList.remove("menu-open"); } });
+}
+
+/* =================================================================== mesa de DJ */
+function spotifyUri(link) {
+  const m = String(link || "").match(/(track|album|playlist|episode)[/:]([A-Za-z0-9]{10,})/);
+  return m ? `spotify:${m[1]}:${m[2]}` : null;
+}
+const PAGE_NAMES = { home: "Drop 01", shop: "Shop", product: "Product", help: "Help", legal: "Legal", thanks: "Thank you", "404": "Lost" };
+function platter(side) {
+  return `<div class="platter ${side}" aria-hidden="true"><div class="vinyl"><span class="label"><img src="/img/brand/logo-mark.webp" alt=""></span></div><span class="arm"></span></div>`;
+}
+function deckHTML() {
+  const uri = spotifyUri(SOUNDTRACK[page] ?? SOUNDTRACK.default);
+  return `<section class="deck${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
+    ${platter("l")}
+    <div class="screen">
+      <div class="idle">
+        <span class="mono lilac">${uri ? "Soundtrack" : "Soundtrack · coming soon"}</span>
+        <b class="track">${esc(PAGE_NAMES[page] || "PURSEC")}</b>
+        <button class="play" type="button" ${uri ? "" : "disabled"} aria-label="Play the soundtrack"><span class="tri"></span></button>
+        <span class="small mute">${uri ? "Plays only when you press play. Opens Spotify's player." : "A track for this page is on its way."}</span>
+      </div>
+      <div class="embed" id="deck-embed"></div>
+      <span class="scan" aria-hidden="true"></span>
+    </div>
+    ${platter("r")}
+    <div class="fader" aria-hidden="true"><i></i></div>
+  </section>`;
+}
+function deck() {
+  const d = $("#deck"); if (!d) return;
+  const uri = spotifyUri(SOUNDTRACK[page] ?? SOUNDTRACK.default);
+  const btn = $(".play", d);
+  let ctrl = null;
+  const setPlaying = (on) => d.classList.toggle("playing", on);
+  btn?.addEventListener("click", () => {
+    if (!uri) return;
+    if (ctrl) { ctrl.togglePlay(); return; }
+    btn.disabled = true; d.classList.add("loading");
+    // Spotify solo se carga cuando el cliente pulsa play: antes no se envía nada a Spotify.
+    window.onSpotifyIframeApiReady = (API) => {
+      API.createController($("#deck-embed"), { uri, width: "100%", height: 152, theme: "dark" }, (c) => {
+        ctrl = c; d.classList.remove("loading"); d.classList.add("live"); btn.disabled = false;
+        c.addListener("ready", () => c.play());
+        c.addListener("playback_update", (e) => setPlaying(!e.data.isPaused));
+      });
+    };
+    const sc = document.createElement("script");
+    sc.src = "https://open.spotify.com/embed/iframe-api/v1"; sc.async = true;
+    sc.onerror = () => { d.classList.remove("loading"); btn.disabled = false; toast("Spotify couldn't load. Try again."); };
+    document.body.appendChild(sc);
+  });
+  // Indicador lateral: baja con el scroll y desaparece cuando la mesa está a la vista.
+  const hint = $(".sound-hint");
+  if (hint && "IntersectionObserver" in window) new IntersectionObserver(([en]) => hint.classList.toggle("hide", en.isIntersecting), { threshold: 0.2 }).observe(d);
+  hint?.addEventListener("click", (e) => { e.preventDefault(); d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); });
 }
 
 let lastFocus = null;
@@ -451,7 +519,7 @@ function docNav() {
 }
 
 /* =================================================================== arranque */
-chrome(); paintCount(); bindWaitlists(); docNav(); progress();
+chrome(); deck(); paintCount(); bindWaitlists(); docNav(); progress();
 window.PURSEC = { clearBag() { bag = []; saveBag(); } };
 const run = { home, shop, product, "404": () => beamHover($(".hero")) }[page];
 Promise.resolve(run && run()).finally(reveals);
