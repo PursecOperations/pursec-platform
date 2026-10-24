@@ -126,81 +126,98 @@ function platter(side) {
 function deckHTML() {
   const t = SOUNDTRACK[page] ?? SOUNDTRACK.default;
   const uri = spotifyUri(t?.url);
-  const body = `<svg class="dk-body d" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M0 210C118 210 150 28 300 28L700 28C850 28 882 210 1000 210C882 210 850 392 700 392L300 392C150 392 118 210 0 210Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(25 10.5) scale(.95)" d="M0 210C118 210 150 28 300 28L700 28C850 28 882 210 1000 210C882 210 850 392 700 392L300 392C150 392 118 210 0 210Z"/></svg>
-    <svg class="dk-body m" viewBox="0 0 400 320" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M0 160C14 160 16 16 62 16L338 16C384 16 386 160 400 160C386 160 384 304 338 304L62 304C16 304 14 160 0 160Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(10 8) scale(.95)" d="M0 160C14 160 16 16 62 16L338 16C384 16 386 160 400 160C386 160 384 304 338 304L62 304C16 304 14 160 0 160Z"/></svg>`;
-  return `<section class="deck${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
-    ${body}
+  return `<section class="deck bh${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
+    ${t?.cover ? `<img class="dk-cover" src="${esc(t.cover)}" alt="" loading="lazy" width="640" height="640">` : ""}
     <canvas class="dk-hole" aria-hidden="true"></canvas>
-    <span class="dk-halo" aria-hidden="true"></span>
-    <span class="dk-wire l" aria-hidden="true"><i></i></span><span class="dk-wire r" aria-hidden="true"><i></i></span>
-    <span class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
     <div class="screen">
-      ${t?.cover ? `<img class="screen-bg" src="${esc(t.cover)}" alt="" loading="lazy">` : ""}
       <div class="idle">
-        ${t?.cover ? `<img class="art" src="${esc(t.cover)}" alt="Cover of ${esc(t.title)}" loading="lazy" width="640" height="640">` : `<div class="art ph"></div>`}
         <div class="meta">
           <span class="eyebrow">Soundtrack · ${esc(PAGE_NAMES[page] || "PURSEC")}</span>
           <b class="track">${esc(t?.title || "Coming soon")}</b>
           <span class="artist">${esc(t?.artist || "A track for this page is on its way")}</span>
           <button class="play" type="button" ${uri ? "" : "disabled"} aria-label="Play ${esc(t?.title || "the soundtrack")}"><span class="tri"></span></button>
-          <span class="note">${uri ? "Plays only when you press play" : ""}</span>
         </div>
       </div>
       <div class="embed" id="deck-embed"></div>
-      <span class="scan" aria-hidden="true"></span>
     </div>
   </section>`;
 }
-// Agujero negro: partículas que orbitan la pantalla y caen en espiral; otras llegan por la línea.
+// Agujero negro realista: horizonte negro, disco de materia que cruza por delante, la parte de atrás
+// del disco curvada por encima y por debajo (lente gravitatoria) y anillo de fotones.
+// La línea del logo es la materia: entra desde los lados y alimenta el disco.
 function blackHole(d) {
   const cv = $(".dk-hole", d); if (!cv) return;
   const ctx = cv.getContext("2d");
-  let W, H, dpr, cx, cy, RX, RY, raf, on = false, parts = [], flow = [];
+  let W, H, dpr, cx, cy, R, raf, on = false, t = 0, last = 0;
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const col = (k, a) => `rgba(${Math.round(lerp(255, 168, k))},${Math.round(lerp(246, 85, k))},${Math.round(lerp(255, 247, k))},${a})`;
   const size = () => {
     dpr = Math.min(2, devicePixelRatio || 1);
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const r = d.getBoundingClientRect(), c = cv.getBoundingClientRect();
-    cx = r.left - c.left + r.width / 2; cy = r.top - c.top + r.height / 2;
-    RX = r.width * 0.5; RY = r.height * 0.5;
+    cx = W / 2; cy = H / 2; R = W < 700 ? Math.min(H * 0.3, W * 0.25) : Math.min(H * 0.25, W * 0.17);
+    d.style.setProperty("--hole", `${Math.round(R * 2)}px`);
   };
-  const spawn = (rr) => ({ a: Math.random() * 6.283, r: rr ?? 0.55 + Math.random() * 0.75, w: 0.6 + Math.random() * 1.6, hue: Math.random() < 0.3 ? 0 : 1, px: null, py: null });
-  const reset = () => { parts = Array.from({ length: Math.round(Math.min(520, W * 0.32)) }, () => spawn()); flow = []; };
-  const pos = (p) => [cx + Math.cos(p.a) * p.r * RX, cy + Math.sin(p.a) * p.r * RY];
-  const tick = () => {
-    const boost = d.classList.contains("playing") ? 1.9 : 1;
+  const SEG = 96;
+  // dibuja un anillo del disco entre dos ángulos con brillo que fluye
+  const ring = (rx, ry, a0, a1, k, alpha, lw, flow) => {
+    const step = (a1 - a0) / SEG;
+    ctx.lineWidth = lw;
+    for (let i = 0; i < SEG; i++) {
+      const a = a0 + i * step, b = a + step * 1.15;
+      const turb = (0.55 + 0.45 * Math.sin(a * 5 - flow + k * 0.9)) * (0.7 + 0.3 * Math.sin(a * 13 + flow * 1.7 - k * 2.1));
+      const dop = 1 - 0.5 * Math.cos(a);           // el lado que se acerca brilla más
+      ctx.strokeStyle = col(k, Math.min(1, alpha * turb * dop));
+      ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, a, b); ctx.stroke();
+    }
+  };
+  const frame = (now) => {
+    const boost = d.classList.contains("playing") ? 2.2 : 1;
+    const dt = last ? Math.min(50, now - last) : 16; last = now; t += dt * 0.0011 * boost;
     ctx.clearRect(0, 0, W, H);
     ctx.globalCompositeOperation = "lighter";
-    ctx.lineCap = "round";
-    for (const p of parts) {
-      const [x0, y0] = p.px === null ? pos(p) : [p.px, p.py];
-      p.a += (0.0045 / Math.pow(p.r, 1.5)) * boost;
-      p.r -= 0.00045 * boost * (1.4 - p.r * 0.5);
-      if (p.r < 0.5) Object.assign(p, spawn(1.15 + Math.random() * 0.2));
-      const [x, y] = pos(p);
-      const near = Math.max(0, 1.3 - p.r);
-      ctx.strokeStyle = p.hue ? `rgba(201,162,255,${0.35 + near * 0.6})` : `rgba(255,255,255,${0.3 + near * 0.6})`;
-      ctx.lineWidth = p.w * (0.8 + near * 1.4);
-      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x, y); ctx.stroke();
-      p.px = x; p.py = y;
+    const N = W < 700 ? 14 : 22;
+    // línea del logo = materia que llega desde los lados
+    const outer = R * 3.3;
+    for (const side of [-1, 1]) {
+      const x0 = side < 0 ? 0 : W, x1 = cx + side * outer * 0.98;
+      const g = ctx.createLinearGradient(x0, 0, x1, 0);
+      g.addColorStop(0, "rgba(168,85,247,0)"); g.addColorStop(0.55, "rgba(168,85,247,.55)"); g.addColorStop(1, "rgba(233,216,255,.95)");
+      ctx.strokeStyle = g; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x0, cy); ctx.lineTo(x1, cy); ctx.stroke();
+      ctx.lineWidth = 9; ctx.strokeStyle = "rgba(168,85,247,.12)"; ctx.beginPath(); ctx.moveTo(x0, cy); ctx.lineTo(x1, cy); ctx.stroke();
+      for (let k = 0; k < 4; k++) {                 // pulsos de materia cayendo hacia el disco
+        const ph = ((t * 0.55 + k / 4) % 1) ** 1.6;
+        const x = lerp(x0, x1, ph), len = 30 + ph * 90;
+        const pg = ctx.createLinearGradient(x - side * len, 0, x, 0);
+        pg.addColorStop(0, "rgba(255,255,255,0)"); pg.addColorStop(1, `rgba(255,255,255,${0.35 + ph * 0.6})`);
+        ctx.strokeStyle = pg; ctx.lineWidth = 2 + ph * 3; ctx.beginPath(); ctx.moveTo(x - side * len, cy); ctx.lineTo(x, cy); ctx.stroke();
+      }
     }
-    // partículas que llegan por la línea del logo
-    if (Math.random() < 0.35 * boost) { const side = Math.random() < 0.5 ? -1 : 1; flow.push({ x: side < 0 ? 0 : W, y: cy + (Math.random() - 0.5) * 3, v: 1.5 + Math.random() * 2, side }); }
-    flow = flow.filter((f) => {
-      const x0 = f.x; f.v *= 1.025; f.x += -f.side * f.v * boost;
-      const dist = Math.abs(f.x - cx);
-      if (dist < RX * 1.02) { const p = spawn(1.05); p.a = f.side < 0 ? Math.PI : 0; parts.push(p); if (parts.length > 700) parts.shift(); return false; }
-      ctx.strokeStyle = "rgba(233,216,255,.85)"; ctx.lineWidth = 1.6;
-      ctx.beginPath(); ctx.moveTo(x0, f.y); ctx.lineTo(f.x, f.y); ctx.stroke();
-      return true;
-    });
+    // mitad trasera del disco (por detrás del agujero)
+    const gap = (R * 1.85) / N;
+    for (let k = 0; k < N; k++) { const q = k / (N - 1); ring(R * lerp(1.45, 3.3, q), R * lerp(1.45, 3.3, q) * 0.1, Math.PI, Math.PI * 2, q, lerp(0.5, 0.06, q), gap * 0.55, t * 3); }
+    // lente: la parte de atrás del disco curvada por encima y por debajo
+    const L = Math.round(N * 0.55);
+    const lg = (R * 0.63) / L;
+    for (let k = 0; k < L; k++) { const q = k / (L - 1); const r = R * lerp(1.1, 1.73, q); ring(r * 1.04, r * 0.96, Math.PI, Math.PI * 2, q, lerp(0.6, 0.08, q), lg * 1.5, t * 3.4); }
+    for (let k = 0; k < L; k++) { const q = k / (L - 1); const r = R * lerp(1.08, 1.42, q); ring(r * 1.02, r * 0.86, 0, Math.PI, q, lerp(0.35, 0.05, q), lg * 1.2, t * 3.4); }
+    // horizonte de sucesos
     ctx.globalCompositeOperation = "source-over";
-    if (on) raf = requestAnimationFrame(tick);
+    const sh = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 1.06);
+    sh.addColorStop(0, "rgba(2,1,4,.97)"); sh.addColorStop(0.85, "rgba(2,1,4,.97)"); sh.addColorStop(1, "rgba(2,1,4,0)");
+    ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(cx, cy, R * 1.06, 0, 6.2832); ctx.fill();
+    ctx.globalCompositeOperation = "lighter";
+    // anillo de fotones
+    ctx.lineWidth = 2.2; ctx.strokeStyle = `rgba(255,248,255,${0.75 + 0.2 * Math.sin(t * 4)})`; ctx.beginPath(); ctx.arc(cx, cy, R * 1.03, 0, 6.2832); ctx.stroke();
+    ctx.lineWidth = 7; ctx.strokeStyle = "rgba(201,162,255,.22)"; ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, 6.2832); ctx.stroke();
+    // mitad delantera del disco (cruza por delante del agujero)
+    for (let k = 0; k < N; k++) { const q = k / (N - 1); ring(R * lerp(1.45, 3.3, q), R * lerp(1.45, 3.3, q) * 0.1, 0, Math.PI, q, lerp(0.62, 0.07, q), gap * 0.6, t * 3); }
+    ctx.globalCompositeOperation = "source-over";
+    if (on) raf = requestAnimationFrame(frame);
   };
-  size(); reset();
-  addEventListener("resize", () => { size(); reset(); });
-  if (reduce) { for (let i = 0; i < 60; i++) tick(); return; }
-  new IntersectionObserver(([en]) => { on = en.isIntersecting; cancelAnimationFrame(raf); if (on) { size(); raf = requestAnimationFrame(tick); } }).observe(d);
+  size(); addEventListener("resize", size);
+  if (reduce) { frame(16); return; }
+  new IntersectionObserver(([en]) => { on = en.isIntersecting; cancelAnimationFrame(raf); if (on) { size(); last = 0; raf = requestAnimationFrame(frame); } }).observe(d);
 }
 
 function deck() {

@@ -739,3 +739,56 @@ body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
 .ftr{overflow:clip}
 .dk-hole{z-index:0}
 .dk-body path.shell{fill:rgba(5,3,9,.6)}
+
+/* =================================================================== apartado entero = agujero negro, portada gigante detrás */
+.ftr .deck{max-width:none;width:100vw;margin-inline:calc(50% - 50vw);aspect-ratio:auto;height:clamp(440px,46vw,640px)}
+.ftr>.rule{display:none}
+.dk-cover{position:absolute;left:50%;top:50%;width:min(1100px,100vw);height:auto;aspect-ratio:1;object-fit:cover;transform:translate(-50%,-50%);z-index:-3;opacity:.55;filter:saturate(1.15) brightness(.75) contrast(1.05);-webkit-mask-image:radial-gradient(closest-side,#000 18%,rgba(0,0,0,.55) 48%,transparent 78%);mask-image:radial-gradient(closest-side,#000 18%,rgba(0,0,0,.55) 48%,transparent 78%);animation:coverDrift 24s ease-in-out infinite alternate}
+@keyframes coverDrift{to{transform:translate(-50%,-50%) scale(1.08) rotate(2deg)}}
+.deck.playing .dk-cover{opacity:.8}
+.dk-vignette{inset:0;z-index:-2;pointer-events:none;background:radial-gradient(ellipse 34% 30% at 50% 50%,rgba(4,2,7,.15),rgba(4,2,7,.5) 55%,var(--night) 100%)}
+.dk-hole{left:0;width:100%;top:0;height:100%}
+.dk-body path.shell{fill:none}
+.dk-body path.inner{stroke:rgba(201,162,255,.45)}
+.dk-halo{width:46%;height:110%;opacity:.55}
+.screen{left:31%;width:38%;top:22%;height:56%;background:rgba(6,3,12,.42);backdrop-filter:blur(10px) saturate(1.2);-webkit-backdrop-filter:blur(10px) saturate(1.2)}
+.screen .idle{grid-template-columns:1fr;justify-items:center;text-align:center;align-content:center}
+.screen .meta{align-items:center}
+.screen .track{font-size:clamp(20px,2.2vw,32px)}
+.screen .artist{font-size:clamp(13px,1.2vw,16px)}
+.screen .play{width:58px;height:58px;margin-top:10px}
+.leds{top:16%}
+.dk-wire{display:none}
+@media (max-width:900px){
+  .ftr .deck{height:400px;max-width:none;aspect-ratio:auto}
+  .dk-cover{width:150vw}
+  .screen{left:8%;width:84%;top:24%;height:52%}
+  .screen .idle{grid-template-columns:1fr}
+  .leds{top:17%}
+}
+.dk-vignette{background:radial-gradient(ellipse 62% 72% at 50% 50%,rgba(4,2,7,0) 0%,rgba(4,2,7,.25) 50%,rgba(4,2,7,.75) 80%,var(--night) 100%)}
+.dk-cover{opacity:.7}
+.screen{background:rgba(6,3,12,.28)}
+
+/* =================================================================== agujero negro realista (v4) */
+.ftr .deck.bh{height:clamp(480px,46vw,680px)}
+.deck.bh .dk-hole{position:absolute;inset:0;left:0;top:0;width:100%;height:100%;z-index:0;filter:drop-shadow(0 0 10px rgba(168,85,247,.75)) drop-shadow(0 0 34px rgba(168,85,247,.45))}
+.deck.bh .dk-cover{z-index:-1;opacity:.42;width:min(1200px,110vw);-webkit-mask-image:radial-gradient(closest-side,#000 25%,rgba(0,0,0,.5) 55%,transparent 82%);mask-image:radial-gradient(closest-side,#000 25%,rgba(0,0,0,.5) 55%,transparent 82%)}
+.deck.bh.playing .dk-cover{opacity:.6}
+.deck.bh .screen{left:50%;top:50%;width:calc(var(--hole,300px) * .92);height:calc(var(--hole,300px) * .92);transform:translate(-50%,-50%);border-radius:50%;border:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;overflow:visible;z-index:2;container-type:normal;transition:width .6s var(--ease),height .6s var(--ease),border-radius .6s var(--ease)}
+.deck.bh .screen .idle{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0;text-align:center}
+.deck.bh .screen .meta{align-items:center;gap:5px;max-width:86%}
+.deck.bh .screen .track{font-size:clamp(17px,1.8vw,26px);text-align:center}
+.deck.bh .screen .artist{font-size:clamp(11.5px,1vw,14px);white-space:normal;text-align:center}
+.deck.bh .screen .eyebrow{font-size:9.5px}
+.deck.bh .screen .play{width:52px;height:52px;margin-top:8px}
+.deck.bh.live .screen{width:min(360px,88vw);height:170px;border-radius:14px}
+.deck.bh .screen .embed{left:0;right:0;top:50%;margin-top:-76px}
+@media (max-width:900px){.ftr .deck.bh{height:440px}.deck.bh .screen .eyebrow{display:none}.deck.bh .screen .play{width:44px;height:44px}}
+
+/* texto arriba del disco, play debajo */
+.deck.bh .screen .idle{align-items:flex-start}
+.deck.bh .screen .meta{height:100%;justify-content:flex-start;padding-top:20%}
+.deck.bh .screen .play{margin-top:auto;margin-bottom:9%}
+@media (max-width:900px){.ftr .deck.bh{height:380px}.deck.bh .screen .meta{padding-top:16%}.deck.bh .screen .track{font-size:15px}.deck.bh .screen .artist{font-size:11px}}
+.deck.bh .screen .meta{position:relative;width:86%;max-width:none;margin:0 auto;text-align:center}
