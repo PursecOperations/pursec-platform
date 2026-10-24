@@ -4,39 +4,24 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Legal, privacy &amp; shipping — PURSEC</title>
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@700&family=Archivo:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
-<style>
-  /* BORRADOR pendiente de revisión por Oriol y su gestor. Los datos marcados [PENDIENTE] se rellenan antes de publicar. */
-  :root{color-scheme:light}
-  body{margin:0;background:#FFFFFF;color:#140E20;font-family:'Archivo','Helvetica Neue',Arial,sans-serif;line-height:1.65}
-  .wrap{max-width:760px;margin:0 auto;padding-inline:20px;padding-block:48px 80px}
-  a{color:#7A1FE0}
-  header{display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:1px solid #E7DEF5;padding-bottom:18px;margin-bottom:28px}
-  header a.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#140E20;font:700 16px 'Unbounded',sans-serif;letter-spacing:.06em}
-  h1{font:700 clamp(28px,5vw,40px)/1.1 'Unbounded',sans-serif;letter-spacing:-.02em;margin:0 0 8px}
-  h2{font:700 20px/1.2 'Unbounded',sans-serif;margin:40px 0 10px;letter-spacing:-.01em}
-  h3{font-size:16px;margin:22px 0 6px}
-  p,li{color:#3A3150}
-  .mono{font-family:'JetBrains Mono',monospace;font-size:12px;color:#5B5270;letter-spacing:.06em}
-  .pend{font-family:'JetBrains Mono',monospace;font-size:13px;color:#B45309;font-weight:600}
-  nav.toc{display:flex;flex-wrap:wrap;gap:8px 18px;margin:18px 0 0;font-size:14px}
-  .form{border:1px solid #E7DEF5;border-radius:12px;padding:16px 18px;background:#FAF7FF}
-</style>
+<meta name="theme-color" content="#040207">
+<link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/site.css">
+<!-- BORRADOR pendiente de revisión por Oriol y su gestor. Los datos marcados [PENDIENTE] se rellenan antes de publicar. -->
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <a class="logo" href="/">PURSEC</a>
-    <a href="/" class="mono">← Back to the shop</a>
-  </header>
-
-  <h1>Legal, privacy &amp; shipping</h1>
-  <p class="mono">Last updated: <span class="pend">[PENDIENTE: fecha de publicación]</span></p>
-  <nav class="toc" aria-label="Sections">
-    <a href="#owner">Who we are</a><a href="#terms">Terms of sale</a><a href="#shipping">Shipping</a><a href="#returns">Returns &amp; withdrawal</a><a href="#privacy">Privacy</a><a href="#cookies">Cookies</a><a href="#product">Product safety</a>
-  </nav>
-
+<body data-page="legal">
+<div data-header></div>
+<main id="main">
+  <section class="page-hero" aria-labelledby="t">
+    <span class="mono lilac">Legal</span>
+    <h1 class="display" id="t" style="font-size:clamp(40px,8vw,112px);margin-top:12px">Legal, privacy &amp; shipping</h1>
+    <p class="mono">Last updated: <span class="pend">[PENDIENTE: fecha de publicación]</span></p>
+  </section>
+  <div class="light">
+    <div class="doc">
+      <nav aria-label="Sections"><a href="#owner">Who we are</a><a href="#terms">Terms of sale</a><a href="#shipping">Shipping</a><a href="#returns">Returns &amp; withdrawal</a><a href="#privacy">Privacy</a><a href="#cookies">Cookies</a><a href="#product">Product safety</a></nav>
+      <article>
   <h2 id="owner">Who we are</h2>
   <p>pursec.club is run by <span class="pend">[PENDIENTE: nombre completo del titular]</span>, NIF <span class="pend">[PENDIENTE]</span>, address <span class="pend">[PENDIENTE: domicilio fiscal]</span>, Spain. Contact: <b>hola@pursec.club</b>.</p>
 
@@ -68,7 +53,7 @@
     <li>We refund the price of the item and the standard shipping cost of the original order within 14 days of receiving your request, using the same payment method. We may wait to refund until we receive the item back.</li>
     <li>Return address: <span class="pend">[PENDIENTE]</span>.</li>
   </ul>
-  <div class="form">
+  <div class="box" id="withdrawal-form">
     <h3 style="margin-top:0">Model withdrawal form</h3>
     <p>To: <span class="pend">[PENDIENTE: nombre y domicilio]</span>, hola@pursec.club<br>
     I hereby give notice that I withdraw from my contract for the following goods: ……<br>
@@ -87,17 +72,22 @@
   </ul>
   <h3>Who processes it for us</h3>
   <ul>
-    <li>Stripe (payments), Supabase (database, EU region), Cloudflare (website hosting) and the shipping carrier that delivers your order <span class="pend">[PENDIENTE: transportista o app de etiquetas]</span>.</li>
+    <li>Stripe (payments), Supabase (database, EU region), Cloudflare (website hosting), Packlink (shipping platform that prepares your parcel label), the carrier that delivers your order (usually Correos) and Make (internal order alerts).</li>
     <li>Some of these providers may process data outside the EU under the European Commission's standard contractual clauses.</li>
   </ul>
   <h3>Your rights</h3>
   <p>You can ask to access, correct, delete or move your data, or object to its use, by writing to hola@pursec.club. You can also complain to the Spanish Data Protection Agency (aepd.es).</p>
 
   <h2 id="cookies">Cookies</h2>
-  <p>pursec.club does not use advertising or analytics cookies. The checkout page, hosted by Stripe, uses cookies that are strictly necessary to process the payment and prevent fraud. Fonts are loaded from Google Fonts, which receives your IP address when the page loads. <span class="pend">[PENDIENTE: decidir si alojamos las fuentes en nuestro servidor para evitarlo]</span></p>
+  <p>pursec.club does not use advertising or analytics cookies. Your bag is kept in your browser's local storage so it is still there when you come back; it never leaves your device until you check out. The checkout page, hosted by Stripe, uses cookies that are strictly necessary to process the payment and prevent fraud. Fonts are served from pursec.club itself, so no third party receives your IP address when the page loads.</p>
 
   <h2 id="product">Product safety &amp; labelling</h2>
   <p>Each product page lists the fibre composition and care instructions. Manufacturer: <span class="pend">[PENDIENTE: nombre y dirección del fabricante]</span>. Responsible economic operator in the EU: <span class="pend">[PENDIENTE: PURSEC o el fabricante, según el proveedor]</span>.</p>
-</div>
+      </article>
+    </div>
+  </div>
+</main>
+<div data-footer></div>
+<script src="/assets/site.js" defer></script>
 </body>
 </html>
