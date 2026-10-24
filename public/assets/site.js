@@ -57,6 +57,7 @@ function chrome() {
   const ftr = $("[data-footer]");
   if (ftr) ftr.outerHTML = `
   <footer class="ftr">
+    <div class="rule" data-reveal style="margin:calc(-1 * clamp(48px,7vw,90px)) calc(-1 * var(--g)) 0"></div>
     <div class="cols">
       <div class="about"><h4>PURSEC</h4><p>Streetwear in short drops of a few pieces. Shipped from our own stock in Spain.</p></div>
       <div><h4>Shop</h4><ul><li><a href="/shop">All pieces</a></li><li><a href="/#drop">Drop 01</a></li><li><a href="/#lookbook">Lookbook</a></li><li><a href="/#list">The list</a></li></ul></div>
@@ -328,37 +329,18 @@ function dragScroll(el) {
   el.addEventListener("click", (e) => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
 }
 
-// Cielo del hero: estrellas que se mueven despacio y siguen un poco al ratón.
-function starfield(canvas) {
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  let w, h, dpr, stars = [], mx = 0, my = 0, tx = 0, ty = 0, raf, visible = true;
-  const make = () => {
-    dpr = Math.min(2, devicePixelRatio || 1);
-    w = canvas.clientWidth; h = canvas.clientHeight;
-    canvas.width = w * dpr; canvas.height = h * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const n = Math.round((w * h) / 2600);
-    stars = Array.from({ length: n }, () => ({ x: Math.random() * w, y: Math.random() * h, z: Math.random() ** 2, t: Math.random() * 6.28, s: 0.4 + Math.random() * 1.3, lilac: Math.random() < 0.18 }));
-  };
-  const draw = (time) => {
-    tx += (mx - tx) * 0.04; ty += (my - ty) * 0.04;
-    ctx.clearRect(0, 0, w, h);
-    for (const s of stars) {
-      s.x -= 0.03 + s.z * 0.12; if (s.x < -4) s.x = w + 4;
-      const tw = 0.55 + 0.45 * Math.sin(time * 0.0012 * s.s + s.t);
-      const px = s.x + tx * (s.z * 18), py = s.y + ty * (s.z * 18);
-      const r = (0.35 + s.z * 1.25) * (s.lilac ? 1.1 : 1);
-      ctx.globalAlpha = (0.25 + s.z * 0.75) * tw;
-      ctx.fillStyle = s.lilac ? "#C9A2FF" : "#F3EAFF";
-      ctx.beginPath(); ctx.arc(px, py, r, 0, 6.283); ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-    if (visible) raf = requestAnimationFrame(draw);
-  };
-  make(); addEventListener("resize", make);
-  addEventListener("pointermove", (e) => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; }, { passive: true });
-  if (reduce) { draw(0); cancelAnimationFrame(raf); return; }
-  new IntersectionObserver(([en]) => { visible = en.isIntersecting; if (visible) raf = requestAnimationFrame(draw); else cancelAnimationFrame(raf); }).observe(canvas);
+// La línea del logo: un punto de luz sigue al ratón por la línea del hero.
+function beamHover(hero) {
+  if (!hero || reduce || matchMedia("(hover: none)").matches) return;
+  const beam = $(".beam", hero); if (!beam) return;
+  hero.addEventListener("pointerenter", () => hero.classList.add("hover"));
+  hero.addEventListener("pointerleave", () => hero.classList.remove("hover"));
+  hero.addEventListener("pointermove", (e) => { const r = beam.getBoundingClientRect(); beam.style.setProperty("--mx", `${e.clientX - r.left}px`); }, { passive: true });
+}
+// Progreso de lectura: la línea bajo la cabecera se llena al bajar.
+function progress() {
+  const set = () => { const h = document.documentElement.scrollHeight - innerHeight; document.documentElement.style.setProperty("--p", h > 0 ? (scrollY / h).toFixed(4) : 0); };
+  addEventListener("scroll", set, { passive: true }); addEventListener("resize", set); set();
 }
 function tilt(stage) {
   const t = $(".tilt", stage); if (!t || reduce || matchMedia("(hover: none)").matches) return;
@@ -370,7 +352,7 @@ function tilt(stage) {
 
 /* =================================================================== páginas */
 async function home() {
-  starfield($(".hero canvas")); tilt($(".logo-stage")); manifesto(); dragScroll($(".look"));
+  beamHover($(".hero")); tilt($(".logo-stage")); manifesto(); dragScroll($(".look"));
   const grid = $("#drop-grid"); if (!grid) return;
   const ps = await loadProducts();
   if (ps.length) {
@@ -469,9 +451,9 @@ function docNav() {
 }
 
 /* =================================================================== arranque */
-chrome(); paintCount(); bindWaitlists(); docNav();
+chrome(); paintCount(); bindWaitlists(); docNav(); progress();
 window.PURSEC = { clearBag() { bag = []; saveBag(); } };
-const run = { home, shop, product, "404": () => starfield($(".hero canvas")) }[page];
+const run = { home, shop, product, "404": () => beamHover($(".hero")) }[page];
 Promise.resolve(run && run()).finally(reveals);
 if (location.hash === "#bag") openDrawer("bag");
 })();
