@@ -13,11 +13,16 @@ const SIZE_ORDER = ["XXS","XS","S","M","L","XL","XXL","2XL","3XL","One size"];
    null = la mesa muestra "coming soon". "default" se usa en las páginas sin canción propia. */
 const SOUNDTRACK = {
   default: null,
-  home: "https://open.spotify.com/track/5XlzuIySfqhqMv5MqjHj6H",     // Inicio · Toomas, Tell Me Somethin'
-  shop: "https://open.spotify.com/track/49BbpJuVsX2wUl0Qo9aVvC",     // Drop 01 · Gunna ft. Young Thug, mop
-  product: "https://open.spotify.com/track/04Gk5sGLIDk6mRfTLnRasR",  // Producto · Fanta Rosario, Ponlos, DICEN
-  help: "https://open.spotify.com/track/6mjhmQB61lSVhgcmOFJv9L",     // Ayuda · Romeo Santos, Ayúdame
-  legal: "https://open.spotify.com/track/4X5f3vT8MRuXF68pfjNte5",    // Legal · A$AP Rocky, F**kin' Problems
+  // Inicio
+  home: { url: "https://open.spotify.com/track/5XlzuIySfqhqMv5MqjHj6H", title: "Tell Me Somethin'", artist: "Toomas", cover: "https://i.scdn.co/image/ab67616d0000b27351d00e92ac87efac98195198" },
+  // Drop 01 (tienda)
+  shop: { url: "https://open.spotify.com/track/49BbpJuVsX2wUl0Qo9aVvC", title: "mop (feat. Young Thug)", artist: "Gunna", cover: "https://i.scdn.co/image/ab67616d0000b273095bca744b48a058767a8f48" },
+  // Producto
+  product: { url: "https://open.spotify.com/track/04Gk5sGLIDk6mRfTLnRasR", title: "DICEN", artist: "Fanta Rosario, Ponlos", cover: "https://i.scdn.co/image/ab67616d0000b2730e4994eaf538636d76b264b8" },
+  // Ayuda
+  help: { url: "https://open.spotify.com/track/6mjhmQB61lSVhgcmOFJv9L", title: "Ayúdame", artist: "Romeo Santos", cover: "https://i.scdn.co/image/ab67616d0000b273485849255c69a3c2c3cfc6a5" },
+  // Legal
+  legal: { url: "https://open.spotify.com/track/4X5f3vT8MRuXF68pfjNte5", title: "F**kin' Problems", artist: "A$AP Rocky, Drake, 2 Chainz, Kendrick Lamar", cover: "https://i.scdn.co/image/ab67616d0000b2732ae92030b51fb8135d694af9" },
 };
 const CATEGORIES = { hoodies:"Hoodies", tees:"Tees", sweatshirts:"Sweatshirts", bottoms:"Bottoms", outerwear:"Outerwear", accessories:"Accessories" };
 
@@ -42,18 +47,16 @@ const ICON = {
 const NAV = [["Shop","/shop"],["Drop 01","/#drop"],["Fits","/#fits"],["About","/#about"]];
 function chrome() {
   const here = location.pathname.replace(/\.html$/, "").replace(/\/$/, "") || "/";
-  const marq = ["Drop 01 — the list is open","Free shipping from €70","Shipping to ES · FR · DE · IT · PT","14-day returns","Ships from Spain in 3 business days"];
-  const seq = marq.map((t) => `<span>${esc(t)}</span><span class="sep">✦</span>`).join("");
   const hdr = $("[data-header]");
   if (hdr) hdr.outerHTML = `
   <a class="skip" href="#main">Skip to content</a>
-  <div class="announce mono" role="region" aria-label="Announcements"><div class="marquee" style="--speed:44s"><span>${seq}</span><span aria-hidden="true">${seq}</span></div></div>
+  <div class="announce" role="region" aria-label="Announcements"><span class="msg">Free shipping from €70 · 14-day returns · Ships from Spain</span></div>
   <header class="hdr" id="hdr">
     <div style="display:flex;align-items:center">
       <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu"><i></i><i></i></button>
       <nav aria-label="Main">${NAV.map(([t, h]) => `<a href="${h}"${h === here ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     </div>
-    <a class="brand" href="/" aria-label="PURSEC home"><img src="/img/brand/logo-nav.webp" width="286" height="72" alt="PURSEC"></a>
+    <a class="brand${page === "home" ? " is-home" : ""}" href="/" aria-label="PURSEC — go to home"><img src="/img/brand/logo-nav.webp" width="286" height="72" alt="PURSEC"><span class="home-sig" aria-hidden="true"><i></i><b>Home</b><i></i></span></a>
     <div class="tools">
       <a class="tool hide-s" href="/help">Help</a>
       <button class="tool" data-open-bag aria-controls="bag">Bag<span class="bag-count" data-count>0</span></button>
@@ -90,7 +93,7 @@ function chrome() {
     <div class="body" style="padding-top:18px">${sizeGuideHTML()}</div>
   </aside>
   <div class="toast" role="status" aria-live="polite"></div>
-  <a class="sound-hint" href="#deck" aria-label="Soundtrack at the bottom of the page"><span class="cap"></span><span class="lbl mono">Sound</span></a>`;
+  <div class="sound-hint"><span class="rail" role="scrollbar" tabindex="0" aria-orientation="vertical" aria-controls="main" aria-label="Scroll the page" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="flare"></span><span class="cap"></span></span><a class="lbl" href="#deck" aria-label="Go to the soundtrack">Sound</a></div>`;
 
   // menú móvil
   const burger = $(".burger");
@@ -121,26 +124,106 @@ function platter(side) {
   return `<div class="platter ${side}" aria-hidden="true"><div class="vinyl"><span class="label"><img src="/img/brand/logo-mark.webp" alt=""></span></div><span class="arm"></span></div>`;
 }
 function deckHTML() {
-  const uri = spotifyUri(SOUNDTRACK[page] ?? SOUNDTRACK.default);
-  return `<section class="deck${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
-    ${platter("l")}
+  const t = SOUNDTRACK[page] ?? SOUNDTRACK.default;
+  const uri = spotifyUri(t?.url);
+  return `<section class="deck bh${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
+    ${t?.cover ? `<img class="dk-cover" src="${esc(t.cover)}" alt="" loading="lazy" width="640" height="640">` : ""}
+    <canvas class="dk-hole" aria-hidden="true"></canvas>
     <div class="screen">
       <div class="idle">
-        <span class="mono lilac">${uri ? "Soundtrack" : "Soundtrack · coming soon"}</span>
-        <b class="track">${esc(PAGE_NAMES[page] || "PURSEC")}</b>
-        <button class="play" type="button" ${uri ? "" : "disabled"} aria-label="Play the soundtrack"><span class="tri"></span></button>
-        <span class="small mute">${uri ? "Plays only when you press play. Opens Spotify's player." : "A track for this page is on its way."}</span>
+        <div class="meta">
+          <span class="eyebrow">Soundtrack · ${esc(PAGE_NAMES[page] || "PURSEC")}</span>
+          <b class="track">${esc(t?.title || "Coming soon")}</b>
+          <span class="artist">${esc(t?.artist || "A track for this page is on its way")}</span>
+          <button class="play" type="button" ${uri ? "" : "disabled"} aria-label="Play ${esc(t?.title || "the soundtrack")}"><span class="tri"></span></button>
+        </div>
       </div>
       <div class="embed" id="deck-embed"></div>
-      <span class="scan" aria-hidden="true"></span>
     </div>
-    ${platter("r")}
-    <div class="fader" aria-hidden="true"><i></i></div>
   </section>`;
 }
+// Agujero negro realista: horizonte negro, disco de materia que cruza por delante, la parte de atrás
+// del disco curvada por encima y por debajo (lente gravitatoria) y anillo de fotones.
+// La línea del logo es la materia: entra desde los lados y alimenta el disco.
+function blackHole(d) {
+  const cv = $(".dk-hole", d); if (!cv) return;
+  const ctx = cv.getContext("2d");
+  let W, H, dpr, cx, cy, R, raf, on = false, t = 0, last = 0;
+  const lerp = (a, b, k) => a + (b - a) * k;
+  const col = (k, a) => `rgba(${Math.round(lerp(255, 168, k))},${Math.round(lerp(246, 85, k))},${Math.round(lerp(255, 247, k))},${a})`;
+  const size = () => {
+    dpr = Math.min(2, devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    cx = W / 2; cy = H / 2; R = W < 700 ? Math.min(H * 0.3, W * 0.25) : Math.min(H * 0.25, W * 0.17);
+    d.style.setProperty("--hole", `${Math.round(R * 2)}px`);
+  };
+  const SEG = 96;
+  // dibuja un anillo del disco entre dos ángulos con brillo que fluye
+  const ring = (rx, ry, a0, a1, k, alpha, lw, flow) => {
+    const step = (a1 - a0) / SEG;
+    ctx.lineWidth = lw;
+    for (let i = 0; i < SEG; i++) {
+      const a = a0 + i * step, b = a + step * 1.15;
+      const turb = (0.55 + 0.45 * Math.sin(a * 5 - flow + k * 0.9)) * (0.7 + 0.3 * Math.sin(a * 13 + flow * 1.7 - k * 2.1));
+      const dop = 1 - 0.5 * Math.cos(a);           // el lado que se acerca brilla más
+      ctx.strokeStyle = col(k, Math.min(1, alpha * turb * dop));
+      ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, 0, a, b); ctx.stroke();
+    }
+  };
+  const frame = (now) => {
+    const boost = d.classList.contains("playing") ? 2.2 : 1;
+    const dt = last ? Math.min(50, now - last) : 16; last = now; t += dt * 0.0011 * boost;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    const N = W < 700 ? 14 : 22;
+    // línea del logo = materia que llega desde los lados
+    const outer = R * 3.3;
+    for (const side of [-1, 1]) {
+      const x0 = side < 0 ? 0 : W, x1 = cx + side * outer * 0.98;
+      const g = ctx.createLinearGradient(x0, 0, x1, 0);
+      g.addColorStop(0, "rgba(168,85,247,0)"); g.addColorStop(0.55, "rgba(168,85,247,.55)"); g.addColorStop(1, "rgba(233,216,255,.95)");
+      ctx.strokeStyle = g; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x0, cy); ctx.lineTo(x1, cy); ctx.stroke();
+      ctx.lineWidth = 9; ctx.strokeStyle = "rgba(168,85,247,.12)"; ctx.beginPath(); ctx.moveTo(x0, cy); ctx.lineTo(x1, cy); ctx.stroke();
+      for (let k = 0; k < 4; k++) {                 // pulsos de materia cayendo hacia el disco
+        const ph = ((t * 0.55 + k / 4) % 1) ** 1.6;
+        const x = lerp(x0, x1, ph), len = 30 + ph * 90;
+        const pg = ctx.createLinearGradient(x - side * len, 0, x, 0);
+        pg.addColorStop(0, "rgba(255,255,255,0)"); pg.addColorStop(1, `rgba(255,255,255,${0.35 + ph * 0.6})`);
+        ctx.strokeStyle = pg; ctx.lineWidth = 2 + ph * 3; ctx.beginPath(); ctx.moveTo(x - side * len, cy); ctx.lineTo(x, cy); ctx.stroke();
+      }
+    }
+    // mitad trasera del disco (por detrás del agujero)
+    const gap = (R * 1.85) / N;
+    for (let k = 0; k < N; k++) { const q = k / (N - 1); ring(R * lerp(1.45, 3.3, q), R * lerp(1.45, 3.3, q) * 0.1, Math.PI, Math.PI * 2, q, lerp(0.5, 0.06, q), gap * 0.55, t * 3); }
+    // lente: la parte de atrás del disco curvada por encima y por debajo
+    const L = Math.round(N * 0.55);
+    const lg = (R * 0.63) / L;
+    for (let k = 0; k < L; k++) { const q = k / (L - 1); const r = R * lerp(1.1, 1.73, q); ring(r * 1.04, r * 0.96, Math.PI, Math.PI * 2, q, lerp(0.6, 0.08, q), lg * 1.5, t * 3.4); }
+    for (let k = 0; k < L; k++) { const q = k / (L - 1); const r = R * lerp(1.08, 1.42, q); ring(r * 1.02, r * 0.86, 0, Math.PI, q, lerp(0.35, 0.05, q), lg * 1.2, t * 3.4); }
+    // horizonte de sucesos
+    ctx.globalCompositeOperation = "source-over";
+    const sh = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, R * 1.06);
+    sh.addColorStop(0, "rgba(2,1,4,.97)"); sh.addColorStop(0.85, "rgba(2,1,4,.97)"); sh.addColorStop(1, "rgba(2,1,4,0)");
+    ctx.fillStyle = sh; ctx.beginPath(); ctx.arc(cx, cy, R * 1.06, 0, 6.2832); ctx.fill();
+    ctx.globalCompositeOperation = "lighter";
+    // anillo de fotones
+    ctx.lineWidth = 2.2; ctx.strokeStyle = `rgba(255,248,255,${0.75 + 0.2 * Math.sin(t * 4)})`; ctx.beginPath(); ctx.arc(cx, cy, R * 1.03, 0, 6.2832); ctx.stroke();
+    ctx.lineWidth = 7; ctx.strokeStyle = "rgba(201,162,255,.22)"; ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, 6.2832); ctx.stroke();
+    // mitad delantera del disco (cruza por delante del agujero)
+    for (let k = 0; k < N; k++) { const q = k / (N - 1); ring(R * lerp(1.45, 3.3, q), R * lerp(1.45, 3.3, q) * 0.1, 0, Math.PI, q, lerp(0.62, 0.07, q), gap * 0.6, t * 3); }
+    ctx.globalCompositeOperation = "source-over";
+    if (on) raf = requestAnimationFrame(frame);
+  };
+  size(); addEventListener("resize", size);
+  if (reduce) { frame(16); return; }
+  new IntersectionObserver(([en]) => { on = en.isIntersecting; cancelAnimationFrame(raf); if (on) { size(); last = 0; raf = requestAnimationFrame(frame); } }).observe(d);
+}
+
 function deck() {
   const d = $("#deck"); if (!d) return;
-  const uri = spotifyUri(SOUNDTRACK[page] ?? SOUNDTRACK.default);
+  blackHole(d);
+  const uri = spotifyUri((SOUNDTRACK[page] ?? SOUNDTRACK.default)?.url);
   const btn = $(".play", d);
   let ctrl = null;
   const setPlaying = (on) => d.classList.toggle("playing", on);
@@ -161,10 +244,27 @@ function deck() {
     sc.onerror = () => { d.classList.remove("loading"); btn.disabled = false; toast("Spotify couldn't load. Try again."); };
     document.body.appendChild(sc);
   });
-  // Indicador lateral: baja con el scroll y desaparece cuando la mesa está a la vista.
-  const hint = $(".sound-hint");
-  if (hint && "IntersectionObserver" in window) new IntersectionObserver(([en]) => hint.classList.toggle("hide", en.isIntersecting), { threshold: 0.2 }).observe(d);
-  hint?.addEventListener("click", (e) => { e.preventDefault(); d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); });
+  // Fader lateral: arrastrar = desplazar la página; "Sound" lleva a la mesa.
+  const hint = $(".sound-hint"); if (!hint) return;
+  const rail = $(".rail", hint);
+  const max = () => document.documentElement.scrollHeight - innerHeight;
+  const go = (clientY) => { const r = rail.getBoundingClientRect(); const t = Math.min(1, Math.max(0, (clientY - r.top) / r.height)); scrollTo({ top: t * max(), behavior: "instant" }); };
+  let drag = false;
+  rail.addEventListener("pointerdown", (e) => { if (e.pointerType === "mouse" && e.button !== 0) return; drag = true; rail.setPointerCapture(e.pointerId); hint.classList.add("drag"); go(e.clientY); e.preventDefault(); });
+  // Solo se mueve con el botón pulsado: pasar el ratón por encima no hace nada.
+  rail.addEventListener("pointermove", (e) => { if (!drag) return; if (e.pointerType === "mouse" && e.buttons === 0) return end(); go(e.clientY); });
+  const end = () => { drag = false; hint.classList.remove("drag"); };
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((ev) => rail.addEventListener(ev, end));
+  addEventListener("blur", end);
+  rail.addEventListener("keydown", (e) => {
+    const step = { ArrowDown: 0.08, ArrowUp: -0.08, PageDown: 0.25, PageUp: -0.25 }[e.key];
+    if (e.key === "Home") { e.preventDefault(); return scrollTo({ top: 0 }); }
+    if (e.key === "End") { e.preventDefault(); return scrollTo({ top: max() }); }
+    if (step) { e.preventDefault(); scrollBy({ top: step * max(), behavior: reduce ? "auto" : "smooth" }); }
+  });
+  addEventListener("scroll", () => rail.setAttribute("aria-valuenow", Math.round((scrollY / Math.max(1, max())) * 100)), { passive: true });
+  if ("IntersectionObserver" in window) new IntersectionObserver(([en]) => hint.classList.toggle("at-deck", en.isIntersecting), { threshold: 0.2 }).observe(d);
+  $(".lbl", hint).addEventListener("click", (e) => { e.preventDefault(); d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); });
 }
 
 let lastFocus = null;
