@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PURSEC</title>
+<meta name="description" content="PURSEC streetwear. Free shipping from €70 to Spain, France, Germany, Italy and Portugal. 14-day returns.">
+<meta name="theme-color" content="#040207">
+<meta property="og:image" content="https://pursec.club/img/brand/og.jpg">
+<link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/assets/fonts/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body data-page="product" style="background:var(--paper)">
+<div data-header></div>
+<main id="main" class="light">
+  <div class="pdp">
+    <div>
+      <div class="gallery" id="gallery" aria-label="Photos"></div>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </div>
+    <div class="panel">
+      <div id="pdp-note"></div>
+      <nav class="crumbs mono" aria-label="Breadcrumb"><a href="/shop">Shop</a><span>/</span><span id="pdp-crumb"></span></nav>
+      <h1 id="pdp-name"></h1>
+      <div class="price" id="pdp-price"></div>
+      <span class="small" id="pdp-color"></span>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><span class="caps">Size</span><button class="link small" data-open-sizes>Size guide</button></div>
+        <div class="sizes" id="sizes-row" role="group" aria-label="Choose a size"></div>
+        <p class="stock-note" id="stock-note" aria-live="polite" style="margin:10px 0 0"></p>
+      </div>
+      <button class="btn dark block" id="add" disabled>Select a size</button>
+      <form id="notify" data-waitlist="restock" data-ok="Done. We'll email you if it comes back." hidden novalidate style="display:flex;flex-direction:column;gap:10px">
+        <span class="caps">Get notified</span>
+        <div class="field" style="border-color:var(--line-l);background:var(--white)"><label class="sr" for="nm">Email</label><input id="nm" type="email" required autocomplete="email" placeholder="Your email" style="color:var(--text-l)"><button class="btn dark" type="submit">Notify me</button></div>
+        <label class="consent" style="color:var(--mute-l)"><input type="checkbox" required><span>Email me about this piece and accept the <a href="/legal#privacy">privacy policy</a>.</span></label>
+        <p class="form-msg" role="status" aria-live="polite"></p>
+      </form>
+      <div class="trust">
+        <div><b>Free shipping</b>From €70. Otherwise €4.95.</div>
+        <div><b>Fast dispatch</b>Within 3 business days.</div>
+        <div><b>14-day returns</b>From the day you receive it.</div>
+      </div>
+      <div class="acc">
+        <details open><summary>Description</summary><div class="in" id="pdp-desc"></div></details>
+        <details><summary>Composition &amp; care</summary><div class="in" id="pdp-specs"></div></details>
+        <details><summary>Shipping</summary><div class="in">Shipping to Spain, France, Germany, Italy and Portugal. €4.95, free when your items add up to €70 or more. We dispatch within 3 business days; delivery usually takes about 3 more business days in Spain and about 4 elsewhere. Tracking by email. <a href="/help#shipping">More</a></div></details>
+        <details><summary>Returns</summary><div class="in">You can return any piece within 14 days of receiving it, unworn, unwashed and with its labels. <a href="/help#returns">How to return</a></div></details>
+        <details><summary>Product safety</summary><div class="in">Manufacturer and responsible person in the EU are listed here and on the label of each piece.</div></details>
+      </div>
+    </div>
+  </div>
+  <section class="sec bleed" style="padding-top:0;background:var(--paper)" aria-labelledby="mt">
+    <div class="sec-head"><h2 class="h2" id="mt" style="font-size:clamp(28px,4vw,56px)">You may also like</h2></div>
+    <div class="grid" id="more-grid"></div>
+  </section>
+  <div class="sticky-buy"><button class="btn dark block" id="sticky-add">Select a size</button></div>
+</main>
+<div data-footer></div>
+<script src="/assets/site.js" defer></script>
+</body>
+</html>

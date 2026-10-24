@@ -1,0 +1,27 @@
+{
+  // Worker de la tienda: pagos con Stripe Checkout, pedidos y stock en Supabase. Al pagar se crea el borrador de envío en Packlink; Oriol lo paga e imprime.
+  // Se despliega desde GitHub con Workers Builds, carpeta raíz: workers/shop
+  "name": "pursec-shop",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-01",
+  "workers_dev": true,
+  // Conserva los secretos definidos en el panel de Cloudflare:
+  // SUPABASE_SERVICE_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PACKLINKPRO_API_KEY, ALERT_WEBHOOK_URL
+  "keep_vars": true,
+  "previews": {},
+  "vars": {
+    "SUPABASE_URL": "https://uymgrzlbpaqorbwajhfh.supabase.co",
+    "SITE_URL": "https://pursec.club",
+    "ALLOWED_ORIGINS": "https://pursec.club,https://www.pursec.club",
+    // Envío (decidido por Oriol el 24 oct 2026): 4,95 €; gratis desde 70 € en prendas.
+    // Países: solo donde ya se conoce el coste de la etiqueta (España, Francia, Alemania, Italia y Portugal).
+    "SHIP_COUNTRIES": "ES,FR,DE,IT,PT",
+    "SHIPPING_EUR": "4.95",
+    "FREE_SHIPPING_FROM": "70",
+    "SHIPPING_LABEL": "Standard shipping (EU)",
+    "FREE_SHIPPING_LABEL": "Free shipping (EU)",
+    // Paquete por defecto para el borrador de Packlink: sobre 40x30x10 cm, 0,5 kg por prenda
+    "PARCEL_CM": "40x30x10",
+    "PARCEL_KG_PER_ITEM": "0.5"
+  }
+}

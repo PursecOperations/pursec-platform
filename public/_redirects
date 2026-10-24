@@ -1,0 +1,11 @@
+# Páginas del antiguo club -> tienda
+/planes          /        301
+/planes.html     /        301
+/garage          /        301
+/garage/*        /        301
+/acceso          /        301
+/acceso.html     /        301
+/muy-pronto      /#list   301
+/muy-pronto.html /#list   301
+/contacto        /#list   301
+/contacto.html   /#list   301
