@@ -1,7 +1,9 @@
 /* PURSEC — sistema visual de la tienda (web v2)
    Fuentes alojadas aquí (sin Google Fonts: no se envía la IP de nadie a terceros). */
-@font-face{font-family:"Archivo";src:url(/assets/fonts/archivo-latin-wdth-normal.woff2) format("woff2-variations");font-weight:100 900;font-stretch:62% 125%;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
-@font-face{font-family:"Archivo";src:url(/assets/fonts/archivo-latin-ext-wdth-normal.woff2) format("woff2-variations");font-weight:100 900;font-stretch:62% 125%;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Hanken Grotesk";src:url(/assets/fonts/hanken-grotesk-latin-wght-normal.woff2) format("woff2-variations");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Hanken Grotesk";src:url(/assets/fonts/hanken-grotesk-latin-ext-wght-normal.woff2) format("woff2-variations");font-weight:100 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Instrument Serif";src:url(/assets/fonts/instrument-serif-latin-400-normal.woff2) format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url(/assets/fonts/instrument-serif-latin-400-italic.woff2) format("woff2");font-weight:400;font-style:italic;font-display:swap}
 @font-face{font-family:"JetBrains Mono";src:url(/assets/fonts/jetbrains-mono-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap}
 
 :root{
@@ -13,7 +15,7 @@
   --g:clamp(16px,2.6vw,32px);
   --hdr:64px;
   --ease:cubic-bezier(.16,1,.3,1); --ease-in:cubic-bezier(.7,0,.84,0);
-  --f:"Archivo","Helvetica Neue",Arial,sans-serif; --m:"JetBrains Mono",ui-monospace,monospace;
+  --f:"Hanken Grotesk","Helvetica Neue",Arial,sans-serif;--serif:"Instrument Serif",Georgia,"Times New Roman",serif; --m:"JetBrains Mono",ui-monospace,monospace;
   color-scheme:dark;
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -425,3 +427,96 @@ section[id]{scroll-margin-top:var(--hdr)}
 .drawer-open .sound-hint,.menu-open .sound-hint{opacity:0;pointer-events:none}
 @media (max-width:700px){.sound-hint{right:4px}.sound-hint::before{height:80px}.sound-hint .cap{top:calc(var(--p,0) * 72px)}.sound-hint .lbl{display:none}}
 @media (prefers-reduced-motion:reduce){.vinyl{animation:none}}
+
+
+/* =================================================================== tipografía v3
+   Menos grito, más marca: una grotesca sobria para todo, una serif editorial para los momentos
+   de marca, botones rectos y sin letra de código salvo lo imprescindible. */
+body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
+.display{font-weight:500;font-stretch:100%;text-transform:none;letter-spacing:-.04em;line-height:.95}
+.page-hero .display{font-size:clamp(40px,6.4vw,88px)!important}
+.h2{font-weight:500;font-stretch:100%;text-transform:none;letter-spacing:-.035em;line-height:1;font-size:clamp(30px,4vw,56px)}
+.h3{font-weight:600;font-stretch:100%;text-transform:none;letter-spacing:-.01em;font-size:17px}
+.mono{font-family:var(--f);font-weight:500;font-size:11px;letter-spacing:.14em}
+.caps{font-weight:600;font-size:11px;letter-spacing:.14em}
+.count{font-family:var(--f);font-weight:400;font-size:.36em;letter-spacing:0}
+.hdr nav a,.hdr .tool{font-weight:500;font-size:11.5px;letter-spacing:.12em}
+.announce{justify-content:center;color:var(--mute-d)}
+.announce .msg{font-weight:500;font-size:11px;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 16px}
+.btn{border-radius:2px;height:48px;padding:0 24px;font-weight:600;font-size:11.5px;letter-spacing:.14em}
+.btn::before{border-radius:0}
+.field{border-radius:2px}
+.field .btn{height:42px}
+.pill,.select{border-radius:2px;font-weight:500;letter-spacing:.1em}
+.mmenu a.big{font-weight:500;font-stretch:100%;text-transform:none;letter-spacing:-.035em}
+.manifesto{font-family:var(--serif);font-weight:400;font-stretch:100%;text-transform:none;letter-spacing:-.015em;line-height:1.06;font-size:clamp(34px,5.2vw,78px)}
+.manifesto .w.hl{font-style:italic}
+.card .badge{top:12px;left:12px;padding:0;border-radius:0;background:none;color:var(--mute-l);font-family:var(--f);font-weight:500;font-size:10.5px;letter-spacing:.12em}
+.card .badge.dark{background:none;color:var(--text-l)}
+.card .badge.lilac{background:none;color:#7A1FE0}
+.card .name{font-weight:500;text-transform:none;letter-spacing:0;font-size:14px}
+.card .price,.line .r,.qty span,.table td,.panel .price,.sizes button,.slot .lbl{font-family:var(--f);font-variant-numeric:tabular-nums}
+.card .price{font-size:14px}
+.card .quick{border-radius:2px}
+.card .quick button{border-radius:2px;font-weight:500}
+.panel h1{font-weight:500;font-stretch:100%;text-transform:none;letter-spacing:-.035em;font-size:clamp(28px,3vw,42px);line-height:1.02}
+.panel .price{font-size:17px}
+.sizes button{border-radius:2px;font-weight:500;font-size:13px}
+.line .t b{font-weight:600;text-transform:none;letter-spacing:0;font-size:13.5px}
+.doc h2{font-weight:600;font-stretch:100%;text-transform:none;letter-spacing:-.025em}
+.ftr h4{font-family:var(--f);font-weight:600;font-size:10.5px;letter-spacing:.14em}
+.screen .track{font-weight:500;font-stretch:100%;text-transform:none;letter-spacing:-.02em}
+.trust div,.drawer .warn,.toast{border-radius:2px}
+.deck{border-radius:6px}.screen{border-radius:4px}.screen .embed{border-radius:4px}
+
+/* =================================================================== imagen a sangre, texto mínimo */
+.sec{padding-block:clamp(40px,6vw,88px)}
+.bleed{padding-inline:0}
+.bleed .sec-head,.bleed .toolbar{padding-inline:var(--g)}
+.sec-head{margin-bottom:14px;align-items:baseline}
+.sec-head .h2{font-size:clamp(18px,1.6vw,22px);letter-spacing:-.015em;font-weight:600}
+.sec-head .meta{flex-direction:row;align-items:baseline;gap:18px}
+.sec-head .btn{height:auto;padding:0;border:0;background:none;color:inherit;font-weight:500;font-size:11px;letter-spacing:.12em;text-decoration:underline;text-underline-offset:4px}
+.sec-head .btn::before{display:none}
+/* cuadrícula de producto de borde a borde */
+.grid{gap:2px;row-gap:2px}
+@media (max-width:760px){.grid{row-gap:2px}}
+.card{gap:0;padding-bottom:22px}
+.card .media{aspect-ratio:3/4;border-radius:0}
+.card>.row{padding:12px 12px 0}
+.card>.sub{padding:4px 12px 0;margin:0;font-size:12px}
+.card .name{font-size:12.5px;font-weight:500}
+.card .price{font-size:12.5px}
+.card .quick{left:0;right:0;bottom:0;border-radius:0;justify-content:flex-start;padding:10px 12px;background:rgba(255,255,255,.92)}
+/* About: imagen a media pantalla de borde a borde, texto compacto */
+#about{padding-block:0}
+#about .split{grid-template-columns:1.2fr 1fr;gap:0;align-items:stretch}
+#about .frame{aspect-ratio:auto;min-height:min(92vh,880px);border-radius:0}
+#about .copy{align-self:center;padding:clamp(32px,5vw,80px) var(--g);gap:16px;max-width:460px}
+#about .copy .h2{font-size:clamp(24px,2.4vw,34px)!important;line-height:1.05}
+#about .copy p{font-size:14px}
+@media (max-width:860px){#about .split{grid-template-columns:1fr}#about .frame{min-height:72vh}}
+/* Fits: fotos altas a sangre, sin huecos */
+#fits{padding-top:clamp(40px,6vw,88px)!important}
+.look{margin:0;padding:0;gap:2px;grid-auto-columns:clamp(260px,34vw,560px);scroll-padding-inline:0;scrollbar-width:none}
+.look::-webkit-scrollbar{display:none}
+.look .frame{border-radius:0;aspect-ratio:3/4}
+.look figure{gap:0}
+.look figcaption{padding:10px 12px 0;font-size:10.5px}
+/* cabeceras de página discretas */
+.page-hero{padding:clamp(28px,4vw,48px) var(--g) clamp(18px,2.4vw,28px)}
+.page-hero .display{font-size:clamp(28px,3.2vw,44px)!important;margin-top:8px!important}
+.page-hero p{font-size:14px;margin-top:10px}
+.toolbar{border-top:0;margin-bottom:0}
+/* ficha: galería a sangre y panel de texto compacto */
+.pdp{grid-template-columns:1.45fr 1fr;gap:0;padding:0}
+.gallery{gap:2px}
+.gallery .shot{border-radius:0;aspect-ratio:3/4}
+.panel{padding:clamp(24px,3vw,44px) var(--g);gap:18px;top:var(--hdr)}
+.panel h1{font-size:clamp(22px,2vw,30px)}
+.panel .price{font-size:15px}
+.acc summary{font-size:11px;padding:14px 0}
+.acc .in{font-size:13.5px}
+.trust div{font-size:11.5px;padding:10px}
+@media (max-width:900px){.pdp{grid-template-columns:1fr}.gallery{margin:0}}
+#drop{padding-top:clamp(24px,3vw,40px)}

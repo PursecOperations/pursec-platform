@@ -42,12 +42,10 @@ const ICON = {
 const NAV = [["Shop","/shop"],["Drop 01","/#drop"],["Fits","/#fits"],["About","/#about"]];
 function chrome() {
   const here = location.pathname.replace(/\.html$/, "").replace(/\/$/, "") || "/";
-  const marq = ["Drop 01 — the list is open","Free shipping from €70","Shipping to ES · FR · DE · IT · PT","14-day returns","Ships from Spain in 3 business days"];
-  const seq = marq.map((t) => `<span>${esc(t)}</span><span class="sep">✦</span>`).join("");
   const hdr = $("[data-header]");
   if (hdr) hdr.outerHTML = `
   <a class="skip" href="#main">Skip to content</a>
-  <div class="announce mono" role="region" aria-label="Announcements"><div class="marquee" style="--speed:44s"><span>${seq}</span><span aria-hidden="true">${seq}</span></div></div>
+  <div class="announce" role="region" aria-label="Announcements"><span class="msg">Free shipping from €70 · 14-day returns · Ships from Spain</span></div>
   <header class="hdr" id="hdr">
     <div style="display:flex;align-items:center">
       <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu"><i></i><i></i></button>
