@@ -130,6 +130,8 @@ function deckHTML() {
     <svg class="dk-body m" viewBox="0 0 400 320" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M0 160C14 160 16 16 62 16L338 16C384 16 386 160 400 160C386 160 384 304 338 304L62 304C16 304 14 160 0 160Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(10 8) scale(.95)" d="M0 160C14 160 16 16 62 16L338 16C384 16 386 160 400 160C386 160 384 304 338 304L62 304C16 304 14 160 0 160Z"/></svg>`;
   return `<section class="deck${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
     ${body}
+    <canvas class="dk-hole" aria-hidden="true"></canvas>
+    <span class="dk-halo" aria-hidden="true"></span>
     <span class="dk-wire l" aria-hidden="true"><i></i></span><span class="dk-wire r" aria-hidden="true"><i></i></span>
     <span class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
     <div class="screen">
@@ -149,8 +151,61 @@ function deckHTML() {
     </div>
   </section>`;
 }
+// Agujero negro: partículas que orbitan la pantalla y caen en espiral; otras llegan por la línea.
+function blackHole(d) {
+  const cv = $(".dk-hole", d); if (!cv) return;
+  const ctx = cv.getContext("2d");
+  let W, H, dpr, cx, cy, RX, RY, raf, on = false, parts = [], flow = [];
+  const size = () => {
+    dpr = Math.min(2, devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const r = d.getBoundingClientRect(), c = cv.getBoundingClientRect();
+    cx = r.left - c.left + r.width / 2; cy = r.top - c.top + r.height / 2;
+    RX = r.width * 0.5; RY = r.height * 0.5;
+  };
+  const spawn = (rr) => ({ a: Math.random() * 6.283, r: rr ?? 0.55 + Math.random() * 0.75, w: 0.6 + Math.random() * 1.6, hue: Math.random() < 0.3 ? 0 : 1, px: null, py: null });
+  const reset = () => { parts = Array.from({ length: Math.round(Math.min(520, W * 0.32)) }, () => spawn()); flow = []; };
+  const pos = (p) => [cx + Math.cos(p.a) * p.r * RX, cy + Math.sin(p.a) * p.r * RY];
+  const tick = () => {
+    const boost = d.classList.contains("playing") ? 1.9 : 1;
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = "lighter";
+    ctx.lineCap = "round";
+    for (const p of parts) {
+      const [x0, y0] = p.px === null ? pos(p) : [p.px, p.py];
+      p.a += (0.0045 / Math.pow(p.r, 1.5)) * boost;
+      p.r -= 0.00045 * boost * (1.4 - p.r * 0.5);
+      if (p.r < 0.5) Object.assign(p, spawn(1.15 + Math.random() * 0.2));
+      const [x, y] = pos(p);
+      const near = Math.max(0, 1.3 - p.r);
+      ctx.strokeStyle = p.hue ? `rgba(201,162,255,${0.35 + near * 0.6})` : `rgba(255,255,255,${0.3 + near * 0.6})`;
+      ctx.lineWidth = p.w * (0.8 + near * 1.4);
+      ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x, y); ctx.stroke();
+      p.px = x; p.py = y;
+    }
+    // partículas que llegan por la línea del logo
+    if (Math.random() < 0.35 * boost) { const side = Math.random() < 0.5 ? -1 : 1; flow.push({ x: side < 0 ? 0 : W, y: cy + (Math.random() - 0.5) * 3, v: 1.5 + Math.random() * 2, side }); }
+    flow = flow.filter((f) => {
+      const x0 = f.x; f.v *= 1.025; f.x += -f.side * f.v * boost;
+      const dist = Math.abs(f.x - cx);
+      if (dist < RX * 1.02) { const p = spawn(1.05); p.a = f.side < 0 ? Math.PI : 0; parts.push(p); if (parts.length > 700) parts.shift(); return false; }
+      ctx.strokeStyle = "rgba(233,216,255,.85)"; ctx.lineWidth = 1.6;
+      ctx.beginPath(); ctx.moveTo(x0, f.y); ctx.lineTo(f.x, f.y); ctx.stroke();
+      return true;
+    });
+    ctx.globalCompositeOperation = "source-over";
+    if (on) raf = requestAnimationFrame(tick);
+  };
+  size(); reset();
+  addEventListener("resize", () => { size(); reset(); });
+  if (reduce) { for (let i = 0; i < 60; i++) tick(); return; }
+  new IntersectionObserver(([en]) => { on = en.isIntersecting; cancelAnimationFrame(raf); if (on) { size(); raf = requestAnimationFrame(tick); } }).observe(d);
+}
+
 function deck() {
   const d = $("#deck"); if (!d) return;
+  blackHole(d);
   const uri = spotifyUri((SOUNDTRACK[page] ?? SOUNDTRACK.default)?.url);
   const btn = $(".play", d);
   let ctrl = null;
