@@ -23,7 +23,8 @@ Al fusionar el PR: cambiarla a `main` (Settings -> Builds -> Production branch).
 
 ## Variables públicas (en `wrangler.jsonc`)
 - `SHIPPING_EUR`: precio del envío que paga el cliente (4,95 €). Vacío = la tienda no deja pagar.
-- `FREE_SHIPPING_FROM`: si el importe de las prendas supera esta cifra en euros (70), el envío es gratis. Vacío = nunca gratis.
+- `FREE_SHIPPING_FROM`: si el importe de las prendas llega a esta cifra en euros (70, clavados incluido), el envío es gratis. Vacío = nunca gratis.
+- `SHIP_COUNTRIES`: países a los que se envía (ES,FR,DE,IT,PT). Se amplía cuando se conozca el coste de la etiqueta a otros países.
 
 ## Stock
 - Cada talla (`product_variants`) tiene `stock`, `sku`, `unit_cost_eur` (privado) y `low_stock_alert`.
