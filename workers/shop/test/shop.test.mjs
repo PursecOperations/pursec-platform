@@ -198,3 +198,78 @@ test("salud y rutas desconocidas", async () => {
   assert.equal((await worker.fetch(new Request("https://shop.test/"), ENV)).status, 200);
   assert.equal((await worker.fetch(new Request("https://shop.test/nada"), ENV)).status, 404);
 });
+
+// ---------------------------------------------------------------- Packlink
+import { pickService, buildDraft, parcelFor, splitName } from "../src/packlink.js";
+
+const PL_ENV = { ...ENV, PACKLINKPRO_API_KEY: "pl_test" };
+const WAREHOUSE = { default_selection: true, name: "Oriol", surname: "Gil", company: "PURSEC", address: "Carrer Test 1", postal_code: "08786", city: "Capellades", country: "ES", phone: "600000000", email: "pursec@test" };
+const ORDER_ROW = {
+  id: ORDER_ID, email: "ana@test", customer_name: "Ana García López", status: "paid", stock_issue: false, packlink_ref: null, notes: null,
+  items: [{ variant_id: 11, name: "Heavy Hoodie", size: "M", qty: 2, unit_eur: 79 }],
+  shipping: { name: "Ana García López", address1: "Rue X 3", address2: "", city: "Paris", zip: "75001", country_code: "FR", phone: "+33", email: "ana@test" },
+};
+
+test("Packlink: elige el Correos más barato con entrega en oficina", () => {
+  const s = pickService([
+    { id: 1, carrier_name: "GLS", dropoff: true, price: { total_price: 6 } },
+    { id: 2, carrier_name: "Correos", dropoff: false, price: { total_price: 5 } },
+    { id: 3, carrier_name: "Correos", dropoff: true, price: { total_price: 9.41 } },
+    { id: 4, carrier_name: "Correos Express", dropoff: true, price: { total_price: 8.2 } },
+  ]);
+  assert.equal(s.id, 4);
+  assert.equal(pickService([{ id: 1, carrier_name: "GLS", dropoff: true, price: { total_price: 6 } }]).id, 1);
+  assert.equal(pickService([]), null);
+});
+
+test("Packlink: paquete, nombre y borrador", () => {
+  assert.deepEqual(parcelFor([{ qty: 2 }]), { weight: 1, length: 40, width: 30, height: 10 });
+  assert.deepEqual(splitName("Ana García López"), { name: "Ana", surname: "García López" });
+  const d = buildDraft({ order: ORDER_ROW, warehouse: WAREHOUSE, parcel: parcelFor(ORDER_ROW.items), service: { id: 4 } });
+  assert.equal(d.service_id, 4);
+  assert.equal(d.contentvalue, 158);
+  assert.equal(d.to.country, "FR");
+  assert.equal(d.to.zip_code, "75001");
+  assert.equal(d.from.zip_code, "08786");
+  assert.equal(d.shipment_custom_reference, `PURSEC-${ORDER_ID}`);
+});
+
+function plRoutes({ draftStatus = 200, order = ORDER_ROW } = {}) {
+  route((c) => c.method === "GET" && c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [] });
+  route((c) => c.url.includes("/rest/v1/product_variants"), { body: [VARIANTS[0]] });
+  route((c) => c.method === "POST" && c.url.includes("/rest/v1/orders"), { body: [{ id: ORDER_ID, status: "paid" }] });
+  route((c) => c.url.includes("/rest/v1/rpc/apply_order_stock"), { body: [] });
+  route((c) => c.method === "GET" && c.url.includes(`/rest/v1/orders?id=eq.${ORDER_ID}`), { body: [order] });
+  route((c) => c.method === "PATCH" && c.url.includes(`/rest/v1/orders?id=eq.${ORDER_ID}`), { body: [] });
+  route((c) => c.url.includes("api.packlink.com/v1/clients/warehouses"), { body: [WAREHOUSE] });
+  route((c) => c.url.includes("api.packlink.com/v1/services"), { body: [{ id: 7, carrier_name: "Correos", dropoff: true, price: { total_price: 9.41 } }] });
+  route((c) => c.method === "POST" && c.url.includes("api.packlink.com/v1/shipments"), draftStatus === 200 ? { body: { reference: "ES2026PRO0001" } } : { status: draftStatus, body: { message: "bad" } });
+}
+
+test("pago -> borrador en Packlink y referencia guardada", async () => {
+  plRoutes();
+  const res = await postWebhook(PL_ENV);
+  assert.equal(res.status, 200);
+  assert.match((await res.json()).packlink, /ES2026PRO0001/);
+  const post = calls.find((c) => c.method === "POST" && c.url.includes("packlink.com/v1/shipments"));
+  assert.equal(post.headers.Authorization, "pl_test");
+  assert.equal(JSON.parse(post.body).service_id, 7);
+  const patch = calls.filter((c) => c.method === "PATCH").map((c) => JSON.parse(c.body));
+  assert.deepEqual(patch.at(-1), { packlink_ref: "ES2026PRO0001" });
+});
+
+test("si Packlink falla, el pedido sigue bien (200) y queda la nota", async () => {
+  plRoutes({ draftStatus: 422 });
+  const res = await postWebhook(PL_ENV);
+  assert.equal(res.status, 200);
+  assert.match((await res.json()).packlink, /^error/);
+  const patch = JSON.parse(calls.filter((c) => c.method === "PATCH").at(-1).body);
+  assert.match(patch.notes, /Packlink .*422/);
+});
+
+test("no se crea un segundo borrador si ya existe", async () => {
+  plRoutes({ order: { ...ORDER_ROW, packlink_ref: "ES2026PRO0001" } });
+  const out = await (await postWebhook(PL_ENV)).json();
+  assert.match(out.packlink, /ya creado/);
+  assert.ok(!calls.some((c) => c.url.includes("packlink.com")));
+});
