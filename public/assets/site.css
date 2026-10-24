@@ -684,3 +684,16 @@ body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
   .fader{bottom:7.5%}
   .pod{bottom:15%}
 }
+
+/* la línea del logo sale de los extremos de la mesa y se desvanece hacia los lados */
+.ftr{overflow-x:clip}
+.dk-wire{top:50%;height:3px;margin-top:-1.5px;z-index:0;pointer-events:none;overflow:hidden}
+.dk-wire.l{right:96.4%;width:50vw;background:linear-gradient(270deg,rgba(217,190,255,.95),rgba(168,85,247,.55) 30%,rgba(168,85,247,0));box-shadow:0 0 12px rgba(168,85,247,.6)}
+.dk-wire.r{left:96.4%;width:50vw;background:linear-gradient(90deg,rgba(217,190,255,.95),rgba(168,85,247,.55) 30%,rgba(168,85,247,0));box-shadow:0 0 12px rgba(168,85,247,.6)}
+.dk-wire i{position:absolute;top:-2px;width:120px;height:7px;border-radius:50%;background:radial-gradient(closest-side,#fff,rgba(233,216,255,.7) 40%,rgba(168,85,247,0));opacity:0}
+.deck.playing .dk-wire.r i{animation:wireR 3.2s cubic-bezier(.4,0,.6,1) infinite}
+.deck.playing .dk-wire.l i{animation:wireL 3.2s cubic-bezier(.4,0,.6,1) infinite}
+@keyframes wireR{0%{left:-120px;opacity:1}70%{opacity:.8}100%{left:60%;opacity:0}}
+@keyframes wireL{0%{right:-120px;opacity:1}70%{opacity:.8}100%{right:60%;opacity:0}}
+@media (max-width:900px){.dk-wire{top:74%}.dk-wire.l{right:99.4%}.dk-wire.r{left:99.4%}}
+@media (prefers-reduced-motion:reduce){.dk-wire i{display:none}}
