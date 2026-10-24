@@ -95,18 +95,31 @@ export function buildDraft({ order, warehouse, parcel, service }) {
   return draft;
 }
 
-// Crea el borrador en Packlink para un pedido pagado. Devuelve la referencia.
+// Puntos de depósito más cercanos a la dirección de origen para un servicio (los da Packlink).
+export async function nearestDropoffs(env, serviceId, country, zip, n = 3) {
+  const list = await packlinkJson(env, `/dropoffs/${encodeURIComponent(serviceId)}/${encodeURIComponent(country)}/${encodeURIComponent(zip)}`);
+  return (Array.isArray(list) ? list : []).slice(0, n).map((d) => ({
+    name: d.commerce_name || d.name || "",
+    address: [d.address, d.zip, d.city].filter(Boolean).join(", "),
+    phone: d.phone || "",
+  }));
+}
+
+// Crea el borrador en Packlink para un pedido pagado. Devuelve la referencia y, si el servicio
+// no es Correos (o no hay servicio), el aviso para Oriol con los puntos de depósito cercanos.
 export async function createDraftForOrder(env, order) {
   const warehouses = await packlinkJson(env, "/clients/warehouses");
   const list = Array.isArray(warehouses) ? warehouses : warehouses?.warehouses || [];
   const warehouse = list.find((w) => w.default_selection) || list[0];
   if (!warehouse) throw new Error("Packlink no tiene ninguna dirección de recogida guardada");
+  const fromZip = String(warehouse.postal_code || "").split(" - ")[0];
+  const fromCountry = warehouse.country || "ES";
   const parcel = parcelFor(order.items || [], env);
   const sh = order.shipping || {};
   let service = null;
   try {
     const q = new URLSearchParams({
-      "from[country]": warehouse.country || "ES", "from[zip]": String(warehouse.postal_code || "").split(" - ")[0],
+      "from[country]": fromCountry, "from[zip]": fromZip,
       "to[country]": sh.country_code || "", "to[zip]": sh.zip || "",
       "packages[0][weight]": String(parcel.weight), "packages[0][length]": String(parcel.length),
       "packages[0][width]": String(parcel.width), "packages[0][height]": String(parcel.height),
@@ -117,5 +130,38 @@ export async function createDraftForOrder(env, order) {
   const res = await packlinkJson(env, "/shipments", { method: "POST", body: JSON.stringify(buildDraft({ order, warehouse, parcel, service })) });
   const ref = res?.reference;
   if (!ref) throw new Error(`Packlink no devolvió referencia: ${JSON.stringify(res).slice(0, 200)}`);
-  return { ref, service: service ? `${service.carrier} ${service.price} €` : "sin servicio" };
+
+  let alert = null;
+  if (!service || !/correos/i.test(service.carrier)) {
+    let points = [];
+    if (service) {
+      try { points = await nearestDropoffs(env, service.id, fromCountry, fromZip); } catch { /* el aviso sale igual */ }
+    }
+    alert = alertText({ order, ref, service, points, fromZip, city: warehouse.city });
+  }
+  return { ref, service: service ? `${service.carrier} ${service.price} €` : "sin servicio", alert };
+}
+
+export function alertText({ order, ref, service, points, fromZip, city }) {
+  const dest = [order.shipping?.city, order.shipping?.country_code].filter(Boolean).join(", ");
+  const lines = [`Pedido ${order.id} (${dest}) — envío ${ref} en Packlink.`];
+  if (!service) {
+    lines.push("No hay ningún servicio con depósito en oficina y entrega a domicilio: elige el servicio a mano en Packlink antes de pagar.");
+  } else {
+    lines.push(`El servicio NO es Correos: ${service.carrier} — ${service.name || "servicio"} (${service.price} €). El paquete no se deja en Correos.`);
+    if (points.length) {
+      lines.push(`Puntos de depósito más cercanos a ${city || fromZip}:`);
+      points.forEach((p, i) => lines.push(`${i + 1}. ${p.name} — ${p.address}${p.phone ? ` (${p.phone})` : ""}`));
+    } else {
+      lines.push(`Packlink no ha devuelto puntos de depósito cerca de ${fromZip}: búscalo en el envío dentro de Packlink.`);
+    }
+  }
+  return lines.join("\n");
+}
+
+// Aviso inmediato a Oriol. ALERT_WEBHOOK_URL (secreto) es el webhook de Make que le manda el email.
+export async function sendAlert(env, subject, text) {
+  if (!env.ALERT_WEBHOOK_URL) return false;
+  const res = await fetch(env.ALERT_WEBHOOK_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ subject, text }) });
+  return res.ok;
 }

@@ -2,7 +2,7 @@
 // Oriol paga e imprime la etiqueta en Packlink; el agente Orders marca el pedido como enviado.
 
 import { supabase, stripe, json } from "./clients.js";
-import { packlinkKey, createDraftForOrder } from "./packlink.js";
+import { packlinkKey, createDraftForOrder, sendAlert } from "./packlink.js";
 
 const SIGNATURE_TOLERANCE_S = 300;
 
@@ -143,14 +143,22 @@ export async function ensurePacklinkDraft(env, orderId) {
   if (order.stock_issue) return "sin stock: no se crea envío";
   if (order.status !== "paid") return `estado ${order.status}: no se crea envío`;
   try {
-    const { ref, service } = await createDraftForOrder(env, order);
-    await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: { packlink_ref: ref } });
+    const { ref, service, alert } = await createDraftForOrder(env, order);
+    const patch = { packlink_ref: ref };
+    if (alert) patch.notes = [order.notes, `AVISO envío: ${alert}`].filter(Boolean).join("\n");
+    await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: patch });
+    if (alert) {
+      let sent = false;
+      try { sent = await sendAlert(env, "PURSEC: envío que NO es Correos", alert); } catch { /* queda en notes */ }
+      return `borrador ${ref} (${service}) — aviso ${sent ? "enviado" : "sin enviar (solo en notes)"}`;
+    }
     return `borrador ${ref} (${service})`;
   } catch (err) {
     const note = `Packlink ${new Date().toISOString().slice(0, 16)}: ${err.message}`.slice(0, 500);
     try {
       await supabase(env, `orders?id=eq.${order.id}`, { method: "PATCH", body: { notes: [order.notes, note].filter(Boolean).join("\n") } });
     } catch { /* la nota es secundaria */ }
+    try { await sendAlert(env, "PURSEC: no se pudo crear el envío en Packlink", `Pedido ${order.id}: ${err.message.slice(0, 300)}`); } catch { /* queda en notes */ }
     return `error: ${err.message.slice(0, 200)}`;
   }
 }

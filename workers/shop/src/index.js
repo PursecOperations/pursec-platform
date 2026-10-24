@@ -6,7 +6,7 @@
 //   GET  /                  comprobación de salud
 //
 // Secretos (Cloudflare -> Settings -> Variables and Secrets):
-//   SUPABASE_SERVICE_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PACKLINKPRO_API_KEY
+//   SUPABASE_SERVICE_KEY, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, PACKLINKPRO_API_KEY, ALERT_WEBHOOK_URL
 // Variables públicas en wrangler.jsonc.
 
 import { handleCheckout } from "./checkout.js";

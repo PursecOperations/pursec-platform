@@ -237,7 +237,7 @@ test("Packlink: paquete, nombre y borrador", () => {
   assert.equal(d.shipment_custom_reference, `PURSEC-${ORDER_ID}`);
 });
 
-function plRoutes({ draftStatus = 200, order = ORDER_ROW } = {}) {
+function plRoutes({ draftStatus = 200, order = ORDER_ROW, services = [{ id: 7, carrier_name: "Correos", dropoff: true, price: { total_price: 9.41 } }] } = {}) {
   route((c) => c.method === "GET" && c.url.includes("/rest/v1/orders?stripe_session_id"), { body: [] });
   route((c) => c.url.includes("/rest/v1/product_variants"), { body: [VARIANTS[0]] });
   route((c) => c.method === "POST" && c.url.includes("/rest/v1/orders"), { body: [{ id: ORDER_ID, status: "paid" }] });
@@ -245,7 +245,9 @@ function plRoutes({ draftStatus = 200, order = ORDER_ROW } = {}) {
   route((c) => c.method === "GET" && c.url.includes(`/rest/v1/orders?id=eq.${ORDER_ID}`), { body: [order] });
   route((c) => c.method === "PATCH" && c.url.includes(`/rest/v1/orders?id=eq.${ORDER_ID}`), { body: [] });
   route((c) => c.url.includes("api.packlink.com/v1/clients/warehouses"), { body: [WAREHOUSE] });
-  route((c) => c.url.includes("api.packlink.com/v1/services"), { body: [{ id: 7, carrier_name: "Correos", dropoff: true, price: { total_price: 9.41 } }] });
+  route((c) => c.url.includes("api.packlink.com/v1/services"), { body: services });
+  route((c) => c.url.includes("api.packlink.com/v1/dropoffs/"), { body: [{ commerce_name: "Kiosko Sol", address: "Carrer Major 5", zip: "08786", city: "Capellades", phone: "93" }, { commerce_name: "Bar Pi", address: "Pl. Nova 1", zip: "08786", city: "Capellades" }] });
+  route((c) => c.url === "https://hook.test/alert", { body: { ok: true } });
   route((c) => c.method === "POST" && c.url.includes("api.packlink.com/v1/shipments"), draftStatus === 200 ? { body: { reference: "ES2026PRO0001" } } : { status: draftStatus, body: { message: "bad" } });
 }
 
@@ -275,4 +277,25 @@ test("no se crea un segundo borrador si ya existe", async () => {
   const out = await (await postWebhook(PL_ENV)).json();
   assert.match(out.packlink, /ya creado/);
   assert.ok(!calls.some((c) => c.url.includes("packlink.com")));
+});
+
+test("si el servicio no es Correos: aviso inmediato con los puntos de depósito cercanos", async () => {
+  plRoutes({ services: [{ id: 9, carrier_name: "GLS", name: "Business Parcel", dropoff: true, delivery_to_parcelshop: false, price: { total_price: 7.1 } }] });
+  const out = await (await postWebhook({ ...PL_ENV, ALERT_WEBHOOK_URL: "https://hook.test/alert" })).json();
+  assert.match(out.packlink, /aviso enviado/);
+  assert.ok(calls.some((c) => c.url.includes("/v1/dropoffs/9/ES/08786")));
+  const hook = JSON.parse(calls.find((c) => c.url === "https://hook.test/alert").body);
+  assert.match(hook.subject, /NO es Correos/);
+  assert.match(hook.text, /GLS/);
+  assert.match(hook.text, /1\. Kiosko Sol — Carrer Major 5, 08786, Capellades/);
+  const patch = JSON.parse(calls.filter((c) => c.method === "PATCH").at(-1).body);
+  assert.equal(patch.packlink_ref, "ES2026PRO0001");
+  assert.match(patch.notes, /AVISO envío/);
+});
+
+test("con Correos no hay aviso", async () => {
+  plRoutes();
+  const out = await (await postWebhook({ ...PL_ENV, ALERT_WEBHOOK_URL: "https://hook.test/alert" })).json();
+  assert.doesNotMatch(out.packlink, /aviso/);
+  assert.ok(!calls.some((c) => c.url === "https://hook.test/alert"));
 });
