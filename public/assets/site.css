@@ -664,3 +664,23 @@ body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
   .pod.l{left:9%}.pod.r{right:9%}
   .fader{bottom:5%}
 }
+
+/* mesa v3.1: contorno grueso con doble línea, separado de platos y pantalla */
+.dk-body path.shell{fill:#0B0713;stroke:rgba(201,162,255,.75);stroke-width:4;stroke-linejoin:round}
+.dk-body path.inner{fill:none;stroke:rgba(168,85,247,.38);stroke-width:2;stroke-linejoin:round;stroke-dasharray:2 7;stroke-linecap:round}
+.deck.playing .dk-body path.shell{stroke:#D9BEFF}
+.deck.playing .dk-body path.inner{stroke:rgba(201,162,255,.7);animation:dash 6s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-90}}
+.leds{top:7.2%}
+.pod{width:16%}
+.pod.l{left:8.5%}.pod.r{right:8.5%}
+.screen{left:31%;width:38%;top:16%;height:68%}
+.fader{top:auto;bottom:6.5%}
+@media (max-width:900px){
+  .leds{top:4%}
+  .screen{left:14%;width:72%;top:8%;height:42%}
+  .pod{width:28%;bottom:13%}
+  .pod.l{left:10%}.pod.r{right:10%}
+  .fader{bottom:7.5%}
+  .pod{bottom:15%}
+}
