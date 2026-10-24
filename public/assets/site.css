@@ -393,8 +393,8 @@ section[id]{scroll-margin-top:var(--hdr)}
 .play[disabled]{opacity:.4;box-shadow:none;cursor:default;transform:none}
 .play .tri{width:0;height:0;border-left:15px solid var(--text-d);border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:4px}
 .deck.loading .play .tri{border:2px solid var(--lilac-2);border-right-color:transparent;width:20px;height:20px;border-radius:50%;margin:0;animation:spin .8s linear infinite}
-.screen .embed{padding:8px;opacity:0;pointer-events:none;transition:opacity .5s}
-.screen .embed iframe{display:block;border-radius:10px}
+.screen .embed{align-self:center;margin:8px;height:152px;border-radius:12px;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .5s}
+.screen .embed iframe{display:block;border:0;background:transparent;color-scheme:normal}
 .deck.live .embed{opacity:1;pointer-events:auto}
 .deck.live .idle{opacity:0;pointer-events:none}
 .screen .scan{pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);mix-blend-mode:screen}
