@@ -23,7 +23,7 @@ export async function handlePacklinkCheck(request, env) {
   const q = new URLSearchParams({
     "from[country]": "ES", "from[zip]": "08786",
     "to[country]": "FR", "to[zip]": "75001",
-    "packages[0][weight]": "1", "packages[0][length]": "40", "packages[0][width]": "30", "packages[0][height]": "8",
+    "packages[0][weight]": "0.5", "packages[0][length]": "40", "packages[0][width]": "30", "packages[0][height]": "10",
     source: "PRO",
   });
   const out = { key: "present" };
