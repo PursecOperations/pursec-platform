@@ -497,7 +497,7 @@ body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
 #about .copy p{font-size:14px}
 @media (max-width:860px){#about .split{grid-template-columns:1fr}#about .frame{min-height:72vh}}
 /* Fits: fotos altas a sangre, sin huecos */
-#fits{padding-top:clamp(40px,6vw,88px)!important}
+
 .look{margin:0;padding:0;gap:2px;grid-auto-columns:clamp(260px,34vw,560px);scroll-padding-inline:0;scrollbar-width:none}
 .look::-webkit-scrollbar{display:none}
 .look .frame{border-radius:0;aspect-ratio:3/4}
@@ -520,3 +520,41 @@ body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
 .trust div{font-size:11.5px;padding:10px}
 @media (max-width:900px){.pdp{grid-template-columns:1fr}.gallery{margin:0}}
 #drop{padding-top:clamp(24px,3vw,40px)}
+
+/* =================================================================== fotos a pantalla completa con texto encima */
+.cover{position:relative;width:100%;height:min(100svh,1100px);min-height:520px;overflow:hidden;color:#fff;background:var(--ink);isolation:isolate}
+.cover>.slot,.cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+.cover>.slot .lbl{transform:translateY(-12vh)}
+/* degradado solo donde va el texto: la foto se ve limpia arriba */
+.cover::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(4,2,7,.82) 0%,rgba(4,2,7,.45) 28%,rgba(4,2,7,0) 55%)}
+.cover .over{position:absolute;left:var(--g);right:var(--g);bottom:clamp(28px,5vw,64px);display:flex;flex-direction:column;gap:14px;max-width:560px;text-shadow:0 1px 18px rgba(0,0,0,.35)}
+.cover .over .h2{font-size:clamp(30px,4.2vw,60px);line-height:1;color:#fff}
+.cover .over p{margin:0;font-size:14.5px;line-height:1.6;color:rgba(255,255,255,.86);max-width:460px}
+.cover .over .mono{color:rgba(255,255,255,.8)}
+.cover .over .lilac{color:var(--lilac-2)}
+.cover .btn{--bg:#fff;--fg:var(--ink)}
+/* Fits: cada foto ocupa toda la pantalla y se desliza en horizontal */
+.fits{position:relative;background:var(--ink)}
+.fits-hint{position:absolute;bottom:clamp(34px,5vw,70px);right:var(--g);z-index:3;color:rgba(255,255,255,.85);pointer-events:none}
+.look.full{grid-auto-columns:100%;gap:0;margin:0;padding:0;scroll-snap-type:x mandatory}
+.look.full figure{margin:0;height:min(100svh,1100px);min-height:520px}
+.look.full figcaption{padding:0}
+.look.full .over .h2{font-size:clamp(28px,3.6vw,52px)}
+/* tarjetas: nombre y precio encima de la foto */
+.card{padding-bottom:0}
+.card .media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(0deg,rgba(4,2,7,.62) 0%,rgba(4,2,7,.2) 22%,rgba(4,2,7,0) 40%);transition:opacity .5s}
+.card>.row,.card>.sub{position:absolute;left:0;right:0;z-index:2;color:#fff;pointer-events:none;transition:opacity .4s}
+.card>.row{bottom:30px;padding:0 14px}
+.card>.row a{pointer-events:auto}
+.card>.sub{bottom:12px;padding:0 14px;color:rgba(255,255,255,.75)}
+.card>.row:only-of-type{bottom:14px}
+.card .badge{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.45),0 0 14px rgba(0,0,0,.35)}
+.card .badge.dark{color:#fff}.card .badge.lilac{color:var(--lilac-3)}
+.card:hover>.row,.card:hover>.sub{opacity:0}
+@media (hover:none){.card:hover>.row,.card:hover>.sub{opacity:1}}
+.card .quick{z-index:3}
+.card .slot .lbl{transform:translateY(-14px)}
+/* producto sin descripción: el nombre baja */
+.card>.row:last-child{bottom:14px}
+.cover-s{height:min(62svh,700px);min-height:380px}
+.cover-s .over .h2{font-size:clamp(34px,5vw,72px)}
