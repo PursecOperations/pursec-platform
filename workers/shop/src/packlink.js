@@ -4,18 +4,22 @@
 
 const BASE = "https://api.packlink.com/v1";
 
+// El secreto en Cloudflare se llama PACKLINKPRO_API_KEY (también se acepta PACKLINK_API_KEY)
+export const packlinkKey = (env) => env.PACKLINKPRO_API_KEY || env.PACKLINK_API_KEY;
+
 export async function packlinkGet(env, path) {
-  if (!env.PACKLINK_API_KEY) throw new Error("NO_KEY");
+  const key = packlinkKey(env);
+  if (!key) throw new Error("NO_KEY");
   // La clave va tal cual en Authorization, sin "Bearer"
   return fetch(`${BASE}${path}`, {
-    headers: { Authorization: env.PACKLINK_API_KEY, Accept: "application/json" },
+    headers: { Authorization: key, Accept: "application/json" },
   });
 }
 
 // GET /packlink-check — TEMPORAL. Devuelve solo códigos de estado, el número de servicios y
 // los 3 más baratos de una cotización de prueba. Nada privado.
 export async function handlePacklinkCheck(request, env) {
-  if (!env.PACKLINK_API_KEY) return Response.json({ key: "missing" });
+  if (!packlinkKey(env)) return Response.json({ key: "missing" });
   const q = new URLSearchParams({
     "from[country]": "ES", "from[zip]": "08786",
     "to[country]": "FR", "to[zip]": "75001",
