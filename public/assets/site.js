@@ -70,7 +70,7 @@ function chrome() {
     <div class="rule" data-reveal style="margin:calc(-1 * clamp(48px,7vw,90px)) calc(-1 * var(--g)) 0"></div>
     ${deckHTML()}
     <div class="cols">
-      <div class="about"><h4>PURSEC</h4><p>Streetwear in short drops of a few pieces. Shipped from our own stock in Spain.</p></div>
+      <div class="about"><h4>PURSEC</h4><p>Streetwear released in drops. Shipped from our own stock in Spain.</p></div>
       <div><h4>Shop</h4><ul><li><a href="/shop">All pieces</a></li><li><a href="/#drop">Drop 01</a></li><li><a href="/#fits">Fits</a></li><li><a href="/#list">The list</a></li></ul></div>
       <div><h4>Help</h4><ul><li><a href="/help#shipping">Shipping</a></li><li><a href="/help#returns">Returns</a></li><li><a href="/help#sizing">Size guide</a></li><li><a href="/help#faq">FAQ</a></li><li><a href="mailto:hola@pursec.club">hola@pursec.club</a></li></ul></div>
       <div><h4>Legal</h4><ul><li><a href="/legal#terms">Terms of sale</a></li><li><a href="/legal#returns">Right of withdrawal</a></li><li><a href="/legal#privacy">Privacy</a></li><li><a href="/legal#cookies">Cookies</a></li><li><a href="/legal#owner">Legal notice</a></li></ul></div>
@@ -406,6 +406,21 @@ function beamHover(hero) {
   hero.addEventListener("pointermove", (e) => { const r = beam.getBoundingClientRect(); beam.style.setProperty("--mx", `${e.clientX - r.left}px`); }, { passive: true });
 }
 // Progreso de lectura: la línea bajo la cabecera se llena al bajar.
+// Transición portada → Drop 01: la línea de luz se abre hasta volverse la página blanca.
+function opening() {
+  const el = $(".opening"); if (!el) return;
+  if (reduce) { el.style.setProperty("--w", 1); el.style.setProperty("--h", 1); el.style.setProperty("--b", 0); return; }
+  const tick = () => {
+    const r = el.getBoundingClientRect(), vh = innerHeight;
+    const mid = r.top + r.height / 2;
+    const o = Math.min(1, Math.max(0, (vh * 0.95 - mid) / (vh * 0.85)));
+    el.style.setProperty("--w", Math.min(1, o / 0.3).toFixed(3));
+    const h = Math.min(1, Math.max(0, (o - 0.3) / 0.7));
+    el.style.setProperty("--h", h.toFixed(3));
+    el.style.setProperty("--b", (1 - Math.min(1, h * 3)).toFixed(3));
+  };
+  addEventListener("scroll", tick, { passive: true }); addEventListener("resize", tick); tick();
+}
 function progress() {
   const set = () => { const h = document.documentElement.scrollHeight - innerHeight; document.documentElement.style.setProperty("--p", h > 0 ? (scrollY / h).toFixed(4) : 0); };
   addEventListener("scroll", set, { passive: true }); addEventListener("resize", set); set();
@@ -420,7 +435,7 @@ function tilt(stage) {
 
 /* =================================================================== páginas */
 async function home() {
-  beamHover($(".hero")); tilt($(".logo-stage")); manifesto(); dragScroll($(".look"));
+  beamHover($(".hero")); tilt($(".logo-stage")); opening(); manifesto(); dragScroll($(".look"));
   const grid = $("#drop-grid"); if (!grid) return;
   const ps = await loadProducts();
   if (ps.length) {

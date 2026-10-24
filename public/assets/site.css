@@ -129,6 +129,10 @@ body.menu-open,body.drawer-open{overflow:hidden}
 @keyframes cue{0%{transform:scaleY(0)}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 @media (max-width:700px){.hero .corner{display:none}.logo-stage{--lw:150vw}}
 
+/* ---------- transición portada → Drop 01 ---------- */
+.opening{position:relative;height:clamp(260px,55vh,560px);background:var(--night);overflow:hidden;--w:0;--h:0;--b:1}
+.opening i{position:absolute;left:calc((1 - var(--w)) * 50%);right:calc((1 - var(--w)) * 50%);top:calc((1 - var(--h)) * 50%);bottom:calc(var(--b) * 50%);min-height:1px;background:linear-gradient(180deg,var(--paper),var(--paper));box-shadow:0 0 calc(18px + 60px * (1 - var(--h))) rgba(168,85,247,calc(.9 * (1 - var(--h)))),0 0 6px rgba(243,234,255,calc(1 - var(--h)));border-radius:calc(40px * (1 - var(--h))) calc(40px * (1 - var(--h))) 0 0}
+
 /* ---------- banda grande ---------- */
 .band{background:var(--lilac);color:var(--night);overflow:hidden;padding:14px 0;border-block:1px solid rgba(0,0,0,.2)}
 .band .marquee>span{font-weight:850;font-stretch:125%;font-size:clamp(28px,4.6vw,64px);text-transform:uppercase;letter-spacing:-.03em;gap:clamp(22px,3vw,44px);padding-right:clamp(22px,3vw,44px)}
