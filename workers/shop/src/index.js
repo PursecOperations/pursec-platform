@@ -11,6 +11,7 @@
 
 import { handleCheckout } from "./checkout.js";
 import { handleStripeWebhook, handleOrderStatus } from "./orders.js";
+import { handlePacklinkCheck } from "./packlink.js";
 
 const PREVIEW_ORIGIN = /^https:\/\/([a-z0-9-]+-)?pursec-platform\.pursec-telemetry-hq\.workers\.dev$/;
 
@@ -44,6 +45,7 @@ export default {
       if (pathname === "/checkout" && (request.method === "POST" || request.method === "OPTIONS")) return await withCors(request, env, handleCheckout);
       if (pathname === "/order-status" && (request.method === "GET" || request.method === "OPTIONS")) return await withCors(request, env, handleOrderStatus);
       if (pathname === "/stripe-webhook" && request.method === "POST") return await handleStripeWebhook(request, env);
+      if (pathname === "/packlink-check" && request.method === "GET") return await handlePacklinkCheck(request, env); // TEMPORAL
       if (pathname === "/" && request.method === "GET") return new Response("PURSEC tienda operativa", { status: 200 });
       return new Response("No encontrado", { status: 404 });
     } catch (err) {
