@@ -13,11 +13,11 @@ const SIZE_ORDER = ["XXS","XS","S","M","L","XL","XXL","2XL","3XL","One size"];
    null = la mesa muestra "coming soon". "default" se usa en las páginas sin canción propia. */
 const SOUNDTRACK = {
   default: null,
-  home: null,      // Drop 01
-  shop: null,
-  product: null,
-  help: null,
-  legal: null,
+  home: "https://open.spotify.com/track/5XlzuIySfqhqMv5MqjHj6H",     // Inicio · Toomas, Tell Me Somethin'
+  shop: "https://open.spotify.com/track/49BbpJuVsX2wUl0Qo9aVvC",     // Drop 01 · Gunna ft. Young Thug, mop
+  product: "https://open.spotify.com/track/04Gk5sGLIDk6mRfTLnRasR",  // Producto · Fanta Rosario, Ponlos, DICEN
+  help: "https://open.spotify.com/track/6mjhmQB61lSVhgcmOFJv9L",     // Ayuda · Romeo Santos, Ayúdame
+  legal: "https://open.spotify.com/track/4X5f3vT8MRuXF68pfjNte5",    // Legal · A$AP Rocky, F**kin' Problems
 };
 const CATEGORIES = { hoodies:"Hoodies", tees:"Tees", sweatshirts:"Sweatshirts", bottoms:"Bottoms", outerwear:"Outerwear", accessories:"Accessories" };
 
@@ -39,7 +39,7 @@ const ICON = {
 };
 
 /* =================================================================== estructura común */
-const NAV = [["Shop","/shop"],["Drop 01","/#drop"],["Lookbook","/#lookbook"],["About","/#about"]];
+const NAV = [["Shop","/shop"],["Drop 01","/#drop"],["Fits","/#fits"],["About","/#about"]];
 function chrome() {
   const here = location.pathname.replace(/\.html$/, "").replace(/\/$/, "") || "/";
   const marq = ["Drop 01 — the list is open","Free shipping from €70","Shipping to ES · FR · DE · IT · PT","14-day returns","Ships from Spain in 3 business days"];
@@ -71,7 +71,7 @@ function chrome() {
     ${deckHTML()}
     <div class="cols">
       <div class="about"><h4>PURSEC</h4><p>Streetwear in short drops of a few pieces. Shipped from our own stock in Spain.</p></div>
-      <div><h4>Shop</h4><ul><li><a href="/shop">All pieces</a></li><li><a href="/#drop">Drop 01</a></li><li><a href="/#lookbook">Lookbook</a></li><li><a href="/#list">The list</a></li></ul></div>
+      <div><h4>Shop</h4><ul><li><a href="/shop">All pieces</a></li><li><a href="/#drop">Drop 01</a></li><li><a href="/#fits">Fits</a></li><li><a href="/#list">The list</a></li></ul></div>
       <div><h4>Help</h4><ul><li><a href="/help#shipping">Shipping</a></li><li><a href="/help#returns">Returns</a></li><li><a href="/help#sizing">Size guide</a></li><li><a href="/help#faq">FAQ</a></li><li><a href="mailto:hola@pursec.club">hola@pursec.club</a></li></ul></div>
       <div><h4>Legal</h4><ul><li><a href="/legal#terms">Terms of sale</a></li><li><a href="/legal#returns">Right of withdrawal</a></li><li><a href="/legal#privacy">Privacy</a></li><li><a href="/legal#cookies">Cookies</a></li><li><a href="/legal#owner">Legal notice</a></li></ul></div>
     </div>
@@ -116,7 +116,7 @@ function spotifyUri(link) {
   const m = String(link || "").match(/(track|album|playlist|episode)[/:]([A-Za-z0-9]{10,})/);
   return m ? `spotify:${m[1]}:${m[2]}` : null;
 }
-const PAGE_NAMES = { home: "Drop 01", shop: "Shop", product: "Product", help: "Help", legal: "Legal", thanks: "Thank you", "404": "Lost" };
+const PAGE_NAMES = { home: "PURSEC", shop: "Drop 01", product: "Product", help: "Help", legal: "Legal", thanks: "Thank you", "404": "Lost" };
 function platter(side) {
   return `<div class="platter ${side}" aria-hidden="true"><div class="vinyl"><span class="label"><img src="/img/brand/logo-mark.webp" alt=""></span></div><span class="arm"></span></div>`;
 }
