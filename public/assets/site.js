@@ -51,7 +51,7 @@ function chrome() {
       <button class="burger" aria-label="Menu" aria-expanded="false" aria-controls="mmenu"><i></i><i></i></button>
       <nav aria-label="Main">${NAV.map(([t, h]) => `<a href="${h}"${h === here ? ' aria-current="page"' : ""}>${t}</a>`).join("")}</nav>
     </div>
-    <a class="brand" href="/" aria-label="PURSEC home"><img src="/img/brand/logo-nav.webp" width="286" height="72" alt="PURSEC"></a>
+    <a class="brand${page === "home" ? " is-home" : ""}" href="/" aria-label="PURSEC — go to home"><img src="/img/brand/logo-nav.webp" width="286" height="72" alt="PURSEC"><span class="home-sig" aria-hidden="true"><i></i><b>Home</b><i></i></span></a>
     <div class="tools">
       <a class="tool hide-s" href="/help">Help</a>
       <button class="tool" data-open-bag aria-controls="bag">Bag<span class="bag-count" data-count>0</span></button>
