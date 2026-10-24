@@ -88,7 +88,7 @@ function chrome() {
     <div class="body" style="padding-top:18px">${sizeGuideHTML()}</div>
   </aside>
   <div class="toast" role="status" aria-live="polite"></div>
-  <a class="sound-hint" href="#deck" aria-label="Soundtrack at the bottom of the page"><span class="cap"></span><span class="lbl mono">Sound</span></a>`;
+  <div class="sound-hint"><span class="rail" role="scrollbar" tabindex="0" aria-orientation="vertical" aria-controls="main" aria-label="Scroll the page" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span class="flare"></span><span class="cap"></span></span><a class="lbl" href="#deck" aria-label="Go to the soundtrack">Sound</a></div>`;
 
   // menú móvil
   const burger = $(".burger");
@@ -159,10 +159,25 @@ function deck() {
     sc.onerror = () => { d.classList.remove("loading"); btn.disabled = false; toast("Spotify couldn't load. Try again."); };
     document.body.appendChild(sc);
   });
-  // Indicador lateral: baja con el scroll y desaparece cuando la mesa está a la vista.
-  const hint = $(".sound-hint");
-  if (hint && "IntersectionObserver" in window) new IntersectionObserver(([en]) => hint.classList.toggle("hide", en.isIntersecting), { threshold: 0.2 }).observe(d);
-  hint?.addEventListener("click", (e) => { e.preventDefault(); d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); });
+  // Fader lateral: arrastrar = desplazar la página; "Sound" lleva a la mesa.
+  const hint = $(".sound-hint"); if (!hint) return;
+  const rail = $(".rail", hint);
+  const max = () => document.documentElement.scrollHeight - innerHeight;
+  const go = (clientY) => { const r = rail.getBoundingClientRect(); const t = Math.min(1, Math.max(0, (clientY - r.top) / r.height)); scrollTo({ top: t * max(), behavior: "instant" }); };
+  let drag = false;
+  rail.addEventListener("pointerdown", (e) => { drag = true; rail.setPointerCapture(e.pointerId); hint.classList.add("drag"); go(e.clientY); e.preventDefault(); });
+  rail.addEventListener("pointermove", (e) => { if (drag) go(e.clientY); });
+  const end = () => { drag = false; hint.classList.remove("drag"); };
+  rail.addEventListener("pointerup", end); rail.addEventListener("pointercancel", end);
+  rail.addEventListener("keydown", (e) => {
+    const step = { ArrowDown: 0.08, ArrowUp: -0.08, PageDown: 0.25, PageUp: -0.25 }[e.key];
+    if (e.key === "Home") { e.preventDefault(); return scrollTo({ top: 0 }); }
+    if (e.key === "End") { e.preventDefault(); return scrollTo({ top: max() }); }
+    if (step) { e.preventDefault(); scrollBy({ top: step * max(), behavior: reduce ? "auto" : "smooth" }); }
+  });
+  addEventListener("scroll", () => rail.setAttribute("aria-valuenow", Math.round((scrollY / Math.max(1, max())) * 100)), { passive: true });
+  if ("IntersectionObserver" in window) new IntersectionObserver(([en]) => hint.classList.toggle("at-deck", en.isIntersecting), { threshold: 0.2 }).observe(d);
+  $(".lbl", hint).addEventListener("click", (e) => { e.preventDefault(); d.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" }); });
 }
 
 let lastFocus = null;
