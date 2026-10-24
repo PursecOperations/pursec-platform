@@ -210,15 +210,18 @@ const ORDER_ROW = {
   shipping: { name: "Ana García López", address1: "Rue X 3", address2: "", city: "Paris", zip: "75001", country_code: "FR", phone: "+33", email: "ana@test" },
 };
 
-test("Packlink: elige el Correos más barato con entrega en oficina", () => {
+test("Packlink: siempre depósito en oficina y entrega a domicilio; Correos primero", () => {
   const s = pickService([
-    { id: 1, carrier_name: "GLS", dropoff: true, price: { total_price: 6 } },
-    { id: 2, carrier_name: "Correos", dropoff: false, price: { total_price: 5 } },
-    { id: 3, carrier_name: "Correos", dropoff: true, price: { total_price: 9.41 } },
-    { id: 4, carrier_name: "Correos Express", dropoff: true, price: { total_price: 8.2 } },
+    { id: 1, carrier_name: "GLS", dropoff: true, delivery_to_parcelshop: false, price: { total_price: 6 } },
+    { id: 2, carrier_name: "Correos", dropoff: false, delivery_to_parcelshop: false, price: { total_price: 5 } },
+    { id: 3, carrier_name: "Correos", dropoff: true, delivery_to_parcelshop: true, price: { total_price: 4 } },
+    { id: 5, carrier_name: "Correos", name: "Paq Ligero Punto de recogida", dropoff: true, price: { total_price: 3 } },
+    { id: 6, carrier_name: "Correos", dropoff: true, delivery_to_parcelshop: false, price: { total_price: 9.41 } },
+    { id: 4, carrier_name: "Correos Express", dropoff: true, delivery_to_parcelshop: false, price: { total_price: 8.2 } },
   ]);
   assert.equal(s.id, 4);
   assert.equal(pickService([{ id: 1, carrier_name: "GLS", dropoff: true, price: { total_price: 6 } }]).id, 1);
+  assert.equal(pickService([{ id: 3, carrier_name: "Correos", dropoff: true, delivery_to_parcelshop: true, price: { total_price: 4 } }]), null);
   assert.equal(pickService([]), null);
 });
 

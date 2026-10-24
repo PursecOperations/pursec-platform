@@ -42,16 +42,26 @@ export function splitName(full = "") {
   return { name: parts[0], surname: parts.slice(1).join(" ") };
 }
 
-// Servicio: Correos más barato con entrega en oficina (Oriol deposita, no hay recogida).
-// Si no hay Correos, el más barato con entrega en oficina; si nada, sin servicio (lo elige Oriol).
+// Servicio (Oriol, 24 oct 2026): SIEMPRE se deposita en oficina (no hay recogida) y SIEMPRE se entrega
+// en el domicilio del cliente (nunca en punto de recogida ni taquilla).
+// Entre los que cumplen las dos cosas: el Correos más barato; si no hay Correos, el más barato.
+// Si ninguno cumple, el borrador se crea sin servicio y Oriol lo elige en Packlink.
+const PICKUP_POINT = /punto|parcel ?shop|locker|taquilla|citypaq|relais|point relais|oficina[- ]a[- ]oficina|office[- ]to[- ]office|drop[- ]?off[- ]to[- ]drop/i;
+
 export function pickService(services) {
-  const priced = (Array.isArray(services) ? services : [])
-    .map((s) => ({ id: s.id ?? s.service_id, carrier: s.carrier_name || "", dropoff: s.dropoff === true || s.departure_type === "drop-off", price: s.price?.total_price ?? s.base_price }))
-    .filter((s) => s.id != null && typeof s.price === "number");
+  const ok = (Array.isArray(services) ? services : [])
+    .map((s) => ({
+      id: s.id ?? s.service_id,
+      carrier: s.carrier_name || "",
+      name: s.name || s.service_name || "",
+      dropoff: s.dropoff === true || s.departure_type === "drop-off",
+      toDoor: !(s.delivery_to_parcelshop === true || s.destination_type === "drop-off"),
+      price: s.price?.total_price ?? s.base_price,
+    }))
+    .filter((s) => s.id != null && typeof s.price === "number")
+    .filter((s) => s.dropoff && s.toDoor && !PICKUP_POINT.test(s.name));
   const cheapest = (arr) => arr.sort((a, b) => a.price - b.price)[0] || null;
-  return cheapest(priced.filter((s) => s.dropoff && /correos/i.test(s.carrier)))
-    || cheapest(priced.filter((s) => s.dropoff))
-    || null;
+  return cheapest(ok.filter((s) => /correos/i.test(s.carrier))) || cheapest(ok);
 }
 
 export function buildDraft({ order, warehouse, parcel, service }) {
