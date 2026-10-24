@@ -63,6 +63,24 @@ test("el precio sale de Supabase y el envío es obligatorio", () => {
   assert.throws(() => buildSessionParams([{ variant_id: 99, quantity: 1 }], VARIANTS, ENV), /no está a la venta/);
 });
 
+test("envío gratis solo cuando las prendas superan el umbral", () => {
+  const env = { ...ENV, FREE_SHIPPING_FROM: "70" };
+  // 1 prenda de 79 € supera 70 -> envío gratis
+  const gratis = buildSessionParams([{ variant_id: 11, quantity: 1 }], VARIANTS, env);
+  assert.equal(gratis.shipping_options[0].shipping_rate_data.fixed_amount.amount, 0);
+  assert.match(gratis.shipping_options[0].shipping_rate_data.display_name, /Free/);
+  // Justo 70,00 € no supera 70 -> paga 4,95 €
+  const justo = [{ id: 11, size: "M", color: "Black", stock: 3, product: { id: 2, slug: "tee", name: "Tee", price_eur: "70.00", active: true } }];
+  const pagado = buildSessionParams([{ variant_id: 11, quantity: 1 }], justo, env);
+  assert.equal(pagado.shipping_options[0].shipping_rate_data.fixed_amount.amount, 495);
+  // Por debajo de 70 € paga el envío estándar
+  const barato = [{ id: 11, size: "M", color: "Black", stock: 3, product: { id: 3, slug: "cap", name: "Cap", price_eur: "35.00", active: true } }];
+  assert.equal(buildSessionParams([{ variant_id: 11, quantity: 1 }], barato, env).shipping_options[0].shipping_rate_data.fixed_amount.amount, 495);
+  // Dos de 35 € suman 70,00 € -> no supera -> paga; sin umbral configurado, nunca es gratis
+  assert.equal(buildSessionParams([{ variant_id: 11, quantity: 2 }], barato, env).shipping_options[0].shipping_rate_data.fixed_amount.amount, 495);
+  assert.equal(buildSessionParams([{ variant_id: 11, quantity: 1 }], VARIANTS, ENV).shipping_options[0].shipping_rate_data.fixed_amount.amount, 495);
+});
+
 test("POST /checkout devuelve la URL de Stripe", async () => {
   route((c) => c.url.startsWith("https://db.test/rest/v1/product_variants"), { body: [VARIANTS[0]] });
   route((c) => c.url === "https://api.stripe.com/v1/checkout/sessions", { body: { id: "cs_test_1", url: "https://checkout.stripe.com/c/pay/cs_test_1" } });

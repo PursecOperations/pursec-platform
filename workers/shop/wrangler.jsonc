@@ -13,8 +13,10 @@
     "SUPABASE_URL": "https://uymgrzlbpaqorbwajhfh.supabase.co",
     "SITE_URL": "https://pursec.club",
     "ALLOWED_ORIGINS": "https://pursec.club,https://www.pursec.club",
-    // Precio del envío que paga el cliente, en euros. [PENDIENTE] lo decide Oriol con la tarifa de su app de etiquetas.
-    "SHIPPING_EUR": "",
-    "SHIPPING_LABEL": "Standard shipping (EU)"
+    // Envío (decidido por Oriol el 24 oct 2026): 4,95 € en toda la UE; gratis si las prendas superan 70 €.
+    "SHIPPING_EUR": "4.95",
+    "FREE_SHIPPING_FROM": "70",
+    "SHIPPING_LABEL": "Standard shipping (EU)",
+    "FREE_SHIPPING_LABEL": "Free shipping (EU)"
   }
 }

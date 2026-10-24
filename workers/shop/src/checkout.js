@@ -44,6 +44,10 @@ export function buildSessionParams(lines, variants, env) {
   if (!(shipping >= 0) || env.SHIPPING_EUR === undefined || env.SHIPPING_EUR === "") {
     throw new Error("CONFIG: falta la variable SHIPPING_EUR (precio del envío)");
   }
+  // Envío gratis si el importe de las prendas supera FREE_SHIPPING_FROM (en euros). Vacío = nunca gratis.
+  const subtotalCents = line_items.reduce((t, l) => t + l.price_data.unit_amount * l.quantity, 0);
+  const freeFrom = env.FREE_SHIPPING_FROM === undefined || env.FREE_SHIPPING_FROM === "" ? NaN : Number(env.FREE_SHIPPING_FROM);
+  const isFree = freeFrom >= 0 && subtotalCents > Math.round(freeFrom * 100);
   const countries = (env.SHIP_COUNTRIES || EU_COUNTRIES.join(",")).split(",").map((c) => c.trim()).filter(Boolean);
   const site = env.SITE_URL || "https://pursec.club";
 
@@ -54,8 +58,8 @@ export function buildSessionParams(lines, variants, env) {
     shipping_options: [{
       shipping_rate_data: {
         type: "fixed_amount",
-        display_name: env.SHIPPING_LABEL || "Standard shipping",
-        fixed_amount: { amount: Math.round(shipping * 100), currency: "eur" },
+        display_name: isFree ? (env.FREE_SHIPPING_LABEL || "Free shipping (EU)") : (env.SHIPPING_LABEL || "Standard shipping"),
+        fixed_amount: { amount: isFree ? 0 : Math.round(shipping * 100), currency: "eur" },
       },
     }],
     phone_number_collection: { enabled: true },

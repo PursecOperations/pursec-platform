@@ -22,7 +22,8 @@ Al fusionar el PR: cambiarla a `main` (Settings -> Builds -> Production branch).
 | `STRIPE_WEBHOOK_SECRET` | Stripe (sandbox) -> Workbench -> Webhooks -> `pursec-shop-test` -> Signing secret (`whsec_...`) |
 
 ## Variables públicas (en `wrangler.jsonc`)
-- `SHIPPING_EUR`: precio del envío que paga el cliente. Vacío = la tienda no deja pagar.
+- `SHIPPING_EUR`: precio del envío que paga el cliente (4,95 €). Vacío = la tienda no deja pagar.
+- `FREE_SHIPPING_FROM`: si el importe de las prendas supera esta cifra en euros (70), el envío es gratis. Vacío = nunca gratis.
 
 ## Stock
 - Cada talla (`product_variants`) tiene `stock`, `sku`, `unit_cost_eur` (privado) y `low_stock_alert`.
