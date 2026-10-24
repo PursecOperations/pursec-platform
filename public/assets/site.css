@@ -697,3 +697,23 @@ body{font-size:15px;letter-spacing:-.003em;font-feature-settings:"ss01"}
 @keyframes wireL{0%{right:-120px;opacity:1}70%{opacity:.8}100%{right:60%;opacity:0}}
 @media (max-width:900px){.dk-wire{top:74%}.dk-wire.l{right:99.4%}.dk-wire.r{left:99.4%}}
 @media (prefers-reduced-motion:reduce){.dk-wire i{display:none}}
+
+/* la línea es la estructura: entra, se abre en el contorno de la mesa y vuelve a salir */
+.dk-body path.shell{stroke:#C9A2FF;stroke-width:3}
+.dk-wire{height:3px;margin-top:-1.5px;box-shadow:0 0 10px rgba(168,85,247,.7)}
+.dk-wire.l{right:100%;background:linear-gradient(270deg,#C9A2FF,rgba(168,85,247,.6) 35%,rgba(168,85,247,0))}
+.dk-wire.r{left:100%;background:linear-gradient(90deg,#C9A2FF,rgba(168,85,247,.6) 35%,rgba(168,85,247,0))}
+.dk-body{filter:drop-shadow(0 30px 50px rgba(0,0,0,.6)) drop-shadow(0 0 10px rgba(168,85,247,.55))}
+.pod{width:15.5%}
+.pod.l{left:10.5%}.pod.r{right:10.5%}
+@media (max-width:900px){.dk-wire{top:73.33%}.dk-wire.l{right:100%}.dk-wire.r{left:100%}.pod{width:27%;bottom:13%}.pod.l{left:12%}.pod.r{right:12%}}
+
+/* sin platos: la línea abraza solo la pantalla */
+.leds{top:10.5%}
+.screen{left:24%;width:52%;top:17%;height:66%}
+@media (max-width:900px){
+  .deck{aspect-ratio:400/320;max-width:520px}
+  .leds{top:9.5%}
+  .screen{left:9%;width:82%;top:16.5%;height:68%}
+  .dk-wire{top:50%}
+}

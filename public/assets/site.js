@@ -126,13 +126,12 @@ function platter(side) {
 function deckHTML() {
   const t = SOUNDTRACK[page] ?? SOUNDTRACK.default;
   const uri = spotifyUri(t?.url);
-  const body = `<svg class="dk-body d" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M36 210C36 132 110 52 230 50C270 50 280 60 290 40Q300 14 340 12L660 12Q700 14 710 40C720 60 730 50 770 50C890 52 964 132 964 210C964 288 890 368 770 370C730 370 720 360 710 380Q700 406 660 408L340 408Q300 406 290 380C280 360 270 370 230 370C110 368 36 288 36 210Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(25 10.5) scale(.95)" d="M36 210C36 132 110 52 230 50C270 50 280 60 290 40Q300 14 340 12L660 12Q700 14 710 40C720 60 730 50 770 50C890 52 964 132 964 210C964 288 890 368 770 370C730 370 720 360 710 380Q700 406 660 408L340 408Q300 406 290 380C280 360 270 370 230 370C110 368 36 288 36 210Z"/></svg>
-    <svg class="dk-body m" viewBox="0 0 400 480" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M70 6L330 6Q372 8 374 50L374 230C374 262 398 280 398 330L398 400C398 452 360 474 300 474L100 474C40 474 2 452 2 400L2 330C2 280 26 262 26 230L26 50Q28 8 70 6Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(10 12) scale(.95)" d="M70 6L330 6Q372 8 374 50L374 230C374 262 398 280 398 330L398 400C398 452 360 474 300 474L100 474C40 474 2 452 2 400L2 330C2 280 26 262 26 230L26 50Q28 8 70 6Z"/></svg>`;
+  const body = `<svg class="dk-body d" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M0 210C118 210 150 28 300 28L700 28C850 28 882 210 1000 210C882 210 850 392 700 392L300 392C150 392 118 210 0 210Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(25 10.5) scale(.95)" d="M0 210C118 210 150 28 300 28L700 28C850 28 882 210 1000 210C882 210 850 392 700 392L300 392C150 392 118 210 0 210Z"/></svg>
+    <svg class="dk-body m" viewBox="0 0 400 320" preserveAspectRatio="none" aria-hidden="true"><path class="shell" vector-effect="non-scaling-stroke" d="M0 160C14 160 16 16 62 16L338 16C384 16 386 160 400 160C386 160 384 304 338 304L62 304C16 304 14 160 0 160Z"/><path class="inner" vector-effect="non-scaling-stroke" transform="translate(10 8) scale(.95)" d="M0 160C14 160 16 16 62 16L338 16C384 16 386 160 400 160C386 160 384 304 338 304L62 304C16 304 14 160 0 160Z"/></svg>`;
   return `<section class="deck${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
     ${body}
     <span class="dk-wire l" aria-hidden="true"><i></i></span><span class="dk-wire r" aria-hidden="true"><i></i></span>
     <span class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-    <div class="pod l">${platter("l")}</div>
     <div class="screen">
       ${t?.cover ? `<img class="screen-bg" src="${esc(t.cover)}" alt="" loading="lazy">` : ""}
       <div class="idle">
@@ -148,8 +147,6 @@ function deckHTML() {
       <div class="embed" id="deck-embed"></div>
       <span class="scan" aria-hidden="true"></span>
     </div>
-    <div class="pod r">${platter("r")}</div>
-    <div class="fader" aria-hidden="true"><i></i></div>
   </section>`;
 }
 function deck() {
