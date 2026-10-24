@@ -13,11 +13,16 @@ const SIZE_ORDER = ["XXS","XS","S","M","L","XL","XXL","2XL","3XL","One size"];
    null = la mesa muestra "coming soon". "default" se usa en las páginas sin canción propia. */
 const SOUNDTRACK = {
   default: null,
-  home: "https://open.spotify.com/track/5XlzuIySfqhqMv5MqjHj6H",     // Inicio · Toomas, Tell Me Somethin'
-  shop: "https://open.spotify.com/track/49BbpJuVsX2wUl0Qo9aVvC",     // Drop 01 · Gunna ft. Young Thug, mop
-  product: "https://open.spotify.com/track/04Gk5sGLIDk6mRfTLnRasR",  // Producto · Fanta Rosario, Ponlos, DICEN
-  help: "https://open.spotify.com/track/6mjhmQB61lSVhgcmOFJv9L",     // Ayuda · Romeo Santos, Ayúdame
-  legal: "https://open.spotify.com/track/4X5f3vT8MRuXF68pfjNte5",    // Legal · A$AP Rocky, F**kin' Problems
+  // Inicio
+  home: { url: "https://open.spotify.com/track/5XlzuIySfqhqMv5MqjHj6H", title: "Tell Me Somethin'", artist: "Toomas", cover: "https://i.scdn.co/image/ab67616d0000b27351d00e92ac87efac98195198" },
+  // Drop 01 (tienda)
+  shop: { url: "https://open.spotify.com/track/49BbpJuVsX2wUl0Qo9aVvC", title: "mop (feat. Young Thug)", artist: "Gunna", cover: "https://i.scdn.co/image/ab67616d0000b273095bca744b48a058767a8f48" },
+  // Producto
+  product: { url: "https://open.spotify.com/track/04Gk5sGLIDk6mRfTLnRasR", title: "DICEN", artist: "Fanta Rosario, Ponlos", cover: "https://i.scdn.co/image/ab67616d0000b2730e4994eaf538636d76b264b8" },
+  // Ayuda
+  help: { url: "https://open.spotify.com/track/6mjhmQB61lSVhgcmOFJv9L", title: "Ayúdame", artist: "Romeo Santos", cover: "https://i.scdn.co/image/ab67616d0000b273485849255c69a3c2c3cfc6a5" },
+  // Legal
+  legal: { url: "https://open.spotify.com/track/4X5f3vT8MRuXF68pfjNte5", title: "F**kin' Problems", artist: "A$AP Rocky, Drake, 2 Chainz, Kendrick Lamar", cover: "https://i.scdn.co/image/ab67616d0000b2732ae92030b51fb8135d694af9" },
 };
 const CATEGORIES = { hoodies:"Hoodies", tees:"Tees", sweatshirts:"Sweatshirts", bottoms:"Bottoms", outerwear:"Outerwear", accessories:"Accessories" };
 
@@ -119,26 +124,36 @@ function platter(side) {
   return `<div class="platter ${side}" aria-hidden="true"><div class="vinyl"><span class="label"><img src="/img/brand/logo-mark.webp" alt=""></span></div><span class="arm"></span></div>`;
 }
 function deckHTML() {
-  const uri = spotifyUri(SOUNDTRACK[page] ?? SOUNDTRACK.default);
+  const t = SOUNDTRACK[page] ?? SOUNDTRACK.default;
+  const uri = spotifyUri(t?.url);
+  const body = `<svg class="dk-body d" viewBox="0 0 1000 420" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M18 210C58 118 168 66 252 66C292 66 300 36 342 28L658 28C700 36 708 66 748 66C832 66 942 118 982 210C942 302 832 354 748 354C708 354 700 384 658 392L342 392C300 384 292 354 252 354C168 354 58 302 18 210Z"/><path class="trim" vector-effect="non-scaling-stroke" d="M300 70L700 70M300 350L700 350"/></svg>
+    <svg class="dk-body m" viewBox="0 0 400 660" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M44 58C44 26 72 8 110 8L290 8C328 8 356 26 356 58L356 392C356 420 392 444 392 514C392 604 330 652 258 652L142 652C70 652 8 604 8 514C8 444 44 420 44 392Z"/></svg>`;
   return `<section class="deck${uri ? "" : " empty"}" id="deck" aria-label="Soundtrack">
-    ${platter("l")}
+    ${body}
+    <span class="leds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    <div class="pod l">${platter("l")}</div>
     <div class="screen">
+      ${t?.cover ? `<img class="screen-bg" src="${esc(t.cover)}" alt="" loading="lazy">` : ""}
       <div class="idle">
-        <span class="mono lilac">${uri ? "Soundtrack" : "Soundtrack · coming soon"}</span>
-        <b class="track">${esc(PAGE_NAMES[page] || "PURSEC")}</b>
-        <button class="play" type="button" ${uri ? "" : "disabled"} aria-label="Play the soundtrack"><span class="tri"></span></button>
-        <span class="small mute">${uri ? "Plays only when you press play. Opens Spotify's player." : "A track for this page is on its way."}</span>
+        ${t?.cover ? `<img class="art" src="${esc(t.cover)}" alt="Cover of ${esc(t.title)}" loading="lazy" width="640" height="640">` : `<div class="art ph"></div>`}
+        <div class="meta">
+          <span class="eyebrow">Soundtrack · ${esc(PAGE_NAMES[page] || "PURSEC")}</span>
+          <b class="track">${esc(t?.title || "Coming soon")}</b>
+          <span class="artist">${esc(t?.artist || "A track for this page is on its way")}</span>
+          <button class="play" type="button" ${uri ? "" : "disabled"} aria-label="Play ${esc(t?.title || "the soundtrack")}"><span class="tri"></span></button>
+          <span class="note">${uri ? "Plays only when you press play" : ""}</span>
+        </div>
       </div>
       <div class="embed" id="deck-embed"></div>
       <span class="scan" aria-hidden="true"></span>
     </div>
-    ${platter("r")}
+    <div class="pod r">${platter("r")}</div>
     <div class="fader" aria-hidden="true"><i></i></div>
   </section>`;
 }
 function deck() {
   const d = $("#deck"); if (!d) return;
-  const uri = spotifyUri(SOUNDTRACK[page] ?? SOUNDTRACK.default);
+  const uri = spotifyUri((SOUNDTRACK[page] ?? SOUNDTRACK.default)?.url);
   const btn = $(".play", d);
   let ctrl = null;
   const setPlaying = (on) => d.classList.toggle("playing", on);
@@ -165,10 +180,12 @@ function deck() {
   const max = () => document.documentElement.scrollHeight - innerHeight;
   const go = (clientY) => { const r = rail.getBoundingClientRect(); const t = Math.min(1, Math.max(0, (clientY - r.top) / r.height)); scrollTo({ top: t * max(), behavior: "instant" }); };
   let drag = false;
-  rail.addEventListener("pointerdown", (e) => { drag = true; rail.setPointerCapture(e.pointerId); hint.classList.add("drag"); go(e.clientY); e.preventDefault(); });
-  rail.addEventListener("pointermove", (e) => { if (drag) go(e.clientY); });
+  rail.addEventListener("pointerdown", (e) => { if (e.pointerType === "mouse" && e.button !== 0) return; drag = true; rail.setPointerCapture(e.pointerId); hint.classList.add("drag"); go(e.clientY); e.preventDefault(); });
+  // Solo se mueve con el botón pulsado: pasar el ratón por encima no hace nada.
+  rail.addEventListener("pointermove", (e) => { if (!drag) return; if (e.pointerType === "mouse" && e.buttons === 0) return end(); go(e.clientY); });
   const end = () => { drag = false; hint.classList.remove("drag"); };
-  rail.addEventListener("pointerup", end); rail.addEventListener("pointercancel", end);
+  ["pointerup", "pointercancel", "lostpointercapture"].forEach((ev) => rail.addEventListener(ev, end));
+  addEventListener("blur", end);
   rail.addEventListener("keydown", (e) => {
     const step = { ArrowDown: 0.08, ArrowUp: -0.08, PageDown: 0.25, PageUp: -0.25 }[e.key];
     if (e.key === "Home") { e.preventDefault(); return scrollTo({ top: 0 }); }
