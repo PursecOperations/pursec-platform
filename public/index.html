@@ -8,8 +8,7 @@
 <meta property="og:title" content="PURSEC">
 <meta property="og:description" content="PURSEC streetwear. Limited drops. Shipping to Spain, France, Germany, Italy and Portugal.">
 <meta property="og:image" content="https://pursec.club/img/drop/hero.webp">
-<link rel="icon" href="/favicon.svg" type="image/svg+xml">
-<link rel="icon" href="/img/ps-emblema-32.png" sizes="32x32">
+<link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,7 +52,8 @@ a{color:inherit}
 .nav .links a::after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:right;transition:transform .5s var(--ease)}
 .nav .links a:hover::after{transform:scaleX(1);transform-origin:left}
 .nav .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav .logo b{font-family:var(--f-display);font-weight:900;font-size:16px;letter-spacing:.08em}
+.nav .logo img{display:block;height:30px;width:auto;mix-blend-mode:screen;transition:filter .5s var(--ease)}
+.nav.light .logo img{mix-blend-mode:normal;filter:none;background:#000;border-radius:8px;padding:2px 6px;height:34px}
 .nav .right{display:flex;justify-content:flex-end;gap:22px;align-items:center}
 .pill{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 18px;border-radius:999px;border:1px solid currentColor;text-decoration:none;transition:background .4s var(--ease),color .4s var(--ease)}
 .pill:hover{background:currentColor}
@@ -232,7 +232,7 @@ a{color:inherit}
     <nav class="links caps" aria-label="Main">
       <a href="#drop">Shop</a><a href="#look">Lookbook</a><a href="#join">The list</a>
     </nav>
-    <a class="logo" href="#top" aria-label="PURSEC home"><b>PURSEC</b></a>
+    <a class="logo" href="#top" aria-label="PURSEC home"><img src="/img/logo-pursec.webp" width="117" height="30" alt="PURSEC"></a>
     <div class="right caps">
       <a href="#join" class="pill"><span>Join the drop</span></a>
     </div>
