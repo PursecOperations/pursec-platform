@@ -330,14 +330,14 @@ function cardHTML(p, i) {
   const a = p.gallery[0], b = p.gallery[1];
   const sizes = p.variants.map((v) => `<button type="button" data-add="${v.id}" ${v.stock > 0 ? "" : "disabled"} aria-label="Add size ${esc(v.size)}">${esc(v.size)}</button>`).join("");
   const low = p.variants.reduce((t, v) => t + Math.max(0, v.stock), 0);
-  const badge = p.comingSoon ? '<span class="badge">Coming soon</span>' : !p.inStock ? '<span class="badge dark">Sold out</span>' : low <= 5 ? '<span class="badge lilac">Last pieces</span>' : '<span class="badge">Drop 01</span>';
+  const badge = p.comingSoon ? '<span class="badge dark">Coming soon</span>' : !p.inStock ? '<span class="badge dark">Sold out</span>' : low <= 5 ? '<span class="badge lilac">Last pieces</span>' : '<span class="badge">Drop 01</span>';
   return `<article class="card" data-reveal style="--d:${(i % 4) * 0.06}s">
     <a class="media" href="/product?p=${encodeURIComponent(p.slug)}" aria-label="${esc(p.name)}">
       ${badge}
       ${a ? `<img class="a" src="${esc(a)}" alt="${esc(p.name)}" loading="lazy">` : slotHTML("Front", "a")}
       ${b ? `<img class="b" src="${esc(b)}" alt="" loading="lazy">` : slotHTML("Back", "b")}
     </a>
-    ${p.inStock ? `<div class="quick" aria-label="Quick add">${sizes}</div>` : ""}
+    ${p.inStock && p.colors.length < 2 ? `<div class="quick" aria-label="Quick add">${sizes}</div>` : ""}
     <div class="row"><a class="name" href="/product?p=${encodeURIComponent(p.slug)}" style="text-decoration:none">${esc(p.name)}</a><span class="price">${eur(p.price_eur)}</span></div>
     ${p.colors.length ? `<div class="sub">${esc(p.colors.join(" / "))}</div>` : ""}
   </article>`;
@@ -601,7 +601,17 @@ async function product() {
 
   let chosen = null;
   const sizes = $("#sizes-row"), add = $("#add"), sticky = $("#sticky-add"), note = $("#stock-note"), notify = $("#notify");
-  sizes.innerHTML = p.variants.map((v) => `<button type="button" data-v="${v.id}" class="${v.stock > 0 || demo || p.comingSoon ? "" : "out"}" aria-pressed="false" aria-label="Size ${esc(v.size)}${v.stock > 0 || demo || p.comingSoon ? "" : ", sold out"}">${esc(v.size)}</button>`).join("");
+  let color = (p.variants.find((v) => v.stock > 0) || p.variants[0] || {}).color;
+  const colorRow = $("#pdp-color");
+  if (!demo && p.colors.length > 1) {
+    colorRow.innerHTML = `<span style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">${p.colors.map((c) => `<button type="button" class="pill" data-c="${esc(c)}" aria-pressed="${c === color}">${esc(c)}</button>`).join("")}</span>`;
+  }
+  const renderSizes = () => {
+    const vs = p.variants.filter((v) => demo || p.colors.length < 2 || v.color === color);
+    sizes.innerHTML = vs.map((v) => `<button type="button" data-v="${v.id}" class="${v.stock > 0 || demo || p.comingSoon ? "" : "out"}" aria-pressed="false" aria-label="Size ${esc(v.size)}${v.stock > 0 || demo || p.comingSoon ? "" : ", sold out"}">${esc(v.size)}</button>`).join("");
+  };
+  renderSizes();
+  colorRow.addEventListener("click", (e) => { const b = e.target.closest("[data-c]"); if (!b) return; color = b.dataset.c; $$("[data-c]", colorRow).forEach((x) => x.setAttribute("aria-pressed", x === b)); chosen = null; renderSizes(); paint(); });
   const paint = () => {
     const v = chosen;
     if (demo || p.comingSoon) { add.textContent = "Coming soon"; add.disabled = true; note.textContent = p.comingSoon ? "Join the list to know when it drops." : ""; notify.hidden = false; sticky.innerHTML = add.innerHTML; sticky.disabled = true; return; }
@@ -611,7 +621,7 @@ async function product() {
     sticky.innerHTML = add.innerHTML; sticky.disabled = add.disabled;
   };
   sizes.addEventListener("click", (e) => { const b = e.target.closest("[data-v]"); if (!b) return; chosen = p.variants.find((v) => String(v.id) === b.dataset.v); $$("button", sizes).forEach((x) => x.setAttribute("aria-pressed", x === b)); paint(); });
-  const first = p.variants.filter((v) => v.stock > 0);
+  const first = p.variants.filter((v) => v.stock > 0 && (p.colors.length < 2 || v.color === color));
   if (first.length === 1) { chosen = first[0]; sizes.querySelector(`[data-v="${chosen.id}"]`).setAttribute("aria-pressed", "true"); }
   add.addEventListener("click", () => chosen && addToBag(p, chosen));
   sticky.addEventListener("click", () => chosen ? addToBag(p, chosen) : sizes.scrollIntoView({ behavior: "smooth", block: "center" }));
