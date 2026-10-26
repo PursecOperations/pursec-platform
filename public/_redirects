@@ -1,4 +1,12 @@
-# Páginas del antiguo club -> tienda
+# Páginas antiguas -> home (ya no hay tienda ni club)
+/shop            /        301
+/shop.html       /        301
+/product         /        301
+/product.html    /        301
+/thanks          /        301
+/thanks.html     /        301
+/help            /        301
+/help.html       /        301
 /planes          /        301
 /planes.html     /        301
 /garage          /        301
