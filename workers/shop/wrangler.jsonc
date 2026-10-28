@@ -12,6 +12,13 @@
   "vars": {
     "SUPABASE_URL": "https://uymgrzlbpaqorbwajhfh.supabase.co",
     "SITE_URL": "https://pursec.club",
+    // Panel /admin: único email con acceso (enlace mágico de Supabase). Clave publicable = la misma que ya es pública en la web.
+    "ADMIN_EMAILS": "pursec.telemetry.hq@gmail.com",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_aKv-FR4J-9LYHz45Np-u_Q_TUoF9ybe",
+    // Make (solo lectura, opcional): zona y equipo. El token MAKE_API_TOKEN es un secreto.
+    "MAKE_ZONE": "eu1.make.com",
+    "MAKE_TEAM_ID": "2975763",
+    "GITHUB_REPO": "PursecOperations/pursec-platform",
     "ALLOWED_ORIGINS": "https://pursec.club,https://www.pursec.club",
     // Envío (decidido por Oriol el 24 oct 2026): 4,95 €; gratis desde 70 € en prendas.
     // Países: solo donde ya se conoce el coste de la etiqueta (España, Francia, Alemania, Italia y Portugal).
