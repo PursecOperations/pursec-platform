@@ -8,7 +8,12 @@
 
 const SUPABASE_URL = "https://uymgrzlbpaqorbwajhfh.supabase.co";
 const SUPABASE_KEY = "sb_publishable_aKv-FR4J-9LYHz45Np-u_Q_TUoF9ybe"; // clave publicable (pública por diseño)
-const API = "https://pursec-shop.pursec-telemetry-hq.workers.dev/admin";
+// En pursec.club habla con el Worker de producción; en la vista previa de una rama
+// (<rama>-pursec-platform...workers.dev) habla con la vista previa de esa misma rama de pursec-shop.
+const PREVIEW_HOST = /^([a-z0-9-]+)-pursec-platform\.pursec-telemetry-hq\.workers\.dev$/;
+const API = PREVIEW_HOST.test(location.hostname)
+  ? `https://${location.hostname.replace(PREVIEW_HOST, "$1")}-pursec-shop.pursec-telemetry-hq.workers.dev/admin`
+  : "https://pursec-shop.pursec-telemetry-hq.workers.dev/admin";
 const SESSION_KEY = "pursec_admin_session";
 const TZ = "Europe/Madrid";
 
